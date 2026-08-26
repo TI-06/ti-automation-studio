@@ -68,4 +68,14 @@ describe('実績のケーススタディ表示', () => {
     expect(workDetailSource).toContain('こんな相談に向いています');
     expect(globalCss).toContain('.case-overview-grid');
   });
+
+  it('建設業界向けの工程・安全帳票ケーススタディを掲載する', () => {
+    const construction = works.find((work) => work.slug === 'construction-site-operations');
+    expect(construction).toBeTruthy();
+    expect(construction?.category).toContain('建設');
+    expect(construction?.title).toContain('工程');
+    expect(construction?.title).toContain('安全帳票');
+    expect(construction?.features.length).toBeGreaterThanOrEqual(6);
+    expect(construction?.technologies).toContain('Google Apps Script');
+  });
 });
