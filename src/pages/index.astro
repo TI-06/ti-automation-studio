@@ -1,0 +1,155 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { works } from '../data/works';
+import { publishedTools } from '../data/tools';
+
+const featuredWorks = works.filter((work) => work.featured).slice(0, 4);
+const services = [
+  ['01', 'Excel・スプレッドシート業務の自動化', '手入力、転記、集計、ファイル作成など、毎日繰り返している作業を減らします。'],
+  ['02', '社内Webツール・管理画面の開発', '業務に必要な機能だけを整理し、ブラウザから使える専用画面を構築します。'],
+  ['03', 'GASによるGoogle Workspace活用', 'スプレッドシート、Drive、Gmailなどをつないで既存環境を業務システム化します。'],
+  ['04', 'API・ECサービス連携', '外部サービスとのデータ連携、認証、登録・取得処理を自動化します。'],
+  ['05', 'CSV・Excel・大量データ処理', 'データの検証、変換、集計、一括処理をPythonやExcelで効率化します。'],
+  ['06', 'PDF・帳票・印刷物の自動生成', '入力データをもとに、定型帳票やPDFを自動で作成・保存します。'],
+  ['07', 'AIを組み込んだ業務効率化', 'AIを使うこと自体を目的にせず、実務で使える入力支援や分類・要約へ落とし込みます。'],
+  ['08', '既存システム・既存ツールの改修', 'いま使っているExcel、VBA、GAS、Webツールを活かしながら改善します。'],
+];
+const process = [
+  ['01', '相談', 'いま困っていることを整理します。仕様が決まっていなくても問題ありません。'],
+  ['02', '現在の業務を確認', '実際の作業手順、入力データ、利用者、例外ケースを確認します。'],
+  ['03', '改善案・仕様整理', '作る機能と、あえて作らない部分を整理し、無理のない構成にします。'],
+  ['04', '開発', '操作性と保守性を意識しながら、小さく確認できる単位で実装します。'],
+  ['05', 'テスト', '実際の業務パターンを想定し、入力・処理・エラー時の動作を確認します。'],
+  ['06', '納品・改善', '運用開始後も必要に応じて調整し、使い続けられる状態へ整えます。'],
+];
+---
+<BaseLayout
+  title="TI AUTOMATION STUDIO"
+  description="Excel・GAS・Python・Web・API・AIを活用した業務改善・自動化開発。手作業を、現場で使える仕組みに変えます。"
+>
+  <section class="hero">
+    <div class="container hero-grid reveal">
+      <div>
+        <p class="eyebrow">業務改善・自動化開発</p>
+        <h1>面倒な業務を、<br /><span>使える仕組み</span>に変える。</h1>
+        <p class="hero-copy">Excel・Google Apps Script・Python・Web・API・AIを組み合わせ、手作業で続いている業務を、現場で実際に使える小さなシステムへ変えていきます。</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="/works">実績を見る <span aria-hidden="true">→</span></a>
+          <a class="btn" href="/contact">開発について相談する <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+      <aside class="hero-side" aria-label="対応方針">
+        <strong>現場に合わせて設計します。</strong>
+        <p>大きなシステムを最初から作るのではなく、既存のExcelやGoogle Workspaceも活かしながら、必要な部分から改善します。</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="container metrics" aria-label="実績概要">
+      <div class="metric"><span class="metric-value">約10年</span><span class="metric-label">エンジニア経験</span></div>
+      <div class="metric"><span class="metric-value">約100件</span><span class="metric-label">開発・業務改善の対応実績</span></div>
+      <div class="metric"><span class="metric-value">5領域+</span><span class="metric-label">Excel / GAS / Python / Web / API ほか</span></div>
+    </div>
+  </section>
+
+  <section id="services" class="section">
+    <div class="container">
+      <p class="eyebrow">できること</p>
+      <h2 class="section-title">技術ではなく、<br />解決したい業務から考えます。</h2>
+      <p class="section-lead">「何を使えばいいか分からない」という段階でも大丈夫です。現在の運用を確認し、必要な技術をこちらで組み合わせます。</p>
+      <div class="service-grid">
+        {services.map(([no, title, copy]) => (
+          <article class="service">
+            <span class="service-no">{no}</span>
+            <div><h3>{title}</h3><p>{copy}</p></div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">開発実績</p>
+      <h2 class="section-title">業務の流れそのものを、<br />少しずつ軽くする。</h2>
+      <p class="section-lead">顧客名や固有データは公開せず、どのような課題をどう整理・実装したかが分かる形で紹介しています。</p>
+      <div class="card-grid">
+        {featuredWorks.map((work, index) => (
+          <a class="work-card" href={`/works/${work.slug}`}>
+            <span class="card-arrow" aria-hidden="true">↗</span>
+            <div>
+              <span class="card-kicker">CASE {String(index + 1).padStart(2, '0')}</span>
+              <h3 class="card-title">{work.title}</h3>
+              <p class="card-copy">{work.summary}</p>
+            </div>
+            <div class="tags">{work.technologies.slice(0, 4).map((tech) => <span class="tag">{tech}</span>)}</div>
+          </a>
+        ))}
+      </div>
+      <div class="hero-actions"><a class="btn" href="/works">すべての実績を見る <span aria-hidden="true">→</span></a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">公開ツール</p>
+      <h2 class="section-title">作ったものを、<br />実際に触れる形へ。</h2>
+      <p class="section-lead">公開して問題ないことを確認したツールだけを掲載します。顧客データや秘密情報を含むものは公開しません。</p>
+      {publishedTools.length > 0 ? (
+        <div class="card-grid">
+          {publishedTools.map((tool) => (
+            <a class="tool-card" href={`/tools/${tool.slug}`}>
+              <span class="card-arrow" aria-hidden="true">↗</span>
+              <div><span class="card-kicker">TOOL</span><h3 class="card-title">{tool.title}</h3><p class="card-copy">{tool.description}</p></div>
+              <div class="tags">{tool.technologies.map((tech) => <span class="tag">{tech}</span>)}</div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="empty-state">公開ツールは現在、安全確認と公開用調整を進めています。順次追加します。</div>
+      )}
+      <div class="hero-actions"><a class="btn" href="/tools">公開ツールを見る <span aria-hidden="true">→</span></a></div>
+    </div>
+  </section>
+
+  <section id="process" class="section">
+    <div class="container">
+      <p class="eyebrow">開発の流れ</p>
+      <h2 class="section-title">仕様が固まっていなくても、<br />相談から整理できます。</h2>
+      <div class="process">
+        {process.map(([no, title, copy]) => (
+          <article class="process-item"><span class="process-no">{no}</span><h3>{title}</h3><p>{copy}</p></article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container about-panel">
+      <div>
+        <p class="eyebrow">プロフィール</p>
+        <h2 class="section-title">実務を止めずに、<br />仕組みを変える。</h2>
+      </div>
+      <div>
+        <div class="about-body">
+          <p>30代のシステムエンジニアとして、業務システムの開発・改修と、Excel・GAS・Pythonを使った業務改善を行っています。</p>
+          <p>新しい技術を使うこと自体よりも、利用する人が迷わず、処理中かどうかが分かり、日常業務の中で使い続けられることを重視しています。</p>
+          <p>会社名・顧客名・個人情報は公開していません。公開可能な範囲で、実績と技術内容を紹介しています。</p>
+        </div>
+        <div class="about-meta">
+          <div><span>経験</span><strong>システム開発 約10年</strong></div>
+          <div><span>主な領域</span><strong>業務改善 / 自動化 / Web</strong></div>
+          <div><span>対応</span><strong>小規模改善〜個別システム開発</strong></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container cta-band-inner">
+      <div><p class="eyebrow">問い合わせ</p><h2>その手作業、<br />仕組みにできるかもしれません。</h2></div>
+      <a class="btn btn-primary" href="/contact">相談内容を送る <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+</BaseLayout>
