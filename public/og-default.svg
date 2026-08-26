@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#0B0C0E"/>
+  <path d="M880 0H881V630H880Z" fill="#C8A96B" opacity="0.18"/>
+  <rect x="78" y="76" width="18" height="18" transform="rotate(45 87 85)" fill="none" stroke="#C8A96B" stroke-width="2"/>
+  <text x="116" y="91" fill="#F2F0EA" font-family="Arial, sans-serif" font-size="22" font-weight="700" letter-spacing="4">TI AUTOMATION STUDIO</text>
+  <text x="78" y="252" fill="#F2F0EA" font-family="Arial, 'Noto Sans JP', sans-serif" font-size="68" font-weight="500">面倒な業務を、</text>
+  <text x="78" y="338" fill="#C8A96B" font-family="Arial, 'Noto Sans JP', sans-serif" font-size="68" font-weight="500">使える仕組みに変える。</text>
+  <text x="82" y="430" fill="#A8A8A2" font-family="Arial, 'Noto Sans JP', sans-serif" font-size="28">Excel / GAS / Python / Web / API / AI</text>
+  <text x="82" y="500" fill="#A8A8A2" font-family="Arial, 'Noto Sans JP', sans-serif" font-size="22">業務改善・自動化開発</text>
+</svg>
