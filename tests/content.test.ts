@@ -4,6 +4,8 @@ import { works } from '../src/data/works';
 import { tools } from '../src/data/tools';
 
 const homeSource = readFileSync(new URL('../src/pages/index.astro', import.meta.url), 'utf-8');
+const worksIndexSource = readFileSync(new URL('../src/pages/works/index.astro', import.meta.url), 'utf-8');
+const workDetailSource = readFileSync(new URL('../src/pages/works/[slug].astro', import.meta.url), 'utf-8');
 const globalCss = readFileSync(new URL('../src/styles/global.css', import.meta.url), 'utf-8');
 
 describe('公開コンテンツ', () => {
@@ -39,5 +41,31 @@ describe('トップページのヒーローレイアウト', () => {
     expect(globalCss).toContain('font-size: clamp(2.7rem, 6.1vw, 5.8rem);');
     expect(globalCss).toContain('@media (max-width: 1100px)');
     expect(globalCss).toContain('font-size: clamp(2.35rem, 12vw, 3.7rem);');
+  });
+});
+
+describe('実績のケーススタディ表示', () => {
+  it('全実績に一覧と詳細で使う説明情報を持たせる', () => {
+    for (const work of works) {
+      expect(work.category).toBeTruthy();
+      expect(work.overview.length).toBeGreaterThan(50);
+      expect(work.features.length).toBeGreaterThanOrEqual(3);
+      expect(work.suitableFor.length).toBeGreaterThanOrEqual(3);
+    }
+  });
+
+  it('実績一覧で課題と改善ポイントを先に比較できる', () => {
+    expect(worksIndexSource).toContain('class="work-card-insights"');
+    expect(worksIndexSource).toContain('課題');
+    expect(worksIndexSource).toContain('改善');
+    expect(worksIndexSource).toContain('詳細を見る');
+  });
+
+  it('実績詳細で概要を先に把握してから詳細を読める', () => {
+    expect(workDetailSource).toContain('class="case-overview-grid"');
+    expect(workDetailSource).toContain('この実績について');
+    expect(workDetailSource).toContain('主な機能');
+    expect(workDetailSource).toContain('こんな相談に向いています');
+    expect(globalCss).toContain('.case-overview-grid');
   });
 });
