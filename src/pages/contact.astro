@@ -108,6 +108,11 @@ const siteKey = runtimeEnv.TURNSTILE_SITE_KEY;
 </BaseLayout>
 
 <script>
+  type ContactResponse = {
+    ok?: boolean;
+    message?: string;
+  };
+
   const form = document.querySelector('#contact-form');
   const status = document.querySelector('#form-status');
   const button = document.querySelector('#submit-button');
@@ -143,7 +148,7 @@ const siteKey = runtimeEnv.TURNSTILE_SITE_KEY;
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify(payload),
         });
-        const result = await response.json();
+        const result = (await response.json()) as ContactResponse;
 
         if (!response.ok || !result.ok) {
           status.dataset.state = 'error';
