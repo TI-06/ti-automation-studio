@@ -4,7 +4,8 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   output: 'server',
-  adapter: cloudflare({ session: false }),
+  adapter: cloudflare(),
   integrations: [sitemap()],
+  session: false,
   site: 'https://ti-automation-studio.workers.dev',
 });
