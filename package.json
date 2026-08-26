@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@astrojs/cloudflare": "latest",
+    "@astrojs/sitemap": "latest",
     "astro": "latest"
   },
   "devDependencies": {
