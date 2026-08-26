@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { works } from '../../data/works';
+
+const { slug } = Astro.params;
+const work = works.find((item) => item.slug === slug);
+if (!work) return Astro.redirect('/works');
+---
+<BaseLayout title={work.title} description={work.summary}>
+  <section class="page-hero">
+    <div class="container reveal">
+      <p class="eyebrow">開発実績</p>
+      <h1>{work.title}</h1>
+      <p>{work.summary}</p>
+      <div class="tags">{work.technologies.map((tech) => <span class="tag">{tech}</span>)}</div>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="container detail-grid">
+      <aside class="detail-aside">
+        <p class="eyebrow">CASE DETAIL</p>
+        <a class="btn" href="/works">← 実績一覧へ戻る</a>
+      </aside>
+      <div>
+        <section class="detail-section">
+          <h2>課題</h2>
+          <p>{work.problem}</p>
+        </section>
+        <section class="detail-section">
+          <h2>開発内容</h2>
+          <ul>{work.solution.map((item) => <li>{item}</li>)}</ul>
+        </section>
+        <section class="detail-section">
+          <h2>改善できたこと</h2>
+          <ul>{work.impact.map((item) => <li>{item}</li>)}</ul>
+        </section>
+        <section class="detail-section">
+          <h2>使用技術</h2>
+          <div class="tags">{work.technologies.map((tech) => <span class="tag">{tech}</span>)}</div>
+        </section>
+        <section class="detail-section">
+          <h2>機密保持について</h2>
+          <p>掲載内容は業務課題と技術要素を一般化したものです。顧客名、担当者名、住所、実データ、顧客固有の画面、契約内容などは公開していません。</p>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container cta-band-inner">
+      <div><p class="eyebrow">問い合わせ</p><h2>同じような課題があれば、<br />現在の運用から相談できます。</h2></div>
+      <a class="btn btn-primary" href="/contact">相談内容を送る →</a>
+    </div>
+  </section>
+</BaseLayout>

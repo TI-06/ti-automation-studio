@@ -19,12 +19,88 @@ Excel・Google Apps Script・Python・Web・API・AIを組み合わせ、手作�
 
 ## 技術構成
 
-- Astro
-- TypeScript
-- 独自CSS（CSS Variables / scoped CSS）
+- Astro / TypeScript
+- 独自CSS
 - Cloudflare Workers
 - Cloudflare Turnstile
-- GitHub
+- Google Apps Script（問い合わせ通知先）
+- GitHub Actions
+
+## ローカル起動
+
+```bash
+npm install
+cp .dev.vars.example .dev.vars
+npm run dev
+```
+
+`.dev.vars.example` のTurnstile値はCloudflare公式のテストキーです。問い合わせ転送まで確認する場合は、ローカルの `.dev.vars` に `CONTACT_GAS_URL` と `CONTACT_SHARED_SECRET` を設定してください。`.dev.vars` はGit管理対象外です。
+
+## テスト / ビルド
+
+```bash
+npm test
+npm run build
+```
+
+## Cloudflare Workersへの公開
+
+### 1. GitHub連携
+
+Cloudflare Workers & Pagesの管理画面からGitHubリポジトリ `TI-06/ti-automation-studio` を接続します。
+
+- Production branch: `main`
+- Build command: `npm run build`
+- Deploy commandを手動実行する場合: `npm run deploy`
+
+### 2. 環境変数
+
+Cloudflare側に以下を登録します。
+
+| 名前 | 種別 | 用途 |
+| --- | --- | --- |
+| `TURNSTILE_SITE_KEY` | Variable | 問い合わせ画面に表示するTurnstile site key |
+| `TURNSTILE_SECRET_KEY` | Secret | Turnstileのサーバー検証 |
+| `CONTACT_GAS_URL` | Secret | 問い合わせ転送先GAS Web App URL |
+| `CONTACT_SHARED_SECRET` | Secret | WorkerとGAS間の共有シークレット |
+
+秘密値は `wrangler.jsonc` やソースコードへ直接書き込みません。
+
+### 3. Turnstile
+
+Cloudflare Turnstileで本番ドメイン用Widgetを作成し、Site Key / Secret Keyを上記環境変数へ設定します。サーバー側では `/api/contact` がSiteverify APIを実行し、検証成功後のみGASへ転送します。
+
+### 4. 独自ドメイン
+
+独自ドメインを設定したら、以下も本番URLへ変更します。
+
+- `astro.config.mjs` の `site`
+- `public/robots.txt` の Sitemap URL
+
+## 問い合わせ受信側GAS
+
+GAS側ではPOSTされたJSONを受け取り、`X-Portfolio-Secret` がCloudflare側の `CONTACT_SHARED_SECRET` と一致することを確認してから保存・メール通知します。
+
+受信データ:
+
+- `source`
+- `receivedAt`
+- `name`
+- `email`
+- `category`
+- `problem`
+- `request`
+- `budget`
+- `timing`
+
+## 公開ツールについて
+
+既存GitHubリポジトリは無条件では掲載しません。以下を確認したものだけ `src/data/tools.ts` で `published: true` にします。
+
+- APIキー・トークン・秘密情報が含まれていない
+- 顧客・個人情報が含まれていない
+- ライセンス上問題がない
+- UI・README・動作が営業サイトに掲載できる品質になっている
 
 ## ドキュメント
 

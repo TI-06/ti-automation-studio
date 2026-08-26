@@ -1,0 +1,171 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { env } from 'cloudflare:workers';
+
+const runtimeEnv = env as unknown as { TURNSTILE_SITE_KEY?: string };
+const siteKey = runtimeEnv.TURNSTILE_SITE_KEY;
+---
+<BaseLayout
+  title="問い合わせ"
+  description="Excel・GAS・Python・Web・API・AIを使った業務改善・自動化について相談できます。仕様が決まっていない段階でも問題ありません。"
+>
+  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+  <section class="page-hero">
+    <div class="container reveal">
+      <p class="eyebrow">問い合わせ</p>
+      <h1>まずは、今の業務を<br />教えてください。</h1>
+      <p>「何を作るか」まで決まっていなくても大丈夫です。現在困っていること、繰り返している作業、使っているExcelやスプレッドシートなどから整理できます。</p>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="container contact-layout">
+      <aside>
+        <p class="eyebrow">相談できる内容</p>
+        <div class="about-meta">
+          <div><span>業務自動化</span><strong>Excel / GAS</strong></div>
+          <div><span>Webツール</span><strong>管理画面 / 入力画面</strong></div>
+          <div><span>データ処理</span><strong>Python / CSV</strong></div>
+          <div><span>外部連携</span><strong>API / OAuth</strong></div>
+          <div><span>AI活用</span><strong>業務への組み込み</strong></div>
+        </div>
+        <p class="section-lead">本名・住所・電話番号の公開はしていません。入力いただいた内容は相談対応のためにのみ利用します。</p>
+      </aside>
+
+      <div>
+        <form id="contact-form" class="form-grid" novalidate>
+          <div class="field">
+            <label for="name">お名前または会社名 <small>任意</small></label>
+            <input id="name" name="name" maxlength="100" autocomplete="name" />
+          </div>
+
+          <div class="field">
+            <label for="email">メールアドレス <small>必須</small></label>
+            <input id="email" name="email" type="email" maxlength="254" autocomplete="email" required />
+          </div>
+
+          <div class="field">
+            <label for="category">相談内容</label>
+            <select id="category" name="category">
+              <option value="">選択してください</option>
+              <option>Excel・スプレッドシート自動化</option>
+              <option>GAS・Google Workspace</option>
+              <option>Webシステム・管理画面</option>
+              <option>Python・データ処理</option>
+              <option>API・外部サービス連携</option>
+              <option>AI活用・自動化</option>
+              <option>既存ツールの改修</option>
+              <option>その他・まだ分からない</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="problem">現在困っていること <small>必須</small></label>
+            <textarea id="problem" name="problem" maxlength="3000" required placeholder="例：毎週、複数のExcelから数値を集計してPDFを作成しているため、自動化したい。"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="request">希望していること <small>任意</small></label>
+            <textarea id="request" name="request" maxlength="3000" placeholder="完成イメージが決まっていなくても問題ありません。"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="budget">予算感 <small>任意</small></label>
+            <select id="budget" name="budget">
+              <option value="">未定</option>
+              <option>〜5万円</option>
+              <option>5〜10万円</option>
+              <option>10〜30万円</option>
+              <option>30万円〜</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="timing">希望時期 <small>任意</small></label>
+            <input id="timing" name="timing" maxlength="100" placeholder="例：1か月以内 / 急ぎではない" />
+          </div>
+
+          {siteKey ? (
+            <div class="field">
+              <div class="cf-turnstile" data-sitekey={siteKey} data-theme="dark"></div>
+            </div>
+          ) : (
+            <p class="form-status" data-state="error">問い合わせフォームは公開設定中です。Cloudflare Turnstileの設定後に送信できるようになります。</p>
+          )}
+
+          <label class="checkbox">
+            <input id="consent" name="consent" type="checkbox" required />
+            <span><a href="/privacy" target="_blank">プライバシーポリシー</a>を確認し、入力した情報を問い合わせ対応のために利用することに同意します。</span>
+          </label>
+
+          <p id="form-status" class="form-status" aria-live="polite"></p>
+          <button id="submit-button" class="btn btn-primary" type="submit" disabled={!siteKey}>相談内容を送信する →</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  type ContactResponse = {
+    ok?: boolean;
+    message?: string;
+  };
+
+  const form = document.querySelector('#contact-form');
+  const status = document.querySelector('#form-status');
+  const button = document.querySelector('#submit-button');
+
+  if (form instanceof HTMLFormElement && status instanceof HTMLElement && button instanceof HTMLButtonElement) {
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      status.textContent = '';
+      status.dataset.state = '';
+
+      if (!form.reportValidity()) return;
+
+      const data = new FormData(form);
+      const payload = {
+        name: String(data.get('name') ?? ''),
+        email: String(data.get('email') ?? ''),
+        category: String(data.get('category') ?? ''),
+        problem: String(data.get('problem') ?? ''),
+        request: String(data.get('request') ?? ''),
+        budget: String(data.get('budget') ?? ''),
+        timing: String(data.get('timing') ?? ''),
+        consent: data.get('consent') === 'on',
+        turnstileToken: String(data.get('cf-turnstile-response') ?? ''),
+      };
+
+      button.disabled = true;
+      button.textContent = '送信しています…';
+      status.textContent = '送信処理中です。';
+
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const result = (await response.json()) as ContactResponse;
+
+        if (!response.ok || !result.ok) {
+          status.dataset.state = 'error';
+          status.textContent = result.message ?? '送信に失敗しました。入力内容を確認してください。';
+          return;
+        }
+
+        form.reset();
+        status.dataset.state = 'success';
+        status.textContent = 'お問い合わせを受け付けました。確認後、メールでご連絡します。';
+      } catch {
+        status.dataset.state = 'error';
+        status.textContent = '通信に失敗しました。時間をおいてもう一度お試しください。';
+      } finally {
+        button.disabled = false;
+        button.textContent = '相談内容を送信する →';
+      }
+    });
+  }
+</script>

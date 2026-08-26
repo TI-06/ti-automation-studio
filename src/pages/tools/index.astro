@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { publishedTools } from '../../data/tools';
+---
+<BaseLayout
+  title="公開ツール"
+  description="TI AUTOMATION STUDIOが公開している業務改善・自動化関連のツールとデモ。安全確認済みのものだけを掲載します。"
+>
+  <section class="page-hero">
+    <div class="container reveal">
+      <p class="eyebrow">公開ツール</p>
+      <h1>作ったものを、<br />触れる形で。</h1>
+      <p>営業用に見せるためだけのデモではなく、実際に操作できる小さなツールを順次追加します。公開前に秘密情報・顧客情報・利用条件を確認します。</p>
+    </div>
+  </section>
+  <section class="section-tight">
+    <div class="container">
+      {publishedTools.length > 0 ? (
+        <div class="card-grid">
+          {publishedTools.map((tool) => (
+            <a class="tool-card" href={`/tools/${tool.slug}`}>
+              <span class="card-arrow" aria-hidden="true">↗</span>
+              <div><span class="card-kicker">TOOL</span><h2 class="card-title">{tool.title}</h2><p class="card-copy">{tool.description}</p></div>
+              <div class="tags">{tool.technologies.map((tech) => <span class="tag">{tech}</span>)}</div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="empty-state">
+          <p class="eyebrow">PREPARING</p>
+          <p>現在、既存ツールの安全確認と公開用調整を進めています。<br />公開品質を満たしたものから順次追加します。</p>
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>

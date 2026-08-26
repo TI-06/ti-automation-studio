@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { publishedTools } from '../../data/tools';
+
+const { slug } = Astro.params;
+const tool = publishedTools.find((item) => item.slug === slug);
+if (!tool) return Astro.redirect('/tools');
+---
+<BaseLayout title={tool.title} description={tool.description}>
+  <section class="page-hero">
+    <div class="container reveal">
+      <p class="eyebrow">公開ツール</p>
+      <h1>{tool.title}</h1>
+      <p>{tool.description}</p>
+      <div class="tags">{tool.technologies.map((tech) => <span class="tag">{tech}</span>)}</div>
+      <div class="hero-actions">
+        {tool.demoUrl && <a class="btn btn-primary" href={tool.demoUrl} target="_blank" rel="noopener noreferrer">デモを開く ↗</a>}
+        {tool.githubUrl && <a class="btn" href={tool.githubUrl} target="_blank" rel="noopener noreferrer">GitHubを見る ↗</a>}
+      </div>
+    </div>
+  </section>
+  <section class="section-tight">
+    <div class="container detail-grid">
+      <aside class="detail-aside"><a class="btn" href="/tools">← ツール一覧へ戻る</a></aside>
+      <div>
+        <section class="detail-section"><h2>概要</h2><p>{tool.description}</p></section>
+        <section class="detail-section"><h2>使用技術</h2><div class="tags">{tool.technologies.map((tech) => <span class="tag">{tech}</span>)}</div></section>
+        <section class="detail-section"><h2>公開について</h2><p>公開版は個人情報・顧客情報・秘密情報を含まないことを確認したうえで掲載しています。</p></section>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

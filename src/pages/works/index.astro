@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { works } from '../../data/works';
+---
+<BaseLayout
+  title="開発実績"
+  description="Excel・GAS・Python・Web・APIを使った業務改善・自動化の開発実績。顧客情報を伏せ、課題と改善内容を紹介します。"
+>
+  <section class="page-hero">
+    <div class="container reveal">
+      <p class="eyebrow">開発実績</p>
+      <h1>業務の課題を、<br />動く仕組みへ。</h1>
+      <p>顧客名・固有データ・契約内容は公開せず、どのような問題をどのように整理し、仕組みへ落とし込んだかを紹介しています。</p>
+    </div>
+  </section>
+  <section class="section-tight">
+    <div class="container card-grid">
+      {works.map((work, index) => (
+        <a class="work-card" href={`/works/${work.slug}`}>
+          <span class="card-arrow" aria-hidden="true">↗</span>
+          <div>
+            <span class="card-kicker">CASE {String(index + 1).padStart(2, '0')}</span>
+            <h2 class="card-title">{work.title}</h2>
+            <p class="card-copy">{work.summary}</p>
+          </div>
+          <div class="tags">{work.technologies.map((tech) => <span class="tag">{tech}</span>)}</div>
+        </a>
+      ))}
+    </div>
+  </section>
+  <section class="cta-band">
+    <div class="container cta-band-inner">
+      <div><p class="eyebrow">相談</p><h2>似た業務で困っているなら、<br />一度整理してみませんか。</h2></div>
+      <a class="btn btn-primary" href="/contact">開発について相談する →</a>
+    </div>
+  </section>
+</BaseLayout>
