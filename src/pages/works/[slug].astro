@@ -19,22 +19,24 @@ const caseNumber = String(workIndex + 1).padStart(2, '0');
   </section>
 
   <section class="case-summary-section">
-    <div class="container case-overview-grid">
-      <div class="case-overview-item">
-        <span>対象領域</span>
-        <strong>{work.category}</strong>
-      </div>
-      <div class="case-overview-item">
-        <span>主な課題</span>
-        <p>{work.problem}</p>
-      </div>
-      <div class="case-overview-item">
-        <span>主な対応</span>
-        <p>{work.solution[0]}</p>
-      </div>
-      <div class="case-overview-item">
-        <span>改善ポイント</span>
-        <p>{work.impact[0]}</p>
+    <div class="container">
+      <div class="case-overview-grid">
+        <div class="case-overview-item">
+          <span>対象領域</span>
+          <strong>{work.category}</strong>
+        </div>
+        <div class="case-overview-item">
+          <span>主な課題</span>
+          <p>{work.problem}</p>
+        </div>
+        <div class="case-overview-item">
+          <span>主な対応</span>
+          <p>{work.solution[0]}</p>
+        </div>
+        <div class="case-overview-item">
+          <span>改善ポイント</span>
+          <p>{work.impact[0]}</p>
+        </div>
       </div>
     </div>
   </section>
