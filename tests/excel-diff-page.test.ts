@@ -14,6 +14,7 @@ describe('Excel差分比較ページ', () => {
     expect(source).toContain('data-file-before');
     expect(source).toContain('data-file-after');
     expect(source).toContain('data-diff-table');
+    expect(source).toContain('data-diff-inspector');
     expect(source).toContain('差分結果をExcelで保存');
     expect(source).toContain("'@type': 'WebApplication'");
     expect(source).toContain("'@type': 'BreadcrumbList'");
@@ -32,6 +33,6 @@ describe('Excel差分比較ページ', () => {
     expect(source).toContain('exportDiffWorkbook');
     expect(source).toContain('exportDiffCsv');
     expect(source).toContain('URL.createObjectURL');
-    expect(source).toContain('data-diff-inspector');
+    expect(source).toContain('data-inspector-card');
   });
 });
