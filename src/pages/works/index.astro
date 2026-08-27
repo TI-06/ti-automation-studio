@@ -1,10 +1,23 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { works } from '../../data/works';
+
+const itemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'TI AUTOMATION STUDIO 開発実績',
+  itemListElement: works.map((work, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: work.title,
+    url: Astro.site ? new URL(`/works/${work.slug}`, Astro.site).toString() : `/works/${work.slug}`,
+  })),
+};
 ---
 <BaseLayout
   title="開発実績"
   description="Excel・GAS・Python・Web・APIを使った業務改善・自動化の開発実績。顧客情報を伏せ、課題と改善内容を紹介します。"
+  structuredData={itemList}
 >
   <section class="page-hero works-hero">
     <div class="container reveal">
