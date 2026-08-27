@@ -1,0 +1,328 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ToolProgress from '../../components/tools/ToolProgress.astro';
+import ToolShell from '../../components/tools/ToolShell.astro';
+import '../../styles/tool-app.css';
+
+const canonical = Astro.site ? new URL('/tools/data-cleaner', Astro.site).toString() : undefined;
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'CSV・Excel データ整理・クレンジングツール',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Web',
+    browserRequirements: 'JavaScript',
+    inLanguage: 'ja-JP',
+    description: 'CSV・Excelの重複、余分な空白、全角半角、日付形式、数値形式、セル内改行、表記の違いをブラウザ内で確認・整理できる無料ツール。',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'JPY' },
+    url: canonical,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'トップ', item: Astro.site ? new URL('/', Astro.site).toString() : '/' },
+      { '@type': 'ListItem', position: 2, name: '公開ツール', item: Astro.site ? new URL('/tools', Astro.site).toString() : '/tools' },
+      { '@type': 'ListItem', position: 3, name: 'CSV・Excel データ整理', item: canonical },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="CSV・Excel データ整理・クレンジングツール"
+  description="CSV・Excelの重複、空白、全角半角、日付・数値形式、不要改行、表記の違いを無料・登録不要で診断。修正前に確認し、整理済みファイルを保存できます。"
+  canonical={canonical}
+  structuredData={structuredData}
+>
+  <section class="tool-page">
+    <div class="container">
+      <ToolShell
+        title="CSV・Excelのデータを整理します"
+        subtitle="重複、余分な空白、表記の違いなどを見つけて、必要な修正だけ確認して適用できます。"
+        processingLabel="ブラウザ内処理"
+      >
+        <div class="tool-app-grid tool-cleaner-grid" data-cleaner-app>
+          <aside class="tool-panel" aria-label="ファイルと整理条件">
+            <h2 class="tool-panel-title">1. ファイルを選択</h2>
+            <p class="tool-panel-copy">CSV / Excelに対応。1ファイル20MB、100,000行までです。</p>
+
+            <div class="tool-file-stack tool-panel-section">
+              <label class="tool-file-zone">
+                <strong>整理するファイル</strong>
+                <small>.csv / .xlsx / .xls</small>
+                <input type="file" accept=".csv,.xlsx,.xls" data-cleaner-file />
+                <span class="tool-file-name" data-cleaner-file-name>未選択</span>
+              </label>
+            </div>
+
+            <div class="tool-inline-actions">
+              <button class="tool-button tool-button-secondary" type="button" data-cleaner-sample>サンプルデータで試す</button>
+              <button class="tool-button tool-button-secondary" type="button" data-cleaner-reset>最初からやり直す</button>
+            </div>
+
+            <p class="tool-privacy-note">ファイルは外部サーバーへ送信されません。このブラウザ内だけで読み込み・診断・修正・保存を行います。</p>
+            <p class="tool-error-message" data-cleaner-error hidden role="alert"></p>
+
+            <div class="tool-panel-section" data-file-settings hidden>
+              <h2 class="tool-panel-title">2. 読み込み設定</h2>
+              <div class="tool-control-grid" style="margin-top:16px">
+                <label class="tool-field" data-sheet-field hidden>
+                  <span>整理するシート</span>
+                  <select data-cleaner-sheet></select>
+                </label>
+                <label class="tool-field" data-encoding-field hidden>
+                  <span>CSVの文字コード</span>
+                  <select data-cleaner-encoding>
+                    <option value="auto">自動判定</option>
+                    <option value="utf-8">UTF-8</option>
+                    <option value="shift_jis">Shift_JIS</option>
+                  </select>
+                </label>
+              </div>
+              <p class="tool-row-warning" data-cleaner-large-warning hidden>50,000行を超えるデータです。処理に時間がかかる場合があります。100,000行を超えるデータは処理できません。</p>
+            </div>
+
+            <div class="tool-panel-section">
+              <h2 class="tool-panel-title">3. 重複を確認</h2>
+              <p class="tool-panel-copy">会社名、メールアドレス、商品コードなど、同じ行を判断する列を選べます。</p>
+              <div class="tool-control-grid" style="margin-top:14px">
+                <label class="tool-field">
+                  <span>重複を確認する列</span>
+                  <select data-duplicate-column disabled>
+                    <option value="">データを読み込んでください</option>
+                  </select>
+                </label>
+                <button class="tool-button tool-button-secondary" type="button" data-add-duplicate-column disabled>列を追加</button>
+                <div class="tool-key-list" data-duplicate-columns></div>
+                <button class="tool-button" type="button" data-check-duplicates disabled>重複を確認する</button>
+              </div>
+            </div>
+
+            <div class="tool-panel-section">
+              <ToolProgress />
+            </div>
+          </aside>
+
+          <section class="tool-panel tool-workspace" aria-label="データ健康診断と変更確認">
+            <div class="tool-workspace-head">
+              <div>
+                <h2 class="tool-panel-title">データ健康診断</h2>
+                <p class="tool-panel-copy" data-cleaner-status>ファイルを選ぶか、サンプルデータで試してください。</p>
+              </div>
+              <div class="tool-inline-actions" style="margin-top:0">
+                <button class="tool-button tool-button-secondary" type="button" data-show-all-issues disabled>すべて表示</button>
+              </div>
+            </div>
+
+            <div class="tool-workspace-body">
+              <div class="cleaner-health-summary" aria-label="整理候補の件数">
+                <button type="button" data-health-category="duplicate"><span>重複</span><strong data-health-count="duplicate">0</strong></button>
+                <button type="button" data-health-category="trim-space"><span>前後空白</span><strong data-health-count="trim-space">0</strong></button>
+                <button type="button" data-health-category="blank"><span>空欄</span><strong data-health-count="blank">0</strong></button>
+                <button type="button" data-health-category="width-mixed"><span>全角・半角</span><strong data-health-count="width-mixed">0</strong></button>
+                <button type="button" data-health-category="date-mixed"><span>日付形式</span><strong data-health-count="date-mixed">0</strong></button>
+                <button type="button" data-health-category="number-mixed"><span>数値形式</span><strong data-health-count="number-mixed">0</strong></button>
+                <button type="button" data-health-category="line-break"><span>セル内改行</span><strong data-health-count="line-break">0</strong></button>
+                <button type="button" data-health-category="notation-variant"><span>表記の違い</span><strong data-health-count="notation-variant">0</strong></button>
+              </div>
+
+              <div class="cleaner-section-block">
+                <div class="cleaner-section-heading">
+                  <div>
+                    <p class="tool-app-kicker">診断結果</p>
+                    <h3>整理候補を確認</h3>
+                  </div>
+                  <span data-issue-total>0件</span>
+                </div>
+                <div class="cleaner-issue-list" data-issue-list>
+                  <div class="tool-empty-state cleaner-inline-empty">
+                    <div><strong>まだ診断していません</strong><p>データを読み込むと、修正候補だけをここに表示します。読み込んだだけではデータを書き換えません。</p></div>
+                  </div>
+                </div>
+              </div>
+
+              <section class="cleaner-preview-panel" data-preview-panel hidden aria-labelledby="cleaner-preview-title">
+                <div class="cleaner-section-heading">
+                  <div>
+                    <p class="tool-app-kicker">適用前の確認</p>
+                    <h3 id="cleaner-preview-title">変更内容を確認</h3>
+                  </div>
+                  <span data-preview-count>0件</span>
+                </div>
+                <p class="tool-panel-copy" data-preview-description>変更前と変更後を確認してください。不要な変更はチェックを外せます。</p>
+                <div class="tool-table-wrap cleaner-preview-table-wrap">
+                  <table class="tool-table">
+                    <thead><tr><th>適用</th><th>行</th><th>列</th><th>変更前</th><th>変更後</th><th>理由</th></tr></thead>
+                    <tbody data-preview-body></tbody>
+                  </table>
+                </div>
+                <div class="tool-inline-actions cleaner-preview-actions">
+                  <button class="tool-button tool-button-secondary" type="button" data-cancel-preview>変更しない</button>
+                  <button class="tool-button tool-button-primary" type="button" data-apply-preview>この変更を適用する</button>
+                </div>
+              </section>
+
+              <section class="cleaner-section-block">
+                <div class="cleaner-section-heading">
+                  <div>
+                    <p class="tool-app-kicker">現在のデータ</p>
+                    <h3>データを確認</h3>
+                  </div>
+                  <span data-data-count>0行</span>
+                </div>
+                <p class="tool-panel-copy">表示は先頭100行までです。列名を選ぶと右側にその列の診断結果と整理操作を表示します。</p>
+                <div class="tool-table-wrap cleaner-data-table-wrap">
+                  <table class="tool-table cleaner-data-table">
+                    <thead data-data-head></thead>
+                    <tbody data-data-body></tbody>
+                  </table>
+                  <div class="tool-empty-state" data-data-empty>
+                    <div><strong>データがありません</strong><p>CSV・Excelを選択するか、サンプルデータでお試しください。</p></div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </section>
+
+          <aside class="tool-panel tool-inspector cleaner-inspector" aria-label="列の詳細と変更履歴">
+            <section>
+              <h2 class="tool-panel-title">選択した列</h2>
+              <p class="tool-panel-copy" data-column-empty>データを読み込んで列名を選択してください。</p>
+              <div data-column-detail hidden>
+                <h3 class="cleaner-column-name" data-column-name>—</h3>
+                <dl class="cleaner-column-stats">
+                  <div><dt>データ件数</dt><dd data-column-data>0</dd></div>
+                  <div><dt>空欄</dt><dd data-column-blank>0</dd></div>
+                  <div><dt>重複</dt><dd data-column-duplicate>0</dd></div>
+                  <div><dt>整理候補</dt><dd data-column-issues>0</dd></div>
+                  <div><dt>データ種類</dt><dd data-column-kind>—</dd></div>
+                </dl>
+
+                <div class="tool-panel-section">
+                  <h3 class="tool-panel-title">この列でできること</h3>
+                  <div class="cleaner-action-stack">
+                    <button class="tool-button tool-button-secondary" type="button" data-column-action="trim">前後の空白を削除</button>
+                    <button class="tool-button tool-button-secondary" type="button" data-column-action="normalize-width">全角英数字を半角へ</button>
+                    <button class="tool-button tool-button-secondary" type="button" data-column-action="remove-line-breaks">セル内改行を空白へ</button>
+                    <button class="tool-button tool-button-secondary" type="button" data-column-action="normalize-number">数値形式を統一</button>
+                  </div>
+
+                  <div class="cleaner-mini-form">
+                    <label class="tool-field"><span>日付形式</span><select data-date-format><option value="YYYY-MM-DD">YYYY-MM-DD</option><option value="YYYY/MM/DD">YYYY/MM/DD</option><option value="YYYY年M月D日">YYYY年M月D日</option></select></label>
+                    <button class="tool-button tool-button-secondary" type="button" data-date-action>日付形式を統一</button>
+                  </div>
+
+                  <div class="cleaner-mini-form">
+                    <label class="tool-field"><span>空欄に入れる文字</span><input type="text" placeholder="例：未入力" data-blank-value /></label>
+                    <button class="tool-button tool-button-secondary" type="button" data-blank-action>空欄を埋める</button>
+                  </div>
+
+                  <div class="cleaner-mini-form" data-variant-editor hidden>
+                    <label class="tool-field"><span>表記を統一する値</span><select data-variant-target></select></label>
+                    <button class="tool-button tool-button-secondary" type="button" data-variant-action>この表記に統一</button>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="tool-panel-section">
+              <h2 class="tool-panel-title">変更履歴</h2>
+              <p class="tool-panel-copy">適用した操作をこのページ内だけで保持します。必要なら操作前へ戻せます。</p>
+              <div class="cleaner-history-list" data-history-list>
+                <p class="cleaner-muted-line">まだ変更はありません。</p>
+              </div>
+            </section>
+
+            <section class="tool-panel-section">
+              <h2 class="tool-panel-title">整理済みファイルを保存</h2>
+              <div class="cleaner-save-summary">
+                <div><span>元データ</span><strong data-save-original>0行</strong></div>
+                <div><span>整理後</span><strong data-save-current>0行</strong></div>
+                <div><span>修正セル</span><strong data-save-changed>0件</strong></div>
+                <div><span>削除行</span><strong data-save-deleted>0件</strong></div>
+              </div>
+              <label class="tool-field cleaner-save-field"><span>CSVの文字コード</span><select data-export-encoding><option value="utf-8">UTF-8</option><option value="shift_jis">Shift_JIS</option></select></label>
+              <label class="tool-choice cleaner-save-choice"><input type="checkbox" data-include-history checked /><span>Excelに変更履歴シートを追加</span></label>
+              <div class="cleaner-action-stack">
+                <button class="tool-button tool-button-secondary" type="button" data-export-cleaner-csv disabled>CSVで保存</button>
+                <button class="tool-button tool-button-primary" type="button" data-export-cleaner-xlsx disabled>Excelで保存</button>
+              </div>
+            </section>
+          </aside>
+        </div>
+      </ToolShell>
+
+      <div class="tool-seo-content">
+        <nav class="tool-seo-nav" aria-label="このツールの説明">
+          <a href="#cleaner-can">できること</a>
+          <a href="#cleaner-duplicates">重複整理</a>
+          <a href="#cleaner-format">空白・全角半角</a>
+          <a href="#cleaner-encoding">文字コード</a>
+          <a href="#cleaner-safety">安全性</a>
+          <a href="#cleaner-faq">よくある質問</a>
+        </nav>
+
+        <div class="tool-seo-body">
+          <section class="tool-seo-section" id="cleaner-can">
+            <p class="eyebrow">できること</p>
+            <h2>CSV・Excelを読み込んで、整理すべき場所を先に確認</h2>
+            <p>重複、前後の余分な空白、空欄、全角・半角、日付形式、数値形式、セル内改行、表記の違いをまとめて確認できます。読み込んだだけでは内容を書き換えず、変更候補を見てから必要な処理だけを適用します。</p>
+          </section>
+
+          <section class="tool-seo-section" id="cleaner-duplicates">
+            <p class="eyebrow">重複整理</p>
+            <h2>会社名や商品コードなど、判断したい列を選んで重複確認</h2>
+            <p>単純な完全一致だけでなく、重複を判断する列を選べます。会社名＋電話番号のように複数の列を組み合わせることもでき、削除前にはどの行が対象になるか確認できます。</p>
+          </section>
+
+          <section class="tool-seo-section" id="cleaner-format">
+            <p class="eyebrow">データ整形</p>
+            <h2>空白・全角英数字・日付・数値を確認してから統一</h2>
+            <p>前後の空白削除、全角英数字の半角化、セル内改行の整理、明確に解釈できる日付形式の統一などに対応します。商品コードや社員番号のように意味が変わる可能性のある値は、推測だけで数値へ変換しません。</p>
+          </section>
+
+          <section class="tool-seo-section" id="cleaner-encoding">
+            <p class="eyebrow">CSV文字コード</p>
+            <h2>UTF-8とShift_JISの読み込み・保存に対応</h2>
+            <p>CSVはUTF-8とShift_JISを主要対象として読み込みます。保存時にもUTF-8 / Shift_JISを選択できるため、既存の業務システムへ戻す場合にも使いやすい構成です。</p>
+          </section>
+
+          <section class="tool-seo-section" id="cleaner-safety">
+            <p class="eyebrow">安全性・制限</p>
+            <h2>業務データを外部サーバーへ送信しません</h2>
+            <p>選択したCSV・Excelの読み込み、診断、修正、出力はブラウザ内で行います。ファイル内容をTI AUTOMATION STUDIOのサーバーへ送る処理はありません。</p>
+            <p>初期版は1ファイル20MBまで、100,000行までに対応します。50,000行を超えるデータでは処理時間の注意を表示します。Excelは一度に1シートずつ整理します。</p>
+          </section>
+
+          <section class="tool-seo-section" id="cleaner-faq">
+            <p class="eyebrow">よくある質問</p>
+            <h2>CSV・Excelデータ整理について</h2>
+            <dl class="tool-faq-list">
+              <div class="tool-faq-item"><dt>無料で使えますか？</dt><dd>はい。登録不要で、そのまま利用できます。</dd></div>
+              <div class="tool-faq-item"><dt>読み込んだだけでデータが書き換わりますか？</dt><dd>いいえ。診断では変更しません。変更内容を確認し、「この変更を適用する」を押した処理だけ反映します。</dd></div>
+              <div class="tool-faq-item"><dt>間違えて修正した場合は戻せますか？</dt><dd>このページを開いている間は変更履歴を保持し、操作前の状態へ戻せます。</dd></div>
+              <div class="tool-faq-item"><dt>大量ファイルを毎回同じルールで整理できますか？</dt><dd>この無料ツールは1ファイルずつの確認向けです。毎回同じ処理を行う場合は、一括処理や専用業務ツールとして自動化できます。</dd></div>
+            </dl>
+          </section>
+
+          <section class="tool-seo-section">
+            <p class="eyebrow">関連</p>
+            <h2>毎回同じデータ整理をしている場合</h2>
+            <p>定期的なCSV整形、複数Excelの統合、重複除外、別システム用フォーマットへの変換などは、専用のPython・Excel・Webツールにすると作業そのものを減らせます。</p>
+            <div class="hero-actions">
+              <a class="btn" href="/services/python-data-processing">データ処理自動化を見る</a>
+              <a class="btn" href="/works/bulk-data-processing">データ処理実績を見る</a>
+              <a class="btn btn-primary" href="/contact">相談する</a>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import '../../scripts/tools/data-cleaner';
+  </script>
+</BaseLayout>
