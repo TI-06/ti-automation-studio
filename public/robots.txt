@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ti-automation-studio.workers.dev/sitemap-index.xml
+Sitemap: https://ti-automation-studio.utiltoools.workers.dev/sitemap-index.xml
