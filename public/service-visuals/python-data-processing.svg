@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Python大量データ処理のビジュアル</title>
+  <desc id="desc">大量のファイルと表データが処理エンジンを通り、整理されたデータと分析結果へ変換されるイメージ</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#06090d"/><stop offset="1" stop-color="#0b1118"/></linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f1d99f"/><stop offset=".52" stop-color="#c8a96b"/><stop offset="1" stop-color="#7b6234"/></linearGradient>
+    <linearGradient id="glass"><stop stop-color="#202630" stop-opacity=".96"/><stop offset="1" stop-color="#0c1117" stop-opacity=".9"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#c8a96b" stop-opacity=".32"/><stop offset="1" stop-color="#c8a96b" stop-opacity="0"/></radialGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="20" stdDeviation="24" flood-color="#000" flood-opacity=".52"/></filter>
+    <pattern id="dots" width="30" height="30" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.1" fill="#c8a96b" opacity=".12"/></pattern>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/><rect width="1600" height="900" fill="url(#dots)"/>
+  <ellipse cx="800" cy="450" rx="420" ry="340" fill="url(#glow)"/>
+
+  <g filter="url(#shadow)" opacity=".96">
+    <g transform="translate(65 110)">
+      <rect width="430" height="245" rx="16" fill="url(#glass)" stroke="#806b42" stroke-opacity=".48"/>
+      <g transform="translate(22 32)" stroke="#b5a37b" stroke-opacity=".22"><rect width="386" height="175" fill="none"/><path d="M0 35H386M0 70H386M0 105H386M0 140H386M96 0V175M193 0V175M290 0V175"/></g>
+      <rect x="118" y="102" width="96" height="35" fill="#c8a96b" fill-opacity=".28"/>
+    </g>
+    <g transform="translate(160 370) rotate(-3 160 100)"><path d="M0 16Q0 0 16 0h235l48 48v140q0 16-16 16H16Q0 204 0 188z" fill="#f2f0ea" fill-opacity=".92" stroke="#c8a96b" stroke-opacity=".42"/><path d="M251 0v48h48" fill="#c8a96b" fill-opacity=".2"/><g stroke="#655a46" stroke-opacity=".35"><path d="M34 74H250M34 108H266M34 142H230"/></g></g>
+    <g transform="translate(70 615) rotate(2 170 90)"><rect width="390" height="170" rx="14" fill="url(#glass)" stroke="#8b7447" stroke-opacity=".45"/><g transform="translate(24 28)" fill="#c8a96b" opacity=".55"><path d="M0 0h74l16 18h110v92H0z"/><path d="M228 0h74l16 18h48v92H228z" opacity=".65"/></g></g>
+    <g transform="translate(365 410) rotate(4 90 70)"><rect width="185" height="145" rx="12" fill="url(#glass)" stroke="#8b7447" stroke-opacity=".4"/><g stroke="#cdbb92" stroke-opacity=".28"><path d="M20 35H165M20 66H165M20 97H165M60 20V120M105 20V120"/></g></g>
+  </g>
+
+  <g stroke="url(#gold)" stroke-width="3" fill="none" opacity=".86"><path d="M500 240C625 270 665 365 735 410"/><path d="M470 470C610 470 665 450 735 445"/><path d="M465 690C610 635 660 545 735 495"/></g>
+  <g fill="#f0d59a"><circle cx="500" cy="240" r="6"/><circle cx="470" cy="470" r="6"/><circle cx="465" cy="690" r="6"/></g>
+
+  <g transform="translate(690 325)" filter="url(#shadow)">
+    <circle cx="120" cy="125" r="155" fill="url(#glow)"/>
+    <path d="M120 0 228 62v126l-108 62-108-62V62z" fill="#10151d" stroke="url(#gold)" stroke-width="3"/>
+    <g transform="translate(70 72)" fill="none" stroke="#efd394" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 22c0-12 10-22 22-22h28v42H31c-9 0-16 7-16 16v18H0V22z"/>
+      <path d="M85 78c0 12-10 22-22 22H35V58h34c9 0 16-7 16-16V24h15v54z"/>
+      <circle cx="48" cy="18" r="3" fill="#efd394"/><circle cx="52" cy="82" r="3" fill="#efd394"/>
+    </g>
+  </g>
+
+  <g transform="translate(935 335)" filter="url(#shadow)">
+    <rect x="0" y="20" width="90" height="190" rx="12" fill="#111720" stroke="#8b7447" stroke-opacity=".46"/>
+    <rect x="28" y="0" width="90" height="230" rx="12" fill="#151b24" stroke="#c8a96b" stroke-opacity=".55"/>
+    <rect x="56" y="30" width="90" height="170" rx="12" fill="#0f141b" stroke="#8b7447" stroke-opacity=".46"/>
+    <g fill="#c8a96b"><circle cx="48" cy="48" r="4"/><circle cx="48" cy="72" r="4"/><circle cx="76" cy="28" r="4"/><circle cx="76" cy="52" r="4"/><circle cx="104" cy="58" r="4"/><circle cx="104" cy="82" r="4"/></g>
+  </g>
+
+  <g stroke="url(#gold)" stroke-width="3" fill="none" opacity=".88"><path d="M1080 380C1145 310 1180 250 1230 235"/><path d="M1084 450C1155 450 1180 450 1230 450"/><path d="M1080 520C1140 590 1180 640 1230 655"/></g>
+  <g fill="#f0d59a"><circle cx="1230" cy="235" r="6"/><circle cx="1230" cy="450" r="6"/><circle cx="1230" cy="655" r="6"/></g>
+
+  <g filter="url(#shadow)" transform="translate(1230 110)">
+    <rect width="300" height="245" rx="16" fill="url(#glass)" stroke="#8b7447" stroke-opacity=".48"/>
+    <g transform="translate(24 32)" stroke="#b5a37b" stroke-opacity=".25"><rect width="252" height="165" fill="none"/><path d="M0 33H252M0 66H252M0 99H252M0 132H252M84 0V165M168 0V165"/></g>
+    <rect x="108" y="98" width="84" height="33" fill="#c8a96b" fill-opacity=".25"/>
+  </g>
+  <g filter="url(#shadow)" transform="translate(1230 390)">
+    <rect width="300" height="190" rx="16" fill="url(#glass)" stroke="#8b7447" stroke-opacity=".45"/>
+    <path d="M30 145c45-28 66-62 105-42s70-34 125-66" fill="none" stroke="#c8a96b" stroke-width="4"/>
+    <g fill="#f0d59a"><circle cx="30" cy="145" r="5"/><circle cx="135" cy="103" r="5"/><circle cx="260" cy="37" r="5"/></g>
+  </g>
+  <g filter="url(#shadow)" transform="translate(1230 620)"><path d="M0 14Q0 0 14 0h202l42 42v118q0 14-14 14H14Q0 174 0 160z" fill="#f2f0ea" fill-opacity=".95" stroke="#c8a96b" stroke-opacity=".4"/><g stroke="#645947" stroke-opacity=".34"><path d="M28 68H220M28 100H196M28 132H228"/></g></g>
+</svg>
