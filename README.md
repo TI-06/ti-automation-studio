@@ -22,7 +22,6 @@ Excel・Google Apps Script・Python・Web・API・AIを組み合わせ、手作�
 - Astro / TypeScript
 - 独自CSS
 - Cloudflare Workers
-- Cloudflare Turnstile
 - Google Apps Script（問い合わせメール通知）
 - MailApp
 - Google Spreadsheet（保存処理は実装済み・現在は無効）
@@ -36,7 +35,7 @@ cp .dev.vars.example .dev.vars
 npm run dev
 ```
 
-`.dev.vars.example` のTurnstile値はCloudflare公式のテストキーです。問い合わせ転送まで確認する場合は、ローカルの `.dev.vars` に `CONTACT_GAS_URL` と `CONTACT_SHARED_SECRET` を設定してください。`.dev.vars` はGit管理対象外です。
+問い合わせ転送まで確認する場合は、ローカルの `.dev.vars` に `CONTACT_GAS_URL` と `CONTACT_SHARED_SECRET` を設定してください。`.dev.vars` はGit管理対象外です。
 
 ## テスト / ビルド
 
@@ -61,26 +60,19 @@ Cloudflare側に以下を登録します。
 
 | 名前 | 種別 | 用途 |
 | --- | --- | --- |
-| `TURNSTILE_SITE_KEY` | Variable | 問い合わせ画面に表示するTurnstile Site Key |
-| `TURNSTILE_SECRET_KEY` | Secret | Turnstileのサーバー検証 |
 | `CONTACT_GAS_URL` | Secret | 問い合わせ転送先GAS Web Appの `/exec` URL |
 | `CONTACT_SHARED_SECRET` | Secret | WorkerとGAS間の共有シークレット |
 
 秘密値は `wrangler.jsonc` やソースコードへ直接書き込みません。
 
-### 3. Turnstile
+問い合わせフォームは、通常の利用者には見えないhoneypot項目とサーバー側バリデーションで軽量なスパム対策を行います。
 
-Cloudflare Turnstileで本番ドメイン用Widgetを作成し、Site Key / Secret Keyを上記環境変数へ設定します。サーバー側では `/api/contact` がSiteverify APIを実行し、検証成功後のみGASへ転送します。
-
-現在のWorkersドメインを利用する場合、Turnstile WidgetのHostnameは `ti-automation-studio.utiltoools.workers.dev` です。
-
-### 4. 独自ドメイン
+### 3. 独自ドメイン
 
 独自ドメインを設定したら、以下も本番URLへ変更します。
 
 - `astro.config.mjs` の `site`
 - `public/robots.txt` の Sitemap URL
-- Turnstile WidgetのHostname
 
 ## 問い合わせ受信側GAS
 

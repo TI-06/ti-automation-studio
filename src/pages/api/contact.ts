@@ -5,14 +5,8 @@ import { normalizeContactInput, validateContactInput, type ContactInput } from '
 export const prerender = false;
 
 type RuntimeEnv = {
-  TURNSTILE_SECRET_KEY?: string;
   CONTACT_GAS_URL?: string;
   CONTACT_SHARED_SECRET?: string;
-};
-
-type TurnstileResponse = {
-  success: boolean;
-  'error-codes'?: string[];
 };
 
 type GasResponse = {
@@ -38,29 +32,22 @@ export const POST: APIRoute = async ({ request }) => {
   const validation = validateContactInput(input);
   if (!validation.ok) return json({ ok: false, message: '入力内容を確認してください。', errors: validation.errors }, 400);
 
+  const origin = request.headers.get('origin');
+  if (origin) {
+    const requestOrigin = new URL(request.url).origin;
+    if (origin !== requestOrigin) {
+      console.warn('Rejected contact request from unexpected origin', origin);
+      return json({ ok: false, message: '送信内容を確認してください。' }, 403);
+    }
+  }
+
   const runtimeEnv = env as unknown as RuntimeEnv;
-  const secret = runtimeEnv.TURNSTILE_SECRET_KEY;
   const gasUrl = runtimeEnv.CONTACT_GAS_URL;
   const sharedSecret = runtimeEnv.CONTACT_SHARED_SECRET;
 
-  if (!secret || !gasUrl || !sharedSecret) {
+  if (!gasUrl || !sharedSecret) {
     console.error('Contact environment variables are not configured.');
     return json({ ok: false, message: '問い合わせ機能は現在設定中です。時間をおいてお試しください。' }, 503);
-  }
-
-  const remoteip = request.headers.get('CF-Connecting-IP') ?? undefined;
-  const verifyResponse = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ secret, response: input.turnstileToken, remoteip }),
-  });
-
-  if (!verifyResponse.ok) return json({ ok: false, message: 'Bot確認に失敗しました。もう一度お試しください。' }, 502);
-
-  const turnstile = (await verifyResponse.json()) as TurnstileResponse;
-  if (!turnstile.success) {
-    console.warn('Turnstile validation failed', turnstile['error-codes']);
-    return json({ ok: false, message: 'Bot確認を完了してから送信してください。' }, 400);
   }
 
   const normalized = normalizeContactInput(input);
