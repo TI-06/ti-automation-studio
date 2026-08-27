@@ -11,6 +11,7 @@ import {
 import {
   applyChanges,
   applyRowDeletes,
+  blankRowIndexes,
   buildChanges,
   createHistoryEntry,
   undoHistory,
@@ -43,9 +44,7 @@ if (root) {
     fileBuffer: ArrayBuffer | null;
     fileFormat: 'csv' | 'excel' | 'sample' | null;
     detectedEncoding: DetectedCsvEncoding;
-    sheetNames: string[];
     dataset: CleanerDataset | null;
-    originalDataset: CleanerDataset | null;
     originalRows: number;
     diagnostics: DiagnosticResult | null;
     history: CleanerHistoryEntry[];
@@ -55,8 +54,10 @@ if (root) {
     pendingChanges: CleanerChange[];
     pendingRowDeletes: number[];
     excludedRowDeletes: Set<number>;
+    pendingKeepGroups: number[][];
     pendingLabel: string;
     duplicateColumns: string[];
+    blankRowsOnly: boolean;
     busy: boolean;
   }
 
@@ -65,9 +66,7 @@ if (root) {
     fileBuffer: null,
     fileFormat: null,
     detectedEncoding: 'unknown',
-    sheetNames: [],
     dataset: null,
-    originalDataset: null,
     originalRows: 0,
     diagnostics: null,
     history: [],
@@ -77,8 +76,10 @@ if (root) {
     pendingChanges: [],
     pendingRowDeletes: [],
     excludedRowDeletes: new Set<number>(),
+    pendingKeepGroups: [],
     pendingLabel: '',
     duplicateColumns: [],
+    blankRowsOnly: false,
     busy: false,
   };
 
@@ -102,6 +103,7 @@ if (root) {
   const duplicateColumnSelect = query<HTMLSelectElement>('[data-duplicate-column]');
   const addDuplicateColumnButton = query<HTMLButtonElement>('[data-add-duplicate-column]');
   const duplicateColumnsContainer = query<HTMLElement>('[data-duplicate-columns]');
+  const duplicateKeepSelect = query<HTMLSelectElement>('[data-duplicate-keep]');
   const checkDuplicatesButton = query<HTMLButtonElement>('[data-check-duplicates]');
   const progressBox = query<HTMLElement>('[data-tool-progress]');
   const progressLabel = query<HTMLElement>('[data-progress-label]');
@@ -133,6 +135,8 @@ if (root) {
   const dateActionButton = query<HTMLButtonElement>('[data-date-action]');
   const blankValue = query<HTMLInputElement>('[data-blank-value]');
   const blankActionButton = query<HTMLButtonElement>('[data-blank-action]');
+  const blankOnlyButton = query<HTMLButtonElement>('[data-blank-only]');
+  const blankDeleteButton = query<HTMLButtonElement>('[data-blank-delete]');
   const variantEditor = query<HTMLElement>('[data-variant-editor]');
   const variantTarget = query<HTMLSelectElement>('[data-variant-target]');
   const variantActionButton = query<HTMLButtonElement>('[data-variant-action]');
@@ -222,11 +226,14 @@ if (root) {
     encodingSelect.disabled = busy || state.fileFormat !== 'csv';
     duplicateColumnSelect.disabled = busy || !state.dataset;
     addDuplicateColumnButton.disabled = busy || !state.dataset;
+    duplicateKeepSelect.disabled = busy || !state.dataset;
     checkDuplicatesButton.disabled = busy || !state.dataset || state.duplicateColumns.length === 0;
     showAllIssuesButton.disabled = busy || !state.diagnostics;
     columnActionButtons.forEach((button) => { button.disabled = busy || !state.selectedColumnId; });
     dateActionButton.disabled = busy || !state.selectedColumnId;
     blankActionButton.disabled = busy || !state.selectedColumnId;
+    blankOnlyButton.disabled = busy || !state.selectedColumnId;
+    blankDeleteButton.disabled = busy || !state.selectedColumnId;
     variantActionButton.disabled = busy || !state.selectedVariantIssueId;
   }
 
@@ -234,6 +241,7 @@ if (root) {
     state.pendingChanges = [];
     state.pendingRowDeletes = [];
     state.excludedRowDeletes.clear();
+    state.pendingKeepGroups = [];
     state.pendingLabel = '';
     previewPanel.hidden = true;
     previewBody.replaceChildren();
@@ -266,6 +274,7 @@ if (root) {
   function selectColumn(columnId: string): void {
     state.selectedColumnId = columnId;
     state.selectedVariantIssueId = '';
+    state.blankRowsOnly = false;
     renderDataTable();
     renderColumnDetail();
   }
@@ -283,7 +292,7 @@ if (root) {
     if (!issue.columnId) return null;
 
     if (issue.category === 'blank') {
-      button.textContent = '補完内容を指定';
+      button.textContent = '空欄の処理を選択';
       button.addEventListener('click', () => {
         selectColumn(issue.columnId ?? '');
         blankValue.focus();
@@ -295,6 +304,7 @@ if (root) {
       button.addEventListener('click', () => {
         state.selectedColumnId = issue.columnId ?? '';
         state.selectedVariantIssueId = issue.id;
+        state.blankRowsOnly = false;
         renderDataTable();
         renderColumnDetail();
         variantTarget.focus();
@@ -404,8 +414,18 @@ if (root) {
       return;
     }
 
-    dataEmpty.hidden = true;
-    dataCount.textContent = `${state.dataset.rows.length.toLocaleString('ja-JP')}行`;
+    const indexedRows = state.dataset.rows.map((row, rowIndex) => ({ row, rowIndex }));
+    let visibleRows = indexedRows;
+    if (state.blankRowsOnly && state.selectedColumnId) {
+      const blankSet = new Set(blankRowIndexes(state.dataset, state.selectedColumnId));
+      visibleRows = indexedRows.filter((item) => blankSet.has(item.rowIndex));
+    }
+
+    dataEmpty.hidden = visibleRows.length > 0;
+    dataCount.textContent = state.blankRowsOnly
+      ? `${visibleRows.length.toLocaleString('ja-JP')}行 / 全${state.dataset.rows.length.toLocaleString('ja-JP')}行`
+      : `${state.dataset.rows.length.toLocaleString('ja-JP')}行`;
+
     const headRow = document.createElement('tr');
     const indexHead = document.createElement('th');
     indexHead.textContent = '行';
@@ -423,7 +443,7 @@ if (root) {
     });
     dataHead.appendChild(headRow);
 
-    state.dataset.rows.slice(0, 100).forEach((row, rowIndex) => {
+    visibleRows.slice(0, 100).forEach(({ row, rowIndex }) => {
       const tr = document.createElement('tr');
       const number = document.createElement('td');
       number.className = 'cleaner-row-number';
@@ -445,6 +465,8 @@ if (root) {
     columnEmpty.hidden = Boolean(column && diagnostic);
     columnDetail.hidden = !column || !diagnostic;
     variantEditor.hidden = true;
+    blankOnlyButton.setAttribute('aria-pressed', String(state.blankRowsOnly));
+    blankOnlyButton.textContent = state.blankRowsOnly ? 'すべての行を表示' : '空欄行だけ表示';
     if (!column || !diagnostic) return;
 
     columnName.textContent = column.name;
@@ -484,6 +506,7 @@ if (root) {
       remove.addEventListener('click', () => {
         state.duplicateColumns.splice(index, 1);
         renderDuplicateColumns();
+        renderDuplicateColumnOptions();
         setBusy(state.busy);
       });
       chip.appendChild(label);
@@ -569,15 +592,27 @@ if (root) {
     setBusy(state.busy);
   }
 
-  function renderPreview(): void {
-    previewBody.replaceChildren();
+  function cell(text: string): HTMLTableCellElement {
+    const td = document.createElement('td');
+    td.textContent = text;
+    return td;
+  }
+
+  function updateApplyButton(): void {
     const activeChanges = state.pendingChanges.filter((change) => !change.excluded).length;
     const activeDeletes = state.pendingRowDeletes.filter((rowIndex) => !state.excludedRowDeletes.has(rowIndex)).length;
+    applyPreviewButton.disabled = activeChanges + activeDeletes === 0;
+  }
+
+  function renderPreview(): void {
+    previewBody.replaceChildren();
     const total = state.pendingChanges.length + state.pendingRowDeletes.length;
     previewCount.textContent = `${total.toLocaleString('ja-JP')}件`;
-    previewDescription.textContent = state.pendingRowDeletes.length > 0
-      ? '削除対象の行を確認してください。残したい行はチェックを外せます。'
-      : '変更前と変更後を確認してください。不要な変更はチェックを外せます。';
+    previewDescription.textContent = state.pendingKeepGroups.length > 0
+      ? 'チェックが付いた行を削除します。各重複グループで残したい行はチェックを外してください。残す行は手動で変更できます。'
+      : state.pendingRowDeletes.length > 0
+        ? 'チェックが付いた行を削除します。残したい行はチェックを外してください。'
+        : '変更前と変更後を確認してください。不要な変更はチェックを外せます。';
 
     state.pendingChanges.forEach((change) => {
       const tr = document.createElement('tr');
@@ -588,19 +623,12 @@ if (root) {
       toggle.setAttribute('aria-label', `${change.rowIndex + 2}行目の変更を適用`);
       toggle.addEventListener('change', () => {
         change.excluded = !toggle.checked;
-        applyPreviewButton.disabled = state.pendingChanges.every((item) => item.excluded)
-          && state.pendingRowDeletes.every((rowIndex) => state.excludedRowDeletes.has(rowIndex));
+        updateApplyButton();
       });
       toggleCell.appendChild(toggle);
       const column = state.dataset?.columns.find((item) => item.id === change.columnId);
-      [
-        toggleCell,
-        cell(String(change.rowIndex + 2)),
-        cell(column?.name ?? change.columnId),
-        cell(formatValue(change.before)),
-        cell(formatValue(change.after)),
-        cell(change.reason),
-      ].forEach((item) => tr.appendChild(item));
+      [toggleCell, cell(String(change.rowIndex + 2)), cell(column?.name ?? change.columnId), cell(formatValue(change.before)), cell(formatValue(change.after)), cell(change.reason)]
+        .forEach((item) => tr.appendChild(item));
       previewBody.appendChild(tr);
     });
 
@@ -614,31 +642,18 @@ if (root) {
       toggle.addEventListener('change', () => {
         if (toggle.checked) state.excludedRowDeletes.delete(rowIndex);
         else state.excludedRowDeletes.add(rowIndex);
-        applyPreviewButton.disabled = state.pendingChanges.every((item) => item.excluded)
-          && state.pendingRowDeletes.every((index) => state.excludedRowDeletes.has(index));
+        updateApplyButton();
       });
       toggleCell.appendChild(toggle);
       const beforeRow = state.dataset?.rows[rowIndex] ?? [];
-      [
-        toggleCell,
-        cell(String(rowIndex + 2)),
-        cell('行全体'),
-        cell(beforeRow.map(formatValue).join(' / ')),
-        cell('削除'),
-        cell('重複行の整理'),
-      ].forEach((item) => tr.appendChild(item));
+      [toggleCell, cell(String(rowIndex + 2)), cell('行全体'), cell(beforeRow.map(formatValue).join(' / ')), cell('削除'), cell(state.pendingKeepGroups.length > 0 ? '重複行の整理' : '空欄行の整理')]
+        .forEach((item) => tr.appendChild(item));
       previewBody.appendChild(tr);
     });
 
     previewPanel.hidden = total === 0;
-    applyPreviewButton.disabled = total === 0 || (activeChanges + activeDeletes === 0);
+    updateApplyButton();
     if (!previewPanel.hidden) previewPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-
-  function cell(text: string): HTMLTableCellElement {
-    const td = document.createElement('td');
-    td.textContent = text;
-    return td;
   }
 
   function prepareChanges(action: CleanerMutationAction, label: string): void {
@@ -652,6 +667,7 @@ if (root) {
     state.pendingChanges = changes;
     state.pendingRowDeletes = [];
     state.excludedRowDeletes.clear();
+    state.pendingKeepGroups = [];
     state.pendingLabel = label;
     renderPreview();
   }
@@ -664,17 +680,38 @@ if (root) {
       showError('選択した列では重複する行が見つかりませんでした。別の列の組み合わせも確認できます。');
       return;
     }
-    const deletes = [...new Set(groups.flatMap((group) => duplicateRowsToDelete(group, keep)))].sort((a, b) => a - b);
+
+    const allRows = [...new Set(groups.flatMap((group) => group.rowIndexes))].sort((a, b) => a - b);
+    const deleteRows = new Set(groups.flatMap((group) => duplicateRowsToDelete(group, keep)));
     state.pendingChanges = [];
-    state.pendingRowDeletes = deletes;
-    state.excludedRowDeletes.clear();
+    state.pendingRowDeletes = allRows;
+    state.excludedRowDeletes = new Set(allRows.filter((rowIndex) => !deleteRows.has(rowIndex)));
+    state.pendingKeepGroups = groups.map((group) => [...group.rowIndexes]);
     state.pendingLabel = `重複を整理（${columnIds.map((id) => state.dataset?.columns.find((column) => column.id === id)?.name ?? id).join(' + ')}）`;
     renderPreview();
   }
 
   function prepareExactDuplicatePreview(): void {
     if (!state.dataset) return;
-    prepareDuplicatePreview(state.dataset.columns.map((column) => column.id), 'first');
+    const keep = duplicateKeepSelect.value === 'last' ? 'last' : 'first';
+    prepareDuplicatePreview(state.dataset.columns.map((column) => column.id), keep);
+  }
+
+  function prepareBlankDeletePreview(): void {
+    clearError();
+    if (!state.dataset || !state.selectedColumnId) return;
+    const rows = blankRowIndexes(state.dataset, state.selectedColumnId);
+    if (rows.length === 0) {
+      showError('この列には空欄行がありません。');
+      return;
+    }
+    const column = state.dataset.columns.find((item) => item.id === state.selectedColumnId);
+    state.pendingChanges = [];
+    state.pendingRowDeletes = rows;
+    state.excludedRowDeletes.clear();
+    state.pendingKeepGroups = [];
+    state.pendingLabel = `「${column?.name ?? state.selectedColumnId}」の空欄行を削除`;
+    renderPreview();
   }
 
   function applyPending(): void {
@@ -684,6 +721,15 @@ if (root) {
     if (actualChanges.length === 0 && actualDeletes.length === 0) {
       showError('適用する変更が選択されていません。');
       return;
+    }
+
+    if (state.pendingKeepGroups.length > 0) {
+      const deleteSet = new Set(actualDeletes);
+      const wouldDeleteWholeGroup = state.pendingKeepGroups.some((group) => group.every((rowIndex) => deleteSet.has(rowIndex)));
+      if (wouldDeleteWholeGroup) {
+        showError('重複グループごとに1行以上残してください。残したい行のチェックを外してから適用してください。');
+        return;
+      }
     }
 
     const before = cloneDataset(state.dataset);
@@ -703,6 +749,7 @@ if (root) {
     state.history = state.history.slice(0, index);
     clearPendingPreview();
     state.selectedVariantIssueId = '';
+    state.blankRowsOnly = false;
     diagnoseCurrent('変更を元に戻しました。データを再診断しています。');
   }
 
@@ -718,15 +765,15 @@ if (root) {
     worker.postMessage({ type: 'diagnose', dataset: state.dataset });
   }
 
-  function adoptDataset(dataset: CleanerDataset, resetHistory = true): void {
+  function adoptDataset(dataset: CleanerDataset): void {
     state.dataset = cloneDataset(dataset);
-    state.originalDataset = cloneDataset(dataset);
     state.originalRows = dataset.rows.length;
     state.diagnostics = null;
-    if (resetHistory) state.history = [];
+    state.history = [];
     state.selectedColumnId = dataset.columns[0]?.id ?? '';
     state.selectedVariantIssueId = '';
     state.duplicateColumns = dataset.columns[0] ? [dataset.columns[0].id] : [];
+    state.blankRowsOnly = false;
     clearPendingPreview();
     renderAll();
     diagnoseCurrent();
@@ -768,14 +815,11 @@ if (root) {
           showError('CSVの文字コードを自動判定できませんでした。UTF-8またはShift_JISを選択してください。');
           return;
         }
-        const dataset = parseCsvBytes(bytes, detected);
-        state.sheetNames = ['CSV'];
-        adoptDataset(dataset);
+        adoptDataset(parseCsvBytes(bytes, detected));
       } else {
         state.fileFormat = 'excel';
         encodingField.hidden = true;
         const parsed = parseExcelBuffer(buffer, file.name);
-        state.sheetNames = parsed.sheetNames;
         sheetField.hidden = parsed.sheetNames.length <= 1;
         sheetSelect.replaceChildren();
         parsed.sheetNames.forEach((name) => sheetSelect.add(new Option(name, name)));
@@ -786,8 +830,7 @@ if (root) {
       state.busy = false;
       hideProgress();
       setBusy(false);
-      const message = error instanceof Error ? error.message : 'ファイルを読み込めませんでした。';
-      showError(message);
+      showError(error instanceof Error ? error.message : 'ファイルを読み込めませんでした。');
     }
   }
 
@@ -818,14 +861,28 @@ if (root) {
     }
   }
 
+  function confirmSheetChange(): void {
+    const previousSheet = state.dataset?.sheetName ?? '';
+    const nextSheet = sheetSelect.value;
+    if (!previousSheet || previousSheet === nextSheet) return;
+
+    const hasChanges = state.history.length > 0 || state.pendingChanges.length > 0 || state.pendingRowDeletes.length > 0;
+    if (hasChanges) {
+      const proceed = window.confirm('このシートで行った未保存の変更内容は破棄されます。別のシートへ切り替えますか？');
+      if (!proceed) {
+        sheetSelect.value = previousSheet;
+        return;
+      }
+    }
+    reloadExcelSheet();
+  }
+
   function resetAll(): void {
     state.file = null;
     state.fileBuffer = null;
     state.fileFormat = null;
     state.detectedEncoding = 'unknown';
-    state.sheetNames = [];
     state.dataset = null;
-    state.originalDataset = null;
     state.originalRows = 0;
     state.diagnostics = null;
     state.history = [];
@@ -833,6 +890,7 @@ if (root) {
     state.selectedVariantIssueId = '';
     state.categoryFilter = 'all';
     state.duplicateColumns = [];
+    state.blankRowsOnly = false;
     state.busy = false;
     fileInput.value = '';
     fileName.textContent = '未選択';
@@ -840,6 +898,7 @@ if (root) {
     sheetField.hidden = true;
     encodingField.hidden = true;
     encodingSelect.value = 'auto';
+    duplicateKeepSelect.value = 'first';
     clearError();
     hideProgress();
     clearPendingPreview();
@@ -875,16 +934,12 @@ if (root) {
 
   function exportCsv(): void {
     if (!state.dataset) return;
-    const encoding = exportEncoding.value as CleanerCsvEncoding;
-    downloadBlob(exportCleanerCsv(state.dataset, encoding), `${baseOutputName()}-整理済み-${outputTimestamp()}.csv`);
+    downloadBlob(exportCleanerCsv(state.dataset, exportEncoding.value as CleanerCsvEncoding), `${baseOutputName()}-整理済み-${outputTimestamp()}.csv`);
   }
 
   function exportXlsx(): void {
     if (!state.dataset) return;
-    downloadBlob(
-      exportCleanerWorkbook(state.dataset, state.history, includeHistory.checked),
-      `${baseOutputName()}-整理済み-${outputTimestamp()}.xlsx`,
-    );
+    downloadBlob(exportCleanerWorkbook(state.dataset, state.history, includeHistory.checked), `${baseOutputName()}-整理済み-${outputTimestamp()}.xlsx`);
   }
 
   worker.addEventListener('message', (event: MessageEvent<WorkerResponse>) => {
@@ -905,7 +960,7 @@ if (root) {
     if (!state.selectedColumnId) state.selectedColumnId = state.dataset?.columns[0]?.id ?? '';
     statusText.textContent = message.diagnostics.issues.length === 0
       ? '診断完了。現在のルールでは整理候補は見つかりませんでした。'
-      : `診断完了。${message.diagnostics.issues.length.toLocaleString('ja-JP')}種類の整理候補を確認できます。`;
+      : `診断完了。${message.diagnostics.issues.length.toLocaleString('ja-JP')}件の整理候補を確認できます。`;
     showProgress('診断結果をまとめています', 4);
     window.setTimeout(hideProgress, 250);
     renderAll();
@@ -925,7 +980,7 @@ if (root) {
   });
 
   resetButton.addEventListener('click', resetAll);
-  sheetSelect.addEventListener('change', reloadExcelSheet);
+  sheetSelect.addEventListener('change', confirmSheetChange);
   encodingSelect.addEventListener('change', reloadCsv);
 
   addDuplicateColumnButton.addEventListener('click', () => {
@@ -942,7 +997,10 @@ if (root) {
     setBusy(state.busy);
   });
 
-  checkDuplicatesButton.addEventListener('click', () => prepareDuplicatePreview());
+  checkDuplicatesButton.addEventListener('click', () => {
+    const keep = duplicateKeepSelect.value === 'last' ? 'last' : 'first';
+    prepareDuplicatePreview(state.duplicateColumns, keep);
+  });
 
   healthButtons.forEach((button) => {
     button.addEventListener('click', () => {
@@ -991,16 +1049,20 @@ if (root) {
     prepareChanges({ type: 'fill-blank', columnId: state.selectedColumnId, value }, `空欄を「${value}」で補完`);
   });
 
+  blankOnlyButton.addEventListener('click', () => {
+    if (!state.dataset || !state.selectedColumnId) return;
+    state.blankRowsOnly = !state.blankRowsOnly;
+    renderDataTable();
+    renderColumnDetail();
+  });
+
+  blankDeleteButton.addEventListener('click', prepareBlankDeletePreview);
+
   variantActionButton.addEventListener('click', () => {
     const issue = currentVariantIssue();
     if (!issue?.columnId || !variantTarget.value) return;
     const values = [...new Set(issue.examples.map((example) => example.before))];
-    prepareChanges({
-      type: 'replace-values',
-      columnId: issue.columnId,
-      fromValues: values,
-      toValue: variantTarget.value,
-    }, `表記を「${variantTarget.value}」へ統一`);
+    prepareChanges({ type: 'replace-values', columnId: issue.columnId, fromValues: values, toValue: variantTarget.value }, `表記を「${variantTarget.value}」へ統一`);
   });
 
   cancelPreviewButton.addEventListener('click', clearPendingPreview);
