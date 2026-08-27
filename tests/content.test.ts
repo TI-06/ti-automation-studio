@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { works } from '../src/data/works';
 import { tools } from '../src/data/tools';
@@ -7,6 +7,10 @@ const homeSource = readFileSync(new URL('../src/pages/index.astro', import.meta.
 const worksIndexSource = readFileSync(new URL('../src/pages/works/index.astro', import.meta.url), 'utf-8');
 const workDetailSource = readFileSync(new URL('../src/pages/works/[slug].astro', import.meta.url), 'utf-8');
 const globalCss = readFileSync(new URL('../src/styles/global.css', import.meta.url), 'utf-8');
+const gasReceiverUrl = new URL('../gas/contact-receiver/Code.gs', import.meta.url);
+const gasReceiverReadmeUrl = new URL('../gas/contact-receiver/README.md', import.meta.url);
+const gasReceiverSource = existsSync(gasReceiverUrl) ? readFileSync(gasReceiverUrl, 'utf-8') : '';
+const gasReceiverReadme = existsSync(gasReceiverReadmeUrl) ? readFileSync(gasReceiverReadmeUrl, 'utf-8') : '';
 
 describe('公開コンテンツ', () => {
   it('実績slugが重複しない', () => {
@@ -77,5 +81,32 @@ describe('実績のケーススタディ表示', () => {
     expect(construction?.title).toContain('安全帳票');
     expect(construction?.features.length).toBeGreaterThanOrEqual(6);
     expect(construction?.technologies).toContain('Google Apps Script');
+  });
+});
+
+describe('GAS問い合わせ受信', () => {
+  it('GAS受信コードとセットアップ手順を配置する', () => {
+    expect(existsSync(gasReceiverUrl)).toBe(true);
+    expect(existsSync(gasReceiverReadmeUrl)).toBe(true);
+  });
+
+  it('GAS受信側が本文シークレットをScript Propertiesと照合する', () => {
+    expect(gasReceiverSource).toContain("getProperty('CONTACT_SHARED_SECRET')");
+    expect(gasReceiverSource).toContain('payload._secret');
+  });
+
+  it('問い合わせを保存してメール通知する', () => {
+    expect(gasReceiverSource).toContain("getProperty('CONTACT_SPREADSHEET_ID')");
+    expect(gasReceiverSource).toContain("getProperty('CONTACT_NOTIFY_EMAIL')");
+    expect(gasReceiverSource).toContain('appendRow');
+    expect(gasReceiverSource).toContain('MailApp.sendEmail');
+    expect(gasReceiverSource).toContain('replyTo');
+  });
+
+  it('GASセットアップ手順に必要な設定項目を含める', () => {
+    expect(gasReceiverReadme).toContain('CONTACT_SHARED_SECRET');
+    expect(gasReceiverReadme).toContain('CONTACT_SPREADSHEET_ID');
+    expect(gasReceiverReadme).toContain('CONTACT_NOTIFY_EMAIL');
+    expect(gasReceiverReadme).toContain('Webアプリ');
   });
 });

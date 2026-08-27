@@ -23,7 +23,8 @@ Excel・Google Apps Script・Python・Web・API・AIを組み合わせ、手作�
 - 独自CSS
 - Cloudflare Workers
 - Cloudflare Turnstile
-- Google Apps Script（問い合わせ通知先）
+- Google Apps Script（問い合わせ保存・通知）
+- Google Spreadsheet / MailApp
 - GitHub Actions
 
 ## ローカル起動
@@ -59,9 +60,9 @@ Cloudflare側に以下を登録します。
 
 | 名前 | 種別 | 用途 |
 | --- | --- | --- |
-| `TURNSTILE_SITE_KEY` | Variable | 問い合わせ画面に表示するTurnstile site key |
+| `TURNSTILE_SITE_KEY` | Variable | 問い合わせ画面に表示するTurnstile Site Key |
 | `TURNSTILE_SECRET_KEY` | Secret | Turnstileのサーバー検証 |
-| `CONTACT_GAS_URL` | Secret | 問い合わせ転送先GAS Web App URL |
+| `CONTACT_GAS_URL` | Secret | 問い合わせ転送先GAS Web Appの `/exec` URL |
 | `CONTACT_SHARED_SECRET` | Secret | WorkerとGAS間の共有シークレット |
 
 秘密値は `wrangler.jsonc` やソースコードへ直接書き込みません。
@@ -70,19 +71,31 @@ Cloudflare側に以下を登録します。
 
 Cloudflare Turnstileで本番ドメイン用Widgetを作成し、Site Key / Secret Keyを上記環境変数へ設定します。サーバー側では `/api/contact` がSiteverify APIを実行し、検証成功後のみGASへ転送します。
 
+現在のWorkersドメインを利用する場合、Turnstile WidgetのHostnameは `ti-automation-studio.utiltoools.workers.dev` です。
+
 ### 4. 独自ドメイン
 
 独自ドメインを設定したら、以下も本番URLへ変更します。
 
 - `astro.config.mjs` の `site`
 - `public/robots.txt` の Sitemap URL
+- Turnstile WidgetのHostname
 
 ## 問い合わせ受信側GAS
 
-GAS側ではPOSTされたJSONを受け取り、`X-Portfolio-Secret` がCloudflare側の `CONTACT_SHARED_SECRET` と一致することを確認してから保存・メール通知します。
+GAS側ではPOSTされたJSONを `doPost(e)` で受信し、本文に含まれる `_secret` とScript Propertiesの `CONTACT_SHARED_SECRET` が一致することを確認してから、Googleスプレッドシートへ保存しMailAppで通知します。
+
+GASの設定値はすべてScript Propertiesへ保存します。
+
+| Script Property | 用途 |
+| --- | --- |
+| `CONTACT_SHARED_SECRET` | Cloudflare Workerと共通の秘密値 |
+| `CONTACT_SPREADSHEET_ID` | 問い合わせ保存先スプレッドシートID |
+| `CONTACT_NOTIFY_EMAIL` | 新規問い合わせの通知先メールアドレス |
 
 受信データ:
 
+- `_secret`
 - `source`
 - `receivedAt`
 - `name`
@@ -92,6 +105,8 @@ GAS側ではPOSTされたJSONを受け取り、`X-Portfolio-Secret` がCloudflar
 - `request`
 - `budget`
 - `timing`
+
+GASコードと具体的なデプロイ手順は `gas/contact-receiver/README.md` を参照してください。
 
 ## 公開ツールについて
 
@@ -106,3 +121,5 @@ GAS側ではPOSTされたJSONを受け取り、`X-Portfolio-Secret` がCloudflar
 
 - `docs/superpowers/specs/2026-08-26-ti-automation-studio-design.md`
 - `docs/superpowers/plans/2026-08-26-ti-automation-studio-implementation.md`
+- `docs/superpowers/specs/2026-08-27-contact-gas-receiver-design.md`
+- `docs/superpowers/plans/2026-08-27-contact-gas-receiver.md`
