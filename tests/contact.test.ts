@@ -7,39 +7,28 @@ const contactPageSource = readFileSync(new URL('../src/pages/contact.astro', imp
 
 describe('validateContactInput', () => {
   it('メールアドレスと相談内容を必須にする', () => {
-    const result = validateContactInput({ email: '', problem: '', consent: false, turnstileToken: '' });
+    const result = validateContactInput({ email: '', problem: '', consent: false, website: '' });
     expect(result.ok).toBe(false);
     expect(result.errors.email).toBeTruthy();
     expect(result.errors.problem).toBeTruthy();
   });
 
   it('不正なメール形式を拒否する', () => {
-    const result = validateContactInput({ email: 'not-an-email', problem: '相談内容です', consent: true, turnstileToken: 'token' });
+    const result = validateContactInput({ email: 'not-an-email', problem: '相談内容です', consent: true, website: '' });
     expect(result.ok).toBe(false);
     expect(result.errors.email).toBeTruthy();
   });
 
   it('個人情報取扱いへの同意を必須にする', () => {
-    const result = validateContactInput({ email: 'test@example.com', problem: '相談内容です', consent: false, turnstileToken: 'token' });
+    const result = validateContactInput({ email: 'test@example.com', problem: '相談内容です', consent: false, website: '' });
     expect(result.ok).toBe(false);
     expect(result.errors.consent).toBeTruthy();
   });
 
   it('正常な入力を受け付ける', () => {
-    const result = validateContactInput({ email: 'test@example.com', problem: '既存のExcel業務を自動化したいです。', consent: true, turnstileToken: 'token' });
+    const result = validateContactInput({ email: 'test@example.com', problem: '既存のExcel業務を自動化したいです。', consent: true, website: '' });
     expect(result.ok).toBe(true);
     expect(result.errors).toEqual({});
-  });
-
-  it('Turnstileトークンなしでも正常入力を受け付ける', () => {
-    const result = validateContactInput({
-      email: 'test@example.com',
-      problem: '問い合わせ内容です。',
-      consent: true,
-      website: '',
-    } as any);
-    expect(result.ok).toBe(true);
-    expect(result.errors.turnstileToken).toBeUndefined();
   });
 
   it('honeypotに値が入っている送信を拒否する', () => {
@@ -48,7 +37,7 @@ describe('validateContactInput', () => {
       problem: 'spam',
       consent: true,
       website: 'https://spam.example.com',
-    } as any);
+    });
     expect(result.ok).toBe(false);
     expect(result.errors.website).toBeTruthy();
   });
