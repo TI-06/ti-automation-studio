@@ -7,5 +7,5 @@ export default defineConfig({
   adapter: cloudflare(),
   integrations: [sitemap()],
   session: false,
-  site: 'https://ti-automation-studio.workers.dev',
+  site: 'https://ti-automation-studio.utiltoools.workers.dev',
 });
