@@ -1,0 +1,214 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { services, getServiceBySlug } from '../../data/services';
+import { works } from '../../data/works';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return services.map((service) => ({ params: { slug: service.slug } }));
+}
+
+const { slug } = Astro.params;
+const service = getServiceBySlug(slug ?? '');
+if (!service) return Astro.redirect('/services');
+
+const relatedWorks = service.relatedWorkSlugs
+  .map((workSlug) => works.find((work) => work.slug === workSlug))
+  .filter((work): work is NonNullable<typeof work> => Boolean(work));
+const relatedServices = service.relatedServiceSlugs
+  .map((serviceSlug) => getServiceBySlug(serviceSlug))
+  .filter((item): item is NonNullable<typeof item> => Boolean(item));
+const serviceUrl = Astro.site ? new URL(`/services/${service.slug}`, Astro.site).toString() : `/services/${service.slug}`;
+const imageUrl = Astro.site ? new URL(service.visual, Astro.site).toString() : service.visual;
+
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: service.title,
+    serviceType: service.title,
+    description: service.description,
+    url: serviceUrl,
+    image: imageUrl,
+    areaServed: 'JP',
+    provider: {
+      '@type': 'ProfessionalService',
+      name: 'TI AUTOMATION STUDIO',
+      url: Astro.site?.toString() ?? '/',
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'トップ', item: Astro.site?.toString() ?? '/' },
+      { '@type': 'ListItem', position: 2, name: 'できること', item: Astro.site ? new URL('/services', Astro.site).toString() : '/services' },
+      { '@type': 'ListItem', position: 3, name: service.title, item: serviceUrl },
+    ],
+  },
+];
+---
+<BaseLayout
+  title={service.seoTitle}
+  description={service.description}
+  ogImage={service.visual}
+  structuredData={structuredData}
+>
+  <section class="service-hero">
+    <div class="container service-hero-grid reveal">
+      <div class="service-hero-copy">
+        <nav class="breadcrumb" aria-label="パンくずリスト">
+          <a href="/">トップ</a><span>／</span><a href="/services">できること</a><span>／</span><span>{service.title}</span>
+        </nav>
+        <p class="eyebrow">{service.eyebrow}</p>
+        <h1>{service.title}</h1>
+        <p class="service-hero-lead">{service.hero}</p>
+        <p class="service-hero-description">{service.description}</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#related-works">関連実績を見る →</a>
+          <a class="btn" href="/contact">この内容を相談する ↗</a>
+        </div>
+      </div>
+      <figure class="service-visual">
+        <img src={service.visual} alt={service.visualAlt} width="1600" height="900" decoding="async" fetchpriority="high" />
+      </figure>
+    </div>
+  </section>
+
+  <section class="section service-problems">
+    <div class="container service-section-grid">
+      <div>
+        <p class="eyebrow">COMMON PROBLEMS</p>
+        <h2 class="section-title">こんな作業が続いていませんか。</h2>
+      </div>
+      <div class="service-check-list">
+        {service.problems.map((problem) => (
+          <div class="service-check-item"><span aria-hidden="true">—</span><p>{problem}</p></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">WHAT WE AUTOMATE</p>
+      <h2 class="section-title">できること</h2>
+      <p class="section-lead">技術を増やすことより、手でやっている工程を減らし、確認しやすい業務フローにすることを優先します。</p>
+      <div class="service-capability-grid">
+        {service.capabilities.map((capability, index) => (
+          <article class="service-capability-card">
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            <h3>{capability.title}</h3>
+            <p>{capability.description}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">BEFORE / AFTER</p>
+      <h2 class="section-title">人の手順を、そのまま仕組みにしない。</h2>
+      <div class="service-flow">
+        <article><span>BEFORE</span><h3>いまの作業</h3><p>{service.flow.before}</p></article>
+        <div class="service-flow-arrow" aria-hidden="true">→</div>
+        <article class="service-flow-process"><span>PROCESS</span><h3>整理・自動化</h3><p>{service.flow.process}</p></article>
+        <div class="service-flow-arrow" aria-hidden="true">→</div>
+        <article><span>AFTER</span><h3>改善後</h3><p>{service.flow.after}</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container service-section-grid">
+      <div>
+        <p class="eyebrow">EXAMPLES</p>
+        <h2 class="section-title">具体的には、こんな業務。</h2>
+        <p class="section-lead">実案件を特定できる情報は出さず、対応可能な業務パターンとして一般化しています。</p>
+      </div>
+      <ol class="service-example-list">
+        {service.examples.map((example, index) => (
+          <li><span>{String(index + 1).padStart(2, '0')}</span><p>{example}</p></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section service-fit-section">
+    <div class="container">
+      <p class="eyebrow">GOOD FIT</p>
+      <h2 class="section-title">向いているケース / 向いていないケース</h2>
+      <div class="service-fit-grid">
+        <article>
+          <span class="service-fit-label">向いています</span>
+          <ul>{service.fit.map((item) => <li>{item}</li>)}</ul>
+        </article>
+        <article class="service-not-fit">
+          <span class="service-fit-label">別の方法も検討します</span>
+          <ul>{service.notFit.map((item) => <li>{item}</li>)}</ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="related-works" class="section">
+    <div class="container">
+      <p class="eyebrow">RELATED CASES</p>
+      <h2 class="section-title">関連する開発実績</h2>
+      <p class="section-lead">似た課題を、どのような仕組みへ整理しているか確認できます。</p>
+      <div class="card-grid service-related-works">
+        {relatedWorks.map((work, index) => (
+          <a class="work-card" href={`/works/${work.slug}`}>
+            <span class="card-arrow" aria-hidden="true">↗</span>
+            <div><span class="card-kicker">CASE {String(index + 1).padStart(2, '0')}</span><h3 class="card-title">{work.title}</h3><p class="card-copy">{work.summary}</p></div>
+            <div class="tags">{work.technologies.slice(0, 4).map((tech) => <span class="tag">{tech}</span>)}</div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container service-section-grid">
+      <div>
+        <p class="eyebrow">TECHNOLOGY</p>
+        <h2 class="section-title">使う技術は、業務に合わせて選びます。</h2>
+        <div class="tags service-tech-tags">{service.technologies.map((tech) => <span class="tag">{tech}</span>)}</div>
+      </div>
+      <div>
+        <p class="eyebrow">RELATED SERVICES</p>
+        <div class="service-related-links">
+          {relatedServices.map((item) => (
+            <a href={`/services/${item.slug}`}><span>{item.title}</span><span aria-hidden="true">→</span></a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container service-faq">
+      <div>
+        <p class="eyebrow">FAQ</p>
+        <h2 class="section-title">よくある質問</h2>
+      </div>
+      <div class="service-faq-list">
+        {service.faq.map((item) => (
+          <details>
+            <summary>{item.question}<span aria-hidden="true">＋</span></summary>
+            <p>{item.answer}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container cta-band-inner">
+      <div><p class="eyebrow">CONTACT</p><h2>「これも自動化できる？」から、<br />相談できます。</h2></div>
+      <a class="btn btn-primary" href="/contact">相談内容を送る →</a>
+    </div>
+  </section>
+</BaseLayout>

@@ -7,8 +7,18 @@ const workIndex = works.findIndex((item) => item.slug === slug);
 const work = works[workIndex];
 if (!work) return Astro.redirect('/works');
 const caseNumber = String(workIndex + 1).padStart(2, '0');
+const workUrl = Astro.site ? new URL(`/works/${work.slug}`, Astro.site).toString() : `/works/${work.slug}`;
+const breadcrumbData = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'トップ', item: Astro.site?.toString() ?? '/' },
+    { '@type': 'ListItem', position: 2, name: '開発実績', item: Astro.site ? new URL('/works', Astro.site).toString() : '/works' },
+    { '@type': 'ListItem', position: 3, name: work.title, item: workUrl },
+  ],
+};
 ---
-<BaseLayout title={work.title} description={work.summary}>
+<BaseLayout title={work.title} description={work.summary} structuredData={breadcrumbData}>
   <section class="page-hero case-hero">
     <div class="container reveal">
       <p class="eyebrow">CASE {caseNumber} / {work.category}</p>

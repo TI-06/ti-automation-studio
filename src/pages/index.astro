@@ -5,14 +5,14 @@ import { publishedTools } from '../data/tools';
 
 const featuredWorks = works.filter((work) => work.featured).slice(0, 4);
 const services = [
-  ['01', 'Excel・スプレッドシート業務の自動化', '手入力、転記、集計、ファイル作成など、毎日繰り返している作業を減らします。'],
-  ['02', '社内Webツール・管理画面の開発', '業務に必要な機能だけを整理し、ブラウザから使える専用画面を構築します。'],
-  ['03', 'GASによるGoogle Workspace活用', 'スプレッドシート、Drive、Gmailなどをつないで既存環境を業務システム化します。'],
-  ['04', 'API・ECサービス連携', '外部サービスとのデータ連携、認証、登録・取得処理を自動化します。'],
-  ['05', 'CSV・Excel・大量データ処理', 'データの検証、変換、集計、一括処理をPythonやExcelで効率化します。'],
-  ['06', 'PDF・帳票・印刷物の自動生成', '入力データをもとに、定型帳票やPDFを自動で作成・保存します。'],
-  ['07', 'AIを組み込んだ業務効率化', 'AIを使うこと自体を目的にせず、実務で使える入力支援や分類・要約へ落とし込みます。'],
-  ['08', '既存システム・既存ツールの改修', 'いま使っているExcel、VBA、GAS、Webツールを活かしながら改善します。'],
+  ['01', 'Excel・スプレッドシート業務の自動化', '手入力、転記、集計、ファイル作成など、毎日繰り返している作業を減らします。', '/services/excel-automation'],
+  ['02', '社内Webツール・管理画面の開発', '業務に必要な機能だけを整理し、ブラウザから使える専用画面を構築します。', ''],
+  ['03', 'GASによるGoogle Workspace活用', 'スプレッドシート、Drive、Gmailなどをつないで既存環境を業務システム化します。', '/services/gas-automation'],
+  ['04', 'API・ECサービス連携', '外部サービスとのデータ連携、認証、登録・取得処理を自動化します。', '/services/api-integration'],
+  ['05', 'CSV・Excel・大量データ処理', 'データの検証、変換、集計、一括処理をPythonやExcelで効率化します。', '/services/python-data-processing'],
+  ['06', 'PDF・帳票・印刷物の自動生成', '入力データをもとに、定型帳票やPDFを自動で作成・保存します。', '/services/pdf-document-automation'],
+  ['07', 'AIを組み込んだ業務効率化', 'AIを使うこと自体を目的にせず、実務で使える入力支援や分類・要約へ落とし込みます。', ''],
+  ['08', '既存システム・既存ツールの改修', 'いま使っているExcel、VBA、GAS、Webツールを活かしながら改善します。', ''],
 ];
 const process = [
   ['01', '相談', 'いま困っていることを整理します。仕様が決まっていなくても問題ありません。'],
@@ -63,13 +63,21 @@ const process = [
       <h2 class="section-title">技術ではなく、<br />解決したい業務から考えます。</h2>
       <p class="section-lead">「何を使えばいいか分からない」という段階でも大丈夫です。現在の運用を確認し、必要な技術をこちらで組み合わせます。</p>
       <div class="service-grid">
-        {services.map(([no, title, copy]) => (
-          <article class="service">
-            <span class="service-no">{no}</span>
-            <div><h3>{title}</h3><p>{copy}</p></div>
-          </article>
+        {services.map(([no, title, copy, href]) => (
+          href ? (
+            <a class="service service-linked" href={href}>
+              <span class="service-no">{no}</span>
+              <div><h3>{title}</h3><p>{copy}</p><span class="service-inline-link">詳しく見る →</span></div>
+            </a>
+          ) : (
+            <article class="service">
+              <span class="service-no">{no}</span>
+              <div><h3>{title}</h3><p>{copy}</p></div>
+            </article>
+          )
         ))}
       </div>
+      <div class="hero-actions"><a class="btn" href="/services">対応サービスを詳しく見る <span aria-hidden="true">→</span></a></div>
     </div>
   </section>
 
