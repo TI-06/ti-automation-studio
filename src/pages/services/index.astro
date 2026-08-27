@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { services } from '../../data/services';
+
+const itemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: '業務改善・自動化サービス',
+  itemListElement: services.map((service, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: service.title,
+    url: Astro.site ? new URL(`/services/${service.slug}`, Astro.site).toString() : `/services/${service.slug}`,
+  })),
+};
+---
+<BaseLayout
+  title="業務改善・自動化サービス"
+  description="Excel・GAS・Python・API連携・PDF帳票生成など、TI AUTOMATION STUDIOが対応する業務改善・自動化サービスを、課題別に分かりやすく紹介します。"
+  structuredData={itemList}
+>
+  <section class="page-hero services-index-hero">
+    <div class="container reveal">
+      <p class="eyebrow">SERVICES</p>
+      <h1>面倒な作業から、<br />必要な仕組みを選ぶ。</h1>
+      <p>技術名から選ぶ必要はありません。今の業務で困っていることに近いページから、できること・向いているケース・関連実績を確認できます。</p>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="container service-index-grid">
+      {services.map((service, index) => (
+        <a class="service-index-card" href={`/services/${service.slug}`}>
+          <div class="service-index-card-visual">
+            <img src={service.visual} alt={service.visualAlt} width="1600" height="900" loading={index < 2 ? 'eager' : 'lazy'} decoding="async" />
+          </div>
+          <div class="service-index-card-body">
+            <div class="service-index-topline">
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <span>{service.eyebrow}</span>
+            </div>
+            <h2>{service.title}</h2>
+            <p>{service.description}</p>
+            <span class="service-index-link">詳しく見る <span aria-hidden="true">→</span></span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container cta-band-inner">
+      <div><p class="eyebrow">相談</p><h2>どの方法が合うか分からなくても、<br />今の作業から整理できます。</h2></div>
+      <a class="btn btn-primary" href="/contact">開発について相談する →</a>
+    </div>
+  </section>
+</BaseLayout>
