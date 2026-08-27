@@ -264,6 +264,23 @@ const structuredData = [
             </section>
           </aside>
         </div>
+
+        <dialog class="cleaner-dialog" data-sheet-change-dialog aria-labelledby="cleaner-sheet-dialog-title">
+          <div class="cleaner-dialog-inner">
+            <p class="tool-app-kicker">シート切替</p>
+            <h2 id="cleaner-sheet-dialog-title">変更中のシートを切り替えますか？</h2>
+            <p>現在のシートで適用した変更や、確認中の変更候補はこのブラウザ上から破棄されます。必要な場合は先に整理済みファイルを保存してください。</p>
+            <div class="cleaner-dialog-route" aria-label="切替対象">
+              <div><span>現在</span><strong data-sheet-change-from>—</strong></div>
+              <b>→</b>
+              <div><span>切替先</span><strong data-sheet-change-to>—</strong></div>
+            </div>
+            <div class="cleaner-dialog-actions">
+              <button class="tool-button tool-button-secondary" type="button" data-sheet-change-cancel>このシートに戻る</button>
+              <button class="tool-button tool-button-danger" type="button" data-sheet-change-confirm>変更を破棄して切り替える</button>
+            </div>
+          </div>
+        </dialog>
       </ToolShell>
 
       <div class="tool-seo-content">
