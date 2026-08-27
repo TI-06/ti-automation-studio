@@ -6,6 +6,7 @@ import {
 import {
   applyChanges,
   applyRowDeletes,
+  blankRowIndexes,
   buildChanges,
   createHistoryEntry,
   undoHistory,
@@ -67,6 +68,11 @@ describe('変更プレビューと適用', () => {
     expect(dates.map((change) => change.after)).toEqual(['2026-08-27', '2026-08-29']);
     const blanks = buildChanges(dataset, { type: 'fill-blank', columnId: 'memo', value: '未入力' });
     expect(blanks[0]).toMatchObject({ rowIndex: 1, after: '未入力' });
+  });
+
+  it('選択列が空欄の行だけを安全に抽出できる', () => {
+    expect(blankRowIndexes(dataset, 'memo')).toEqual([1]);
+    expect(blankRowIndexes(dataset, 'company')).toEqual([]);
   });
 
   it('個別に除外した変更は適用しない', () => {
