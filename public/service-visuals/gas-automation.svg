@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">GAS業務自動化のビジュアル</title>
+  <desc id="desc">表計算、メール、ファイル保管、Web画面が中央の自動化ハブで連携するイメージ</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07090d"/><stop offset="1" stop-color="#0c1119"/></linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f0d59a"/><stop offset=".5" stop-color="#c8a96b"/><stop offset="1" stop-color="#7e6638"/></linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#202630" stop-opacity=".96"/><stop offset="1" stop-color="#0e1218" stop-opacity=".9"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#c8a96b" stop-opacity=".32"/><stop offset="1" stop-color="#c8a96b" stop-opacity="0"/></radialGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#000" flood-opacity=".5"/></filter>
+    <pattern id="dots" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="#c8a96b" opacity=".12"/></pattern>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/><rect width="1600" height="900" fill="url(#dots)"/>
+  <ellipse cx="800" cy="450" rx="380" ry="330" fill="url(#glow)"/>
+  <g stroke="#c8a96b" stroke-opacity=".18"><path d="M0 210H1600M0 690H1600M210 0V900M1390 0V900"/></g>
+
+  <g filter="url(#shadow)">
+    <g transform="translate(90 115)">
+      <rect width="500" height="280" rx="18" fill="url(#glass)" stroke="#907848" stroke-opacity=".52"/>
+      <rect x="22" y="22" width="456" height="36" rx="8" fill="#090d13"/>
+      <g transform="translate(30 84)" stroke="#b8a67e" stroke-opacity=".22"><rect width="440" height="160" fill="none"/><path d="M0 32H440M0 64H440M0 96H440M0 128H440M88 0V160M176 0V160M264 0V160M352 0V160"/></g>
+      <rect x="118" y="148" width="88" height="32" fill="#c8a96b" fill-opacity=".32"/>
+    </g>
+    <g transform="translate(110 510)">
+      <rect width="460" height="250" rx="18" fill="url(#glass)" stroke="#907848" stroke-opacity=".46"/>
+      <rect x="25" y="25" width="70" height="200" rx="12" fill="#0a0e14"/>
+      <g fill="#c8a96b" opacity=".55"><circle cx="60" cy="62" r="8"/><circle cx="60" cy="98" r="8"/><circle cx="60" cy="134" r="8"/><circle cx="60" cy="170" r="8"/></g>
+      <rect x="122" y="48" width="300" height="150" rx="10" fill="#f2f0ea" fill-opacity=".9"/>
+      <g stroke="#655b49" stroke-opacity=".35"><path d="M148 82H392M148 111H370M148 140H402M148 169H325"/></g>
+    </g>
+    <g transform="translate(1040 105)">
+      <rect width="450" height="285" rx="18" fill="url(#glass)" stroke="#907848" stroke-opacity=".5"/>
+      <rect x="24" y="24" width="402" height="42" rx="8" fill="#090d13"/>
+      <g transform="translate(38 90)">
+        <path d="M24 36h90l22 22h200v120H24z" fill="#c8a96b" fill-opacity=".16" stroke="#d7b979" stroke-opacity=".55"/>
+        <path d="M48 95H308M48 126H286M48 157H318" stroke="#d2c29d" stroke-opacity=".28" stroke-width="2"/>
+      </g>
+    </g>
+    <g transform="translate(1015 515)">
+      <rect width="500" height="270" rx="18" fill="url(#glass)" stroke="#907848" stroke-opacity=".48"/>
+      <rect x="24" y="24" width="452" height="34" rx="8" fill="#f2f0ea" fill-opacity=".85"/>
+      <rect x="35" y="84" width="180" height="130" rx="10" fill="#c8a96b" fill-opacity=".12"/>
+      <rect x="245" y="84" width="200" height="42" rx="8" fill="#151a22" stroke="#c8a96b" stroke-opacity=".25"/>
+      <rect x="245" y="145" width="200" height="42" rx="8" fill="#151a22" stroke="#c8a96b" stroke-opacity=".25"/>
+      <path d="M262 231c35-34 66-10 96-45s55 8 88-31" fill="none" stroke="#c8a96b" stroke-width="3"/>
+    </g>
+  </g>
+
+  <g stroke="url(#gold)" stroke-width="3" fill="none" opacity=".88">
+    <path d="M590 250C690 250 690 375 748 414"/><path d="M570 636C670 636 690 520 748 486"/>
+    <path d="M852 414C920 380 960 250 1040 250"/><path d="M852 486C930 520 950 640 1015 650"/>
+  </g>
+  <g fill="#f0d59a"><circle cx="590" cy="250" r="6"/><circle cx="570" cy="636" r="6"/><circle cx="1040" cy="250" r="6"/><circle cx="1015" cy="650" r="6"/></g>
+
+  <g transform="translate(690 330)" filter="url(#shadow)">
+    <circle cx="110" cy="120" r="150" fill="url(#glow)" opacity=".78"/>
+    <path d="M110 5 214 65v120l-104 60L6 185V65z" fill="#10151d" stroke="url(#gold)" stroke-width="3"/>
+    <circle cx="110" cy="125" r="52" fill="none" stroke="#f0d59a" stroke-width="4" stroke-dasharray="6 10"/>
+    <path d="M85 125h50M110 100v50" stroke="#f0d59a" stroke-width="8" stroke-linecap="round"/>
+    <g fill="#c8a96b"><circle cx="110" cy="45" r="6"/><circle cx="178" cy="84" r="6"/><circle cx="178" cy="164" r="6"/><circle cx="42" cy="84" r="6"/><circle cx="42" cy="164" r="6"/></g>
+  </g>
+  <g opacity=".55" fill="none" stroke="#c8a96b" stroke-width="2"><path d="M800 585v70"/><circle cx="800" cy="684" r="18"/><path d="M792 684h16M800 676v16"/></g>
+</svg>
