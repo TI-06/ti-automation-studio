@@ -56,6 +56,7 @@ if (root) {
     excludedRowDeletes: Set<number>;
     pendingKeepGroups: number[][];
     pendingLabel: string;
+    pendingSheetName: string;
     duplicateColumns: string[];
     blankRowsOnly: boolean;
     busy: boolean;
@@ -78,6 +79,7 @@ if (root) {
     excludedRowDeletes: new Set<number>(),
     pendingKeepGroups: [],
     pendingLabel: '',
+    pendingSheetName: '',
     duplicateColumns: [],
     blankRowsOnly: false,
     busy: false,
@@ -85,6 +87,12 @@ if (root) {
 
   const query = <T>(selector: string): T => {
     const element = appRoot.querySelector(selector);
+    if (!element) throw new Error(`必要な画面要素が見つかりません: ${selector}`);
+    return element as unknown as T;
+  };
+
+  const documentQuery = <T>(selector: string): T => {
+    const element = document.querySelector(selector);
     if (!element) throw new Error(`必要な画面要素が見つかりません: ${selector}`);
     return element as unknown as T;
   };
@@ -149,6 +157,11 @@ if (root) {
   const includeHistory = query<HTMLInputElement>('[data-include-history]');
   const exportCsvButton = query<HTMLButtonElement>('[data-export-cleaner-csv]');
   const exportXlsxButton = query<HTMLButtonElement>('[data-export-cleaner-xlsx]');
+  const sheetChangeDialog = documentQuery<HTMLDialogElement>('[data-sheet-change-dialog]');
+  const sheetChangeFrom = documentQuery<HTMLElement>('[data-sheet-change-from]');
+  const sheetChangeTo = documentQuery<HTMLElement>('[data-sheet-change-to]');
+  const sheetChangeCancel = documentQuery<HTMLButtonElement>('[data-sheet-change-cancel]');
+  const sheetChangeConfirm = documentQuery<HTMLButtonElement>('[data-sheet-change-confirm]');
 
   const healthButtons = [...appRoot.querySelectorAll<HTMLButtonElement>('[data-health-category]')];
   const columnActionButtons = [...appRoot.querySelectorAll<HTMLButtonElement>('[data-column-action]')];
@@ -861,19 +874,38 @@ if (root) {
     }
   }
 
+  function closeSheetDialog(): void {
+    state.pendingSheetName = '';
+    if (sheetChangeDialog.open) sheetChangeDialog.close();
+  }
+
   function confirmSheetChange(): void {
     const previousSheet = state.dataset?.sheetName ?? '';
     const nextSheet = sheetSelect.value;
     if (!previousSheet || previousSheet === nextSheet) return;
 
     const hasChanges = state.history.length > 0 || state.pendingChanges.length > 0 || state.pendingRowDeletes.length > 0;
-    if (hasChanges) {
-      const proceed = window.confirm('このシートで行った未保存の変更内容は破棄されます。別のシートへ切り替えますか？');
-      if (!proceed) {
-        sheetSelect.value = previousSheet;
-        return;
-      }
+    if (!hasChanges) {
+      reloadExcelSheet();
+      return;
     }
+
+    state.pendingSheetName = nextSheet;
+    sheetSelect.value = previousSheet;
+    sheetChangeFrom.textContent = previousSheet;
+    sheetChangeTo.textContent = nextSheet;
+    sheetChangeDialog.showModal();
+  }
+
+  function applySheetChange(): void {
+    const nextSheet = state.pendingSheetName;
+    if (!nextSheet) {
+      closeSheetDialog();
+      return;
+    }
+    state.pendingSheetName = '';
+    if (sheetChangeDialog.open) sheetChangeDialog.close();
+    sheetSelect.value = nextSheet;
     reloadExcelSheet();
   }
 
@@ -892,6 +924,8 @@ if (root) {
     state.duplicateColumns = [];
     state.blankRowsOnly = false;
     state.busy = false;
+    state.pendingSheetName = '';
+    if (sheetChangeDialog.open) sheetChangeDialog.close();
     fileInput.value = '';
     fileName.textContent = '未選択';
     fileSettings.hidden = true;
@@ -1069,6 +1103,9 @@ if (root) {
   applyPreviewButton.addEventListener('click', applyPending);
   exportCsvButton.addEventListener('click', exportCsv);
   exportXlsxButton.addEventListener('click', exportXlsx);
+  sheetChangeCancel.addEventListener('click', closeSheetDialog);
+  sheetChangeConfirm.addEventListener('click', applySheetChange);
+  sheetChangeDialog.addEventListener('cancel', () => { state.pendingSheetName = ''; });
 
   resetAll();
 }
