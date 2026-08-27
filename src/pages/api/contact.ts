@@ -15,6 +15,11 @@ type TurnstileResponse = {
   'error-codes'?: string[];
 };
 
+type GasResponse = {
+  ok?: boolean;
+  message?: string;
+};
+
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
@@ -60,6 +65,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   const normalized = normalizeContactInput(input);
   const payload = {
+    _secret: sharedSecret,
     source: 'ti-automation-studio',
     receivedAt: new Date().toISOString(),
     name: normalized.name ?? '',
@@ -71,17 +77,28 @@ export const POST: APIRoute = async ({ request }) => {
     timing: normalized.timing ?? '',
   };
 
-  const gasResponse = await fetch(gasUrl, {
-    method: 'POST',
-    headers: {
-      'content-type': 'application/json',
-      'x-portfolio-secret': sharedSecret,
-    },
-    body: JSON.stringify(payload),
-  });
+  let gasResponse: Response;
+  try {
+    gasResponse = await fetch(gasUrl, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+  } catch (error) {
+    console.error('Contact forwarding request failed', error);
+    return json({ ok: false, message: '送信に失敗しました。時間をおいてもう一度お試しください。' }, 502);
+  }
 
-  if (!gasResponse.ok) {
-    console.error('Contact forwarding failed', gasResponse.status);
+  let gasResult: GasResponse;
+  try {
+    gasResult = (await gasResponse.json()) as GasResponse;
+  } catch {
+    console.error('Contact forwarding returned a non-JSON response', gasResponse.status);
+    return json({ ok: false, message: '送信に失敗しました。時間をおいてもう一度お試しください。' }, 502);
+  }
+
+  if (!gasResponse.ok || gasResult.ok !== true) {
+    console.error('Contact forwarding failed', gasResponse.status, gasResult.message ?? 'unknown error');
     return json({ ok: false, message: '送信に失敗しました。時間をおいてもう一度お試しください。' }, 502);
   }
 
