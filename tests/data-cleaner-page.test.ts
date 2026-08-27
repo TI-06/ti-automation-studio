@@ -23,6 +23,17 @@ describe('CSV・Excelデータ整理ページ', () => {
     expect(source).toContain("'@type': 'BreadcrumbList'");
   });
 
+  it('重複の残し方と空欄行の扱いをユーザーが選べる', () => {
+    const source = existsSync(pageUrl) ? readFileSync(pageUrl, 'utf-8') : '';
+    expect(source).toContain('data-duplicate-keep');
+    expect(source).toContain('先頭の行を残す');
+    expect(source).toContain('最後の行を残す');
+    expect(source).toContain('data-blank-only');
+    expect(source).toContain('空欄行だけ表示');
+    expect(source).toContain('data-blank-delete');
+    expect(source).toContain('空欄がある行を削除候補にする');
+  });
+
   it('Worker・修正プレビュー・履歴・保存をブラウザ内で制御する', () => {
     expect(existsSync(controllerUrl)).toBe(true);
     const source = existsSync(controllerUrl) ? readFileSync(controllerUrl, 'utf-8') : '';
@@ -31,10 +42,13 @@ describe('CSV・Excelデータ整理ページ', () => {
     expect(source).toContain('validateCleanerFile');
     expect(source).toContain('createCleanerSample');
     expect(source).toContain('buildChanges');
+    expect(source).toContain('blankRowIndexes');
     expect(source).toContain('findDuplicateGroups');
     expect(source).toContain('undoHistory');
     expect(source).toContain('exportCleanerCsv');
     expect(source).toContain('exportCleanerWorkbook');
+    expect(source).toContain('confirmSheetChange');
+    expect(source).toContain('window.confirm');
     expect(source).toContain('URL.createObjectURL');
     expect(source).not.toContain('fetch(');
     expect(source).not.toContain('XMLHttpRequest');
