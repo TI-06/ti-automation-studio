@@ -1,4 +1,3 @@
-import { diagnoseDataset } from '../../lib/tools/data-cleaner/diagnostics';
 import { duplicateRowsToDelete, findDuplicateGroups } from '../../lib/tools/data-cleaner/duplicates';
 import { exportCleanerCsv, exportCleanerWorkbook, summarizeCleaning } from '../../lib/tools/data-cleaner/export';
 import {
@@ -32,6 +31,8 @@ import type {
 const root = document.querySelector<HTMLElement>('[data-cleaner-app]');
 
 if (root) {
+  const appRoot = root;
+
   type WorkerResponse =
     | { type: 'progress'; stage: number; label: string }
     | { type: 'complete'; diagnostics: DiagnosticResult }
@@ -82,7 +83,7 @@ if (root) {
   };
 
   const query = <T>(selector: string): T => {
-    const element = root.querySelector(selector);
+    const element = appRoot.querySelector(selector);
     if (!element) throw new Error(`必要な画面要素が見つかりません: ${selector}`);
     return element as unknown as T;
   };
@@ -145,8 +146,8 @@ if (root) {
   const exportCsvButton = query<HTMLButtonElement>('[data-export-cleaner-csv]');
   const exportXlsxButton = query<HTMLButtonElement>('[data-export-cleaner-xlsx]');
 
-  const healthButtons = [...root.querySelectorAll<HTMLButtonElement>('[data-health-category]')];
-  const columnActionButtons = [...root.querySelectorAll<HTMLButtonElement>('[data-column-action]')];
+  const healthButtons = [...appRoot.querySelectorAll<HTMLButtonElement>('[data-health-category]')];
+  const columnActionButtons = [...appRoot.querySelectorAll<HTMLButtonElement>('[data-column-action]')];
 
   const CATEGORY_LABELS: Record<DiagnosticCategory, string> = {
     duplicate: '重複',
@@ -254,7 +255,7 @@ if (root) {
 
   function renderHealthSummary(): void {
     (Object.keys(CATEGORY_LABELS) as DiagnosticCategory[]).forEach((category) => {
-      const counter = root.querySelector<HTMLElement>(`[data-health-count="${category}"]`);
+      const counter = appRoot.querySelector<HTMLElement>(`[data-health-count="${category}"]`);
       if (counter) counter.textContent = issueCount(category).toLocaleString('ja-JP');
     });
     healthButtons.forEach((button) => {
