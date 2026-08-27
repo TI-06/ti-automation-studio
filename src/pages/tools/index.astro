@@ -84,6 +84,30 @@ const structuredData = {
                     </div>
                     <div class="excel-diff-preview-foot">Excelを2つ選択 → 条件指定 → 差分一覧 → 保存</div>
                   </div>
+                ) : tool.slug === 'data-cleaner' ? (
+                  <div class="data-cleaner-preview">
+                    <div class="data-cleaner-preview-head">
+                      <div>
+                        <span>データ健康診断</span>
+                        <strong>整理候補を先に確認</strong>
+                      </div>
+                      <small>表示イメージ</small>
+                    </div>
+                    <div class="data-cleaner-preview-health">
+                      <div><span>重複</span><strong>18</strong></div>
+                      <div><span>前後空白</span><strong>42</strong></div>
+                      <div><span>空欄</span><strong>7</strong></div>
+                      <div><span>表記の違い</span><strong>11</strong></div>
+                    </div>
+                    <div class="data-cleaner-preview-card">
+                      <div class="data-cleaner-preview-card-head"><span>会社名</span><b>整理候補</b></div>
+                      <p>「株式会社ＡＢＣ」と「株式会社ABC 」を確認できます。</p>
+                      <div><span>株式会社ＡＢＣ</span><b>→</b><span>株式会社ABC</span></div>
+                    </div>
+                    <div class="data-cleaner-preview-flow">
+                      <span>診断</span><i>→</i><span>変更内容を確認してから適用</span><i>→</i><span>保存</span>
+                    </div>
+                  </div>
                 ) : (
                   <div class="tool-preview-placeholder">
                     <span>{tool.shortLabel}</span>
@@ -131,7 +155,8 @@ const structuredData = {
   .tools-hero-meta span { padding: 6px 10px; border: 1px solid var(--border); color: #d1cfc8; font-size: .7rem; }
   .tools-product-list { display: grid; gap: 18px; }
   .tool-product-copy .card-kicker { margin: 22px 0 0; }
-  .excel-diff-preview { height: 100%; display: flex; flex-direction: column; border: 1px solid var(--border); background: #0b0d10; }
+  .excel-diff-preview,
+  .data-cleaner-preview { height: 100%; display: flex; flex-direction: column; border: 1px solid var(--border); background: #0b0d10; }
   .excel-diff-preview-head { min-height: 54px; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
   .excel-diff-preview-head span { color: #e1dfd8; font-size: .75rem; font-weight: 600; }
   .excel-diff-preview-head small { color: var(--soft); font-size: .62rem; }
@@ -145,6 +170,26 @@ const structuredData = {
   .preview-row span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .preview-head { color: var(--soft); font-size: .58rem; }
   .excel-diff-preview-foot { padding: 12px 16px; border-top: 1px solid var(--border); color: var(--accent); font-size: .62rem; }
+
+  .data-cleaner-preview-head { min-height: 66px; padding: 13px 15px; display: flex; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--border); }
+  .data-cleaner-preview-head span { display: block; color: var(--accent); font-size: .58rem; letter-spacing: .08em; }
+  .data-cleaner-preview-head strong { display: block; margin-top: 5px; color: #e1dfd8; font-size: .76rem; font-weight: 600; }
+  .data-cleaner-preview-head small { color: var(--soft); font-size: .6rem; }
+  .data-cleaner-preview-health { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--border); }
+  .data-cleaner-preview-health div { min-width: 0; padding: 12px 9px; border-right: 1px solid var(--border); }
+  .data-cleaner-preview-health div:last-child { border-right: 0; }
+  .data-cleaner-preview-health span { display: block; color: var(--muted); font-size: .54rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .data-cleaner-preview-health strong { display: block; margin-top: 5px; font-size: 1rem; font-weight: 500; }
+  .data-cleaner-preview-card { margin: 14px; padding: 13px; border: 1px solid rgba(200,169,107,.28); background: rgba(200,169,107,.025); }
+  .data-cleaner-preview-card-head { display: flex; justify-content: space-between; gap: 10px; }
+  .data-cleaner-preview-card-head span { font-size: .7rem; font-weight: 600; }
+  .data-cleaner-preview-card-head b { color: var(--accent); font-size: .56rem; font-weight: 500; }
+  .data-cleaner-preview-card p { margin: 8px 0; color: var(--muted); font-size: .58rem; line-height: 1.55; }
+  .data-cleaner-preview-card > div:last-child { display: grid; grid-template-columns: 1fr auto 1fr; gap: 7px; color: #cac8c1; font-size: .6rem; }
+  .data-cleaner-preview-card > div:last-child b { color: var(--accent); font-weight: 500; }
+  .data-cleaner-preview-flow { margin-top: auto; padding: 11px 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; border-top: 1px solid var(--border); color: #bdbbb4; font-size: .56rem; }
+  .data-cleaner-preview-flow i { color: var(--accent); font-style: normal; }
+
   .tool-preview-placeholder { min-height: 220px; height: 100%; display: grid; place-items: center; border: 1px solid var(--border); text-align: center; }
   .tool-preview-placeholder span, .tool-preview-placeholder strong { display: block; }
   .tool-preview-placeholder span { color: var(--muted); font-size: .72rem; }
@@ -156,5 +201,9 @@ const structuredData = {
   @media (max-width: 520px) {
     .excel-diff-preview-summary strong { font-size: .95rem; }
     .preview-row { grid-template-columns: .6fr 1fr .8fr .8fr; font-size: .58rem; }
+    .data-cleaner-preview-health { grid-template-columns: repeat(2, 1fr); }
+    .data-cleaner-preview-health div { border-bottom: 1px solid var(--border); }
+    .data-cleaner-preview-health div:nth-child(2n) { border-right: 0; }
+    .data-cleaner-preview-health div:nth-last-child(-n + 2) { border-bottom: 0; }
   }
 </style>
