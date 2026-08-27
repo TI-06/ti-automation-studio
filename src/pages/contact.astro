@@ -1,16 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { env } from 'cloudflare:workers';
-
-const runtimeEnv = env as unknown as { TURNSTILE_SITE_KEY?: string };
-const siteKey = runtimeEnv.TURNSTILE_SITE_KEY;
 ---
 <BaseLayout
   title="問い合わせ"
   description="Excel・GAS・Python・Web・API・AIを使った業務改善・自動化について相談できます。仕様が決まっていない段階でも問題ありません。"
 >
-  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-
   <section class="page-hero">
     <div class="container reveal">
       <p class="eyebrow">問い合わせ</p>
@@ -43,6 +37,11 @@ const siteKey = runtimeEnv.TURNSTILE_SITE_KEY;
           <div class="field">
             <label for="email">メールアドレス <small>必須</small></label>
             <input id="email" name="email" type="email" maxlength="254" autocomplete="email" required />
+          </div>
+
+          <div aria-hidden="true" style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;">
+            <label for="website">Webサイト</label>
+            <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
           </div>
 
           <div class="field">
@@ -86,21 +85,13 @@ const siteKey = runtimeEnv.TURNSTILE_SITE_KEY;
             <input id="timing" name="timing" maxlength="100" placeholder="例：1か月以内 / 急ぎではない" />
           </div>
 
-          {siteKey ? (
-            <div class="field">
-              <div class="cf-turnstile" data-sitekey={siteKey} data-theme="dark"></div>
-            </div>
-          ) : (
-            <p class="form-status" data-state="error">問い合わせフォームは公開設定中です。Cloudflare Turnstileの設定後に送信できるようになります。</p>
-          )}
-
           <label class="checkbox">
             <input id="consent" name="consent" type="checkbox" required />
             <span><a href="/privacy" target="_blank">プライバシーポリシー</a>を確認し、入力した情報を問い合わせ対応のために利用することに同意します。</span>
           </label>
 
           <p id="form-status" class="form-status" aria-live="polite"></p>
-          <button id="submit-button" class="btn btn-primary" type="submit" disabled={!siteKey}>相談内容を送信する →</button>
+          <button id="submit-button" class="btn btn-primary" type="submit">相談内容を送信する →</button>
         </form>
       </div>
     </div>
@@ -135,7 +126,7 @@ const siteKey = runtimeEnv.TURNSTILE_SITE_KEY;
         budget: String(data.get('budget') ?? ''),
         timing: String(data.get('timing') ?? ''),
         consent: data.get('consent') === 'on',
-        turnstileToken: String(data.get('cf-turnstile-response') ?? ''),
+        website: String(data.get('website') ?? ''),
       };
 
       button.disabled = true;
