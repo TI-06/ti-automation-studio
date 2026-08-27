@@ -1,5 +1,8 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { validateContactInput } from '../src/utils/contact';
+
+const contactApiSource = readFileSync(new URL('../src/pages/api/contact.ts', import.meta.url), 'utf-8');
 
 describe('validateContactInput', () => {
   it('メールアドレスと相談内容を必須にする', () => {
@@ -25,5 +28,16 @@ describe('validateContactInput', () => {
     const result = validateContactInput({ email: 'test@example.com', problem: '既存のExcel業務を自動化したいです。', consent: true, turnstileToken: 'token' });
     expect(result.ok).toBe(true);
     expect(result.errors).toEqual({});
+  });
+});
+
+describe('問い合わせAPIのGAS転送', () => {
+  it('GAS共有シークレットをHTTPヘッダーではなくJSON本文に含める', () => {
+    expect(contactApiSource).toContain('_secret: sharedSecret');
+    expect(contactApiSource).not.toContain("'x-portfolio-secret'");
+  });
+
+  it('GASのJSON結果が失敗なら送信成功にしない', () => {
+    expect(contactApiSource).toContain('gasResult.ok');
   });
 });
