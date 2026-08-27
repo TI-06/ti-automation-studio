@@ -12,4 +12,15 @@ describe('公開ツール定義', () => {
     expect(excelDiff?.processing).toBe('ブラウザ内処理');
     expect(excelDiff?.features.length).toBeGreaterThanOrEqual(3);
   });
+
+  it('データ整理ツールを登録不要の公開ツールとして掲載する', () => {
+    const cleaner = tools.find((tool) => tool.slug === 'data-cleaner');
+
+    expect(cleaner).toBeTruthy();
+    expect(cleaner?.published).toBe(true);
+    expect(cleaner?.href).toBe('/tools/data-cleaner');
+    expect(cleaner?.formats).toEqual(expect.arrayContaining(['CSV', 'XLSX', 'XLS']));
+    expect(cleaner?.processing).toBe('ブラウザ内処理');
+    expect(cleaner?.features.length).toBeGreaterThanOrEqual(3);
+  });
 });
