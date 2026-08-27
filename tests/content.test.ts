@@ -7,6 +7,9 @@ const homeSource = readFileSync(new URL('../src/pages/index.astro', import.meta.
 const worksIndexSource = readFileSync(new URL('../src/pages/works/index.astro', import.meta.url), 'utf-8');
 const workDetailSource = readFileSync(new URL('../src/pages/works/[slug].astro', import.meta.url), 'utf-8');
 const globalCss = readFileSync(new URL('../src/styles/global.css', import.meta.url), 'utf-8');
+const baseLayoutSource = readFileSync(new URL('../src/layouts/BaseLayout.astro', import.meta.url), 'utf-8');
+const astroConfigSource = readFileSync(new URL('../astro.config.mjs', import.meta.url), 'utf-8');
+const robotsSource = readFileSync(new URL('../public/robots.txt', import.meta.url), 'utf-8');
 const gasReceiverUrl = new URL('../gas/contact-receiver/Code.gs', import.meta.url);
 const gasReceiverReadmeUrl = new URL('../gas/contact-receiver/README.md', import.meta.url);
 const gasReceiverSource = existsSync(gasReceiverUrl) ? readFileSync(gasReceiverUrl, 'utf-8') : '';
@@ -31,6 +34,17 @@ describe('公開コンテンツ', () => {
         expect(url).toMatch(/^https:\/\//);
       }
     }
+  });
+});
+
+describe('SEO設定', () => {
+  it('本番URLをcanonicalとsitemapの基準にする', () => {
+    expect(astroConfigSource).toContain("site: 'https://ti-automation-studio.utiltoools.workers.dev'");
+    expect(robotsSource).toContain('https://ti-automation-studio.utiltoools.workers.dev/sitemap-index.xml');
+  });
+
+  it('Google Search Consoleの所有権確認メタタグを出力する', () => {
+    expect(baseLayoutSource).toContain('<meta name="google-site-verification" content="R2F-nSTc4w9KY3PCBI2bGG6TvsgPLMwXYng-q31bG3g" />');
   });
 });
 
