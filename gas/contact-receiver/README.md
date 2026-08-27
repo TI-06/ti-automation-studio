@@ -19,7 +19,7 @@ Apps Script画面左側の `プロジェクトの設定` を開き、`スクリ�
 | `CONTACT_SHARED_SECRET` | WorkerとGASで共通に使う32文字以上のランダム文字列 |
 | `CONTACT_NOTIFY_EMAIL` | 新規問い合わせ通知を受け取りたいメールアドレス |
 
-`CONTACT_SHARED_SECRET` はパスワードマネージャー等で32〜64文字程度のランダム値を作成してください。この値は後でCloudflareにも**同じ値**を設定します。
+`CONTACT_SHARED_SECRET` は32〜64文字程度のランダム値を作成してください。この値は後でCloudflareにも**同じ値**を設定します。
 
 これらの値を `Code.gs` やGitHubへ直接書かないでください。
 
@@ -56,7 +56,7 @@ MailAppは通知メールの送信だけに利用し、Gmailの受信トレイ�
 
 本番で使うURLは末尾が `/exec` のものです。`/dev` はテスト用URLなのでCloudflareには設定しません。
 
-Webアプリ自体は外部からアクセス可能ですが、GAS側で `CONTACT_SHARED_SECRET` を検証し、Cloudflare側ではその前段でTurnstile検証を行います。
+Webアプリ自体は外部からアクセス可能ですが、GAS側で `CONTACT_SHARED_SECRET` を検証します。WebアプリURLや共有シークレットはフロントエンドへ直接埋め込みません。
 
 ## 5. Cloudflare Workerへ設定
 
@@ -64,26 +64,14 @@ Cloudflare Dashboardで `ti-automation-studio` Workerを開き、Variables and S
 
 | 名前 | 種別 | 値 |
 | --- | --- | --- |
-| `TURNSTILE_SITE_KEY` | Variable / Text | Turnstileで発行されたSite Key |
-| `TURNSTILE_SECRET_KEY` | Secret | Turnstileで発行されたSecret Key |
 | `CONTACT_GAS_URL` | Secret | 手順4の `/exec` URL |
 | `CONTACT_SHARED_SECRET` | Secret | GASのScript Propertiesと同じランダム文字列 |
 
 設定後はWorkerを再デプロイしてください。
 
-## 6. Turnstile Widgetを作成
+問い合わせフォーム側では、通常の利用者には見えないhoneypot項目とサーバー側バリデーションを使って軽量なスパム対策を行います。
 
-Cloudflare DashboardのTurnstileからWidgetを作成します。
-
-- Widget name: `TI AUTOMATION STUDIO Contact`
-- Hostname: `ti-automation-studio.utiltoools.workers.dev`
-- Widget mode: `Managed`
-
-発行されたSite KeyとSecret Keyを手順5で設定します。
-
-独自ドメインへ切り替えた場合は、そのドメインもTurnstile WidgetのHostnameへ追加してください。
-
-## 7. 動作確認
+## 6. 動作確認
 
 Cloudflareへの反映後、公開サイトの問い合わせページからテスト送信します。
 
