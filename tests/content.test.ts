@@ -10,6 +10,12 @@ const globalCss = readFileSync(new URL('../src/styles/global.css', import.meta.u
 const baseLayoutSource = readFileSync(new URL('../src/layouts/BaseLayout.astro', import.meta.url), 'utf-8');
 const astroConfigSource = readFileSync(new URL('../astro.config.mjs', import.meta.url), 'utf-8');
 const robotsSource = readFileSync(new URL('../public/robots.txt', import.meta.url), 'utf-8');
+const serviceDataUrl = new URL('../src/data/services.ts', import.meta.url);
+const serviceIndexUrl = new URL('../src/pages/services/index.astro', import.meta.url);
+const serviceDetailUrl = new URL('../src/pages/services/[slug].astro', import.meta.url);
+const serviceDataSource = existsSync(serviceDataUrl) ? readFileSync(serviceDataUrl, 'utf-8') : '';
+const serviceIndexSource = existsSync(serviceIndexUrl) ? readFileSync(serviceIndexUrl, 'utf-8') : '';
+const serviceDetailSource = existsSync(serviceDetailUrl) ? readFileSync(serviceDetailUrl, 'utf-8') : '';
 const gasReceiverUrl = new URL('../gas/contact-receiver/Code.gs', import.meta.url);
 const gasReceiverReadmeUrl = new URL('../gas/contact-receiver/README.md', import.meta.url);
 const gasReceiverSource = existsSync(gasReceiverUrl) ? readFileSync(gasReceiverUrl, 'utf-8') : '';
@@ -45,6 +51,70 @@ describe('SEO設定', () => {
 
   it('Google Search Consoleの所有権確認メタタグを出力する', () => {
     expect(baseLayoutSource).toContain('<meta name="google-site-verification" content="R2F-nSTc4w9KY3PCBI2bGG6TvsgPLMwXYng-q31bG3g" />');
+  });
+
+  it('OGPとTwitter metadataをページURL・画像と揃えられる', () => {
+    expect(baseLayoutSource).toContain('ogImage?: string');
+    expect(baseLayoutSource).toContain('structuredData?:');
+    expect(baseLayoutSource).toContain('property="og:url"');
+    expect(baseLayoutSource).toContain('property="og:site_name"');
+    expect(baseLayoutSource).toContain('name="twitter:title"');
+    expect(baseLayoutSource).toContain('name="twitter:description"');
+    expect(baseLayoutSource).toContain('name="twitter:image"');
+    expect(baseLayoutSource).toContain("'@type': 'WebSite'");
+  });
+});
+
+describe('検索意図別サービスページ', () => {
+  it('5つのサービスデータと一覧・詳細ページを配置する', () => {
+    expect(existsSync(serviceDataUrl)).toBe(true);
+    expect(existsSync(serviceIndexUrl)).toBe(true);
+    expect(existsSync(serviceDetailUrl)).toBe(true);
+    for (const slug of [
+      'excel-automation',
+      'gas-automation',
+      'python-data-processing',
+      'api-integration',
+      'pdf-document-automation',
+    ]) {
+      expect(serviceDataSource).toContain(`slug: '${slug}'`);
+    }
+  });
+
+  it('各サービスがSEO文章・専用画像・FAQ・関連導線を持つ', () => {
+    expect(serviceDataSource).toContain('seoTitle:');
+    expect(serviceDataSource).toContain('description:');
+    expect(serviceDataSource).toContain('visual:');
+    expect(serviceDataSource).toContain('visualAlt:');
+    expect(serviceDataSource).toContain('problems:');
+    expect(serviceDataSource).toContain('capabilities:');
+    expect(serviceDataSource).toContain('faq:');
+    expect(serviceDetailSource).toContain("'@type': 'Service'");
+    expect(serviceDetailSource).toContain("'@type': 'BreadcrumbList'");
+    expect(serviceDetailSource).toContain('href="/contact"');
+    expect(serviceDetailSource).toContain('width="1600"');
+    expect(serviceDetailSource).toContain('height="900"');
+    expect(serviceDetailSource).toContain('関連する開発実績');
+  });
+
+  it('トップから主要5サービスへ内部リンクする', () => {
+    for (const slug of [
+      'excel-automation',
+      'gas-automation',
+      'python-data-processing',
+      'api-integration',
+      'pdf-document-automation',
+    ]) {
+      expect(homeSource).toContain(`/services/${slug}`);
+    }
+    expect(homeSource).toContain('href="/services"');
+  });
+
+  it('サービスページ向けの視認性とレスポンシブCSSを持つ', () => {
+    expect(globalCss).toContain('.service-hero-grid');
+    expect(globalCss).toContain('.service-visual');
+    expect(globalCss).toContain('.service-flow');
+    expect(globalCss).toContain('.service-faq');
   });
 });
 
@@ -85,6 +155,11 @@ describe('実績のケーススタディ表示', () => {
     expect(workDetailSource).toContain('主な機能');
     expect(workDetailSource).toContain('こんな相談に向いています');
     expect(globalCss).toContain('.case-overview-grid');
+  });
+
+  it('実績一覧と詳細に検索エンジン向けの構造化データを追加する', () => {
+    expect(worksIndexSource).toContain("'@type': 'ItemList'");
+    expect(workDetailSource).toContain("'@type': 'BreadcrumbList'");
   });
 
   it('建設業界向けの工程・安全帳票ケーススタディを掲載する', () => {
