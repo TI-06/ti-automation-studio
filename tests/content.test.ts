@@ -95,18 +95,21 @@ describe('GAS問い合わせ受信', () => {
     expect(gasReceiverSource).toContain('payload._secret');
   });
 
-  it('問い合わせを保存してメール通知する', () => {
-    expect(gasReceiverSource).toContain("getProperty('CONTACT_SPREADSHEET_ID')");
+  it('標準ではメールだけ通知し、シート保存は設定で任意に有効化できる', () => {
     expect(gasReceiverSource).toContain("getProperty('CONTACT_NOTIFY_EMAIL')");
+    expect(gasReceiverSource).toContain("getProperty('CONTACT_SAVE_TO_SHEET')");
+    expect(gasReceiverSource).toContain("getProperty('CONTACT_SPREADSHEET_ID')");
+    expect(gasReceiverSource).toContain('if (config.saveToSheet)');
     expect(gasReceiverSource).toContain('appendRow');
     expect(gasReceiverSource).toContain('MailApp.sendEmail');
     expect(gasReceiverSource).toContain('replyTo');
   });
 
-  it('GASセットアップ手順に必要な設定項目を含める', () => {
+  it('GASセットアップ手順でメール通知だけならスプレッドシート不要と明記する', () => {
     expect(gasReceiverReadme).toContain('CONTACT_SHARED_SECRET');
-    expect(gasReceiverReadme).toContain('CONTACT_SPREADSHEET_ID');
     expect(gasReceiverReadme).toContain('CONTACT_NOTIFY_EMAIL');
+    expect(gasReceiverReadme).toContain('CONTACT_SAVE_TO_SHEET');
+    expect(gasReceiverReadme).toContain('スプレッドシートは不要');
     expect(gasReceiverReadme).toContain('Webアプリ');
   });
 });

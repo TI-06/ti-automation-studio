@@ -38,21 +38,24 @@ function doPost(e) {
       return jsonResponse_({ ok: false, message: '必須項目が不足しています。' });
     }
 
-    const spreadsheet = SpreadsheetApp.openById(config.spreadsheetId);
-    const sheet = getOrCreateSheet_(spreadsheet);
     const receivedAt = toValidDate_(payload.receivedAt);
 
-    sheet.appendRow([
-      receivedAt,
-      sanitizeCell_(payload.name),
-      sanitizeCell_(email),
-      sanitizeCell_(payload.category),
-      sanitizeCell_(problem),
-      sanitizeCell_(payload.request),
-      sanitizeCell_(payload.budget),
-      sanitizeCell_(payload.timing),
-      sanitizeCell_(source),
-    ]);
+    if (config.saveToSheet) {
+      const spreadsheet = SpreadsheetApp.openById(config.spreadsheetId);
+      const sheet = getOrCreateSheet_(spreadsheet);
+
+      sheet.appendRow([
+        receivedAt,
+        sanitizeCell_(payload.name),
+        sanitizeCell_(email),
+        sanitizeCell_(payload.category),
+        sanitizeCell_(problem),
+        sanitizeCell_(payload.request),
+        sanitizeCell_(payload.budget),
+        sanitizeCell_(payload.timing),
+        sanitizeCell_(source),
+      ]);
+    }
 
     try {
       MailApp.sendEmail({
@@ -63,8 +66,8 @@ function doPost(e) {
         name: 'TI AUTOMATION STUDIO',
       });
     } catch (error) {
-      console.error('Contact saved but notification email failed', error);
-      return jsonResponse_({ ok: false, message: '問い合わせは保存されましたが、通知メールの送信に失敗しました。' });
+      console.error('Contact notification email failed', error);
+      return jsonResponse_({ ok: false, message: '通知メールの送信に失敗しました。' });
     }
 
     return jsonResponse_({ ok: true });
@@ -77,18 +80,21 @@ function doPost(e) {
 function getRequiredConfig_() {
   const properties = PropertiesService.getScriptProperties();
   const sharedSecret = properties.getProperty('CONTACT_SHARED_SECRET');
-  const spreadsheetId = properties.getProperty('CONTACT_SPREADSHEET_ID');
   const notifyEmail = properties.getProperty('CONTACT_NOTIFY_EMAIL');
+  const saveToSheet = String(properties.getProperty('CONTACT_SAVE_TO_SHEET') || '')
+    .trim()
+    .toLowerCase() === 'true';
+  const spreadsheetId = properties.getProperty('CONTACT_SPREADSHEET_ID');
 
   const missing = [];
   if (!sharedSecret) missing.push('CONTACT_SHARED_SECRET');
-  if (!spreadsheetId) missing.push('CONTACT_SPREADSHEET_ID');
   if (!notifyEmail) missing.push('CONTACT_NOTIFY_EMAIL');
+  if (saveToSheet && !spreadsheetId) missing.push('CONTACT_SPREADSHEET_ID');
   if (missing.length > 0) {
     throw new Error('Missing Script Properties: ' + missing.join(', '));
   }
 
-  return { sharedSecret, spreadsheetId, notifyEmail };
+  return { sharedSecret, notifyEmail, saveToSheet, spreadsheetId };
 }
 
 function getOrCreateSheet_(spreadsheet) {

@@ -23,8 +23,9 @@ Excel・Google Apps Script・Python・Web・API・AIを組み合わせ、手作�
 - 独自CSS
 - Cloudflare Workers
 - Cloudflare Turnstile
-- Google Apps Script（問い合わせ保存・通知）
-- Google Spreadsheet / MailApp
+- Google Apps Script（問い合わせメール通知）
+- MailApp
+- Google Spreadsheet（保存処理は実装済み・現在は無効）
 - GitHub Actions
 
 ## ローカル起動
@@ -83,15 +84,23 @@ Cloudflare Turnstileで本番ドメイン用Widgetを作成し、Site Key / Secr
 
 ## 問い合わせ受信側GAS
 
-GAS側ではPOSTされたJSONを `doPost(e)` で受信し、本文に含まれる `_secret` とScript Propertiesの `CONTACT_SHARED_SECRET` が一致することを確認してから、Googleスプレッドシートへ保存しMailAppで通知します。
+GAS側ではPOSTされたJSONを `doPost(e)` で受信し、本文に含まれる `_secret` とScript Propertiesの `CONTACT_SHARED_SECRET` が一致することを確認してから、MailAppで通知します。
 
-GASの設定値はすべてScript Propertiesへ保存します。
+**現在はメール通知のみ**で、Googleスプレッドシートへの保存は行いません。保存用コードは残してあり、`CONTACT_SAVE_TO_SHEET=true` にした時だけ有効になります。
+
+現在必須のScript Properties:
 
 | Script Property | 用途 |
 | --- | --- |
 | `CONTACT_SHARED_SECRET` | Cloudflare Workerと共通の秘密値 |
-| `CONTACT_SPREADSHEET_ID` | 問い合わせ保存先スプレッドシートID |
 | `CONTACT_NOTIFY_EMAIL` | 新規問い合わせの通知先メールアドレス |
+
+スプレッドシート保存を後から有効にする場合だけ追加:
+
+| Script Property | 用途 |
+| --- | --- |
+| `CONTACT_SAVE_TO_SHEET` | `true` で保存を有効化 |
+| `CONTACT_SPREADSHEET_ID` | 問い合わせ保存先スプレッドシートID |
 
 受信データ:
 
@@ -123,3 +132,5 @@ GASコードと具体的なデプロイ手順は `gas/contact-receiver/README.md
 - `docs/superpowers/plans/2026-08-26-ti-automation-studio-implementation.md`
 - `docs/superpowers/specs/2026-08-27-contact-gas-receiver-design.md`
 - `docs/superpowers/plans/2026-08-27-contact-gas-receiver.md`
+- `docs/superpowers/specs/2026-08-27-contact-email-only.md`
+- `docs/superpowers/plans/2026-08-27-contact-email-only.md`
