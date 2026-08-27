@@ -1,36 +1,160 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { publishedTools } from '../../data/tools';
+import '../../styles/tool-app.css';
+
+const canonical = Astro.site ? new URL('/tools', Astro.site).toString() : undefined;
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'TI AUTOMATION STUDIO 公開ツール',
+  itemListElement: publishedTools.map((tool, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: tool.title,
+    url: Astro.site ? new URL(tool.href, Astro.site).toString() : tool.href,
+  })),
+};
 ---
+
 <BaseLayout
-  title="公開ツール"
-  description="TI AUTOMATION STUDIOが公開している業務改善・自動化関連のツールとデモ。安全確認済みのものだけを掲載します。"
+  title="無料の業務ツール"
+  description="登録不要ですぐ使える、Excel・データ処理などの無料業務ツール。TI AUTOMATION STUDIOが実務向けに設計した公開ツールを掲載しています。"
+  canonical={canonical}
+  structuredData={structuredData}
 >
-  <section class="page-hero">
+  <section class="page-hero tools-product-hero">
     <div class="container reveal">
       <p class="eyebrow">公開ツール</p>
-      <h1>作ったものを、<br />触れる形で。</h1>
-      <p>営業用に見せるためだけのデモではなく、実際に操作できる小さなツールを順次追加します。公開前に秘密情報・顧客情報・利用条件を確認します。</p>
+      <h1>仕事で使える、<br /><span>無料の業務ツール。</span></h1>
+      <p>登録不要。必要なときに、そのまま使えます。公開ツールは使い方と処理条件を明示し、業務で迷いにくい画面を優先して設計しています。</p>
+      <div class="tools-hero-meta" aria-label="公開ツールの利用条件">
+        <span>無料</span>
+        <span>登録不要</span>
+        <span>日本語UI</span>
+      </div>
     </div>
   </section>
+
   <section class="section-tight">
     <div class="container">
       {publishedTools.length > 0 ? (
-        <div class="card-grid">
+        <div class="tools-product-list">
           {publishedTools.map((tool) => (
-            <a class="tool-card" href={`/tools/${tool.slug}`}>
-              <span class="card-arrow" aria-hidden="true">↗</span>
-              <div><span class="card-kicker">TOOL</span><h2 class="card-title">{tool.title}</h2><p class="card-copy">{tool.description}</p></div>
-              <div class="tags">{tool.technologies.map((tech) => <span class="tag">{tech}</span>)}</div>
+            <a class="tool-product-card" href={tool.href} aria-label={`${tool.title}を使う`}>
+              <div class="tool-product-copy">
+                <div class="tool-product-meta">
+                  <span>無料</span>
+                  <span>登録不要</span>
+                  <span>{tool.processing}</span>
+                </div>
+
+                <p class="card-kicker">{tool.shortLabel}</p>
+                <h2>{tool.title}</h2>
+                <p>{tool.description}</p>
+
+                <div class="tags">
+                  {tool.formats.map((format) => <span class="tag">{format}</span>)}
+                </div>
+
+                <ul>
+                  {tool.features.map((feature) => <li>{feature}</li>)}
+                </ul>
+
+                <span class="tool-product-link">このツールを使う →</span>
+              </div>
+
+              <div class="tool-product-preview" aria-hidden="true">
+                {tool.slug === 'excel-diff' ? (
+                  <div class="excel-diff-preview">
+                    <div class="excel-diff-preview-head">
+                      <span>差分プレビュー</span>
+                      <small>表示イメージ</small>
+                    </div>
+                    <div class="excel-diff-preview-summary">
+                      <div><span>変更</span><strong>31</strong></div>
+                      <div><span>追加</span><strong>12</strong></div>
+                      <div><span>削除</span><strong>4</strong></div>
+                    </div>
+                    <div class="excel-diff-preview-table">
+                      <div class="preview-row preview-head"><span>種類</span><span>項目</span><span>変更前</span><span>変更後</span></div>
+                      <div class="preview-row"><span>変更</span><span>数量</span><span>12</span><span>15</span></div>
+                      <div class="preview-row"><span>追加</span><span>商品コード</span><span>—</span><span>A-104</span></div>
+                      <div class="preview-row"><span>数式</span><span>合計</span><span>=B2*C2</span><span>=B2*D2</span></div>
+                    </div>
+                    <div class="excel-diff-preview-foot">Excelを2つ選択 → 条件指定 → 差分一覧 → 保存</div>
+                  </div>
+                ) : (
+                  <div class="tool-preview-placeholder">
+                    <span>{tool.shortLabel}</span>
+                    <strong>公開中</strong>
+                  </div>
+                )}
+              </div>
             </a>
           ))}
         </div>
       ) : (
         <div class="empty-state">
-          <p class="eyebrow">PREPARING</p>
-          <p>現在、既存ツールの安全確認と公開用調整を進めています。<br />公開品質を満たしたものから順次追加します。</p>
+          <p class="eyebrow">準備中</p>
+          <p>現在、公開用ツールを調整しています。安全性と操作性を確認できたものから追加します。</p>
         </div>
       )}
     </div>
   </section>
+
+  <section class="section tools-policy-section">
+    <div class="container">
+      <div class="about-panel">
+        <div>
+          <p class="eyebrow">公開方針</p>
+          <h2 class="section-title">デモではなく、<br />その場で使えるものを。</h2>
+        </div>
+        <div class="about-body">
+          <p>公開ツールは「機能があることを見せる」だけではなく、ファイル制限・処理方法・対応範囲を画面上で分かるようにします。</p>
+          <p>業務データを扱うツールでは、外部送信の有無も明記します。個別の業務ルールや大量処理が必要な場合は、公開ツールを起点に専用システムへ拡張できます。</p>
+          <div class="hero-actions">
+            <a class="btn" href="/services">対応サービスを見る</a>
+            <a class="btn btn-primary" href="/contact">業務に合わせて相談する</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  .tools-product-hero { padding-bottom: clamp(52px, 7vw, 84px); }
+  .tools-product-hero h1 span { color: var(--accent); }
+  .tools-product-hero p { max-width: 760px; }
+  .tools-hero-meta { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .tools-hero-meta span { padding: 6px 10px; border: 1px solid var(--border); color: #d1cfc8; font-size: .7rem; }
+  .tools-product-list { display: grid; gap: 18px; }
+  .tool-product-copy .card-kicker { margin: 22px 0 0; }
+  .excel-diff-preview { height: 100%; display: flex; flex-direction: column; border: 1px solid var(--border); background: #0b0d10; }
+  .excel-diff-preview-head { min-height: 54px; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+  .excel-diff-preview-head span { color: #e1dfd8; font-size: .75rem; font-weight: 600; }
+  .excel-diff-preview-head small { color: var(--soft); font-size: .62rem; }
+  .excel-diff-preview-summary { display: grid; grid-template-columns: repeat(3,1fr); border-bottom: 1px solid var(--border); }
+  .excel-diff-preview-summary div { padding: 14px; border-right: 1px solid var(--border); }
+  .excel-diff-preview-summary div:last-child { border-right: 0; }
+  .excel-diff-preview-summary span { display: block; color: var(--muted); font-size: .6rem; }
+  .excel-diff-preview-summary strong { display: block; margin-top: 4px; font-size: 1.1rem; font-weight: 500; }
+  .excel-diff-preview-table { flex: 1; padding: 12px 14px; }
+  .preview-row { min-width: 0; display: grid; grid-template-columns: .65fr 1fr .9fr .9fr; gap: 8px; padding: 9px 5px; border-bottom: 1px solid rgba(242,240,234,.07); color: #c9c7bf; font-size: .64rem; }
+  .preview-row span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .preview-head { color: var(--soft); font-size: .58rem; }
+  .excel-diff-preview-foot { padding: 12px 16px; border-top: 1px solid var(--border); color: var(--accent); font-size: .62rem; }
+  .tool-preview-placeholder { min-height: 220px; height: 100%; display: grid; place-items: center; border: 1px solid var(--border); text-align: center; }
+  .tool-preview-placeholder span, .tool-preview-placeholder strong { display: block; }
+  .tool-preview-placeholder span { color: var(--muted); font-size: .72rem; }
+  .tool-preview-placeholder strong { margin-top: 6px; font-size: 1.2rem; font-weight: 500; }
+  .tools-policy-section { margin-top: clamp(28px,5vw,60px); }
+  @media (max-width: 860px) {
+    .tool-product-preview { min-height: 300px; }
+  }
+  @media (max-width: 520px) {
+    .excel-diff-preview-summary strong { font-size: .95rem; }
+    .preview-row { grid-template-columns: .6fr 1fr .8fr .8fr; font-size: .58rem; }
+  }
+</style>
