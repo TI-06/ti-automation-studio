@@ -1,0 +1,33 @@
+---
+interface Props {
+  title: string;
+  subtitle: string;
+  processingLabel: string;
+  eyebrow?: string;
+}
+
+const {
+  title,
+  subtitle,
+  processingLabel,
+  eyebrow = '公開ツール',
+} = Astro.props;
+---
+
+<section class="tool-app-shell" aria-labelledby="tool-app-title">
+  <header class="tool-app-bar">
+    <div class="tool-app-heading">
+      <p class="tool-app-kicker">{eyebrow}</p>
+      <h1 id="tool-app-title">{title}</h1>
+      <p class="tool-app-subtitle">{subtitle}</p>
+    </div>
+
+    <div class="tool-app-badges" aria-label="利用条件">
+      <span>無料</span>
+      <span>登録不要</span>
+      <span>{processingLabel}</span>
+    </div>
+  </header>
+
+  <slot />
+</section>
