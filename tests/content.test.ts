@@ -7,6 +7,8 @@ const homeSource = readFileSync(new URL('../src/pages/index.astro', import.meta.
 const worksIndexSource = readFileSync(new URL('../src/pages/works/index.astro', import.meta.url), 'utf-8');
 const workDetailSource = readFileSync(new URL('../src/pages/works/[slug].astro', import.meta.url), 'utf-8');
 const globalCss = readFileSync(new URL('../src/styles/global.css', import.meta.url), 'utf-8');
+const serviceCssUrl = new URL('../src/styles/services.css', import.meta.url);
+const serviceCssSource = existsSync(serviceCssUrl) ? readFileSync(serviceCssUrl, 'utf-8') : '';
 const baseLayoutSource = readFileSync(new URL('../src/layouts/BaseLayout.astro', import.meta.url), 'utf-8');
 const astroConfigSource = readFileSync(new URL('../astro.config.mjs', import.meta.url), 'utf-8');
 const robotsSource = readFileSync(new URL('../public/robots.txt', import.meta.url), 'utf-8');
@@ -78,6 +80,7 @@ describe('検索意図別サービスページ', () => {
       'pdf-document-automation',
     ]) {
       expect(serviceDataSource).toContain(`slug: '${slug}'`);
+      expect(existsSync(new URL(`../public/service-visuals/${slug}.svg`, import.meta.url))).toBe(true);
     }
   });
 
@@ -111,10 +114,12 @@ describe('検索意図別サービスページ', () => {
   });
 
   it('サービスページ向けの視認性とレスポンシブCSSを持つ', () => {
-    expect(globalCss).toContain('.service-hero-grid');
-    expect(globalCss).toContain('.service-visual');
-    expect(globalCss).toContain('.service-flow');
-    expect(globalCss).toContain('.service-faq');
+    expect(existsSync(serviceCssUrl)).toBe(true);
+    expect(serviceCssSource).toContain('.service-hero-grid');
+    expect(serviceCssSource).toContain('.service-visual');
+    expect(serviceCssSource).toContain('.service-flow');
+    expect(serviceCssSource).toContain('.service-faq');
+    expect(serviceCssSource).toContain('@media (max-width: 860px)');
   });
 });
 
