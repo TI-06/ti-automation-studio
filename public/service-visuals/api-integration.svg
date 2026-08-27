@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">API連携のビジュアル</title>
+  <desc id="desc">複数のWebサービスが認証とデータ連携ハブを介して安全に同期するイメージ</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#06090d"/><stop offset="1" stop-color="#0b1118"/></linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f1d99f"/><stop offset=".52" stop-color="#c8a96b"/><stop offset="1" stop-color="#7c6234"/></linearGradient>
+    <linearGradient id="glass"><stop stop-color="#202630" stop-opacity=".96"/><stop offset="1" stop-color="#0d1218" stop-opacity=".91"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#c8a96b" stop-opacity=".34"/><stop offset="1" stop-color="#c8a96b" stop-opacity="0"/></radialGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="20" stdDeviation="24" flood-color="#000" flood-opacity=".52"/></filter>
+    <pattern id="dots" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="#c8a96b" opacity=".12"/></pattern>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/><rect width="1600" height="900" fill="url(#dots)"/>
+  <ellipse cx="800" cy="450" rx="410" ry="350" fill="url(#glow)"/>
+  <g stroke="#c8a96b" stroke-opacity=".15"><path d="M0 175H1600M0 725H1600M180 0V900M1420 0V900"/></g>
+
+  <g filter="url(#shadow)">
+    <g transform="translate(90 105)">
+      <rect width="410" height="250" rx="18" fill="url(#glass)" stroke="#8a7345" stroke-opacity=".48"/>
+      <path d="M40 82h92l20 26h196v92H40z" fill="#c8a96b" fill-opacity=".12" stroke="#c8a96b" stroke-opacity=".32"/>
+      <g stroke="#cdbb92" stroke-opacity=".28"><path d="M64 134H322M64 166H294"/></g>
+      <circle cx="340" cy="58" r="18" fill="none" stroke="#c8a96b" stroke-width="3"/><path d="M334 58h12" stroke="#c8a96b" stroke-width="3"/>
+    </g>
+    <g transform="translate(70 510)">
+      <rect width="440" height="260" rx="18" fill="url(#glass)" stroke="#8a7345" stroke-opacity=".46"/>
+      <rect x="24" y="24" width="392" height="42" rx="8" fill="#0a0e14"/>
+      <g transform="translate(32 92)"><rect width="110" height="110" rx="12" fill="#c8a96b" fill-opacity=".12"/><path d="M30 82h50l16-40H46z" fill="none" stroke="#e7cd91" stroke-width="4"/><circle cx="55" cy="55" r="17" fill="none" stroke="#e7cd91" stroke-width="4"/></g>
+      <g transform="translate(175 100)" stroke="#b8a67e" stroke-opacity=".26"><path d="M0 0H220M0 32H190M0 64H210M0 96H170"/></g>
+    </g>
+    <g transform="translate(1090 100)">
+      <rect width="420" height="260" rx="18" fill="url(#glass)" stroke="#8a7345" stroke-opacity=".48"/>
+      <g transform="translate(30 35)"><circle cx="70" cy="72" r="46" fill="#c8a96b" fill-opacity=".1" stroke="#c8a96b" stroke-opacity=".35"/><circle cx="70" cy="58" r="17" fill="#e7cd91" fill-opacity=".78"/><path d="M38 112c9-25 55-25 64 0" fill="none" stroke="#e7cd91" stroke-width="7" stroke-linecap="round"/></g>
+      <g transform="translate(160 52)" stroke="#cdbb92" stroke-opacity=".26"><path d="M0 0H210M0 35H180M0 70H198M0 105H165M0 140H205"/></g>
+    </g>
+    <g transform="translate(1080 520)">
+      <rect width="430" height="250" rx="18" fill="url(#glass)" stroke="#8a7345" stroke-opacity=".46"/>
+      <g transform="translate(34 36)" fill="#c8a96b"><rect width="34" height="150" opacity=".34"/><rect x="58" y="62" width="34" height="88" opacity=".64"/><rect x="116" y="25" width="34" height="125"/><rect x="174" y="82" width="34" height="68" opacity=".5"/></g>
+      <circle cx="330" cy="125" r="65" fill="none" stroke="#c8a96b" stroke-width="24" stroke-dasharray="95 70 55 120" transform="rotate(-90 330 125)"/>
+    </g>
+  </g>
+
+  <g stroke="url(#gold)" stroke-width="3" fill="none" opacity=".88">
+    <path d="M500 235C625 245 675 345 730 395"/><path d="M510 640C625 630 675 535 730 500"/>
+    <path d="M870 395C945 335 980 235 1090 235"/><path d="M870 500C950 550 980 640 1080 645"/>
+  </g>
+  <g fill="#f0d59a"><circle cx="500" cy="235" r="6"/><circle cx="510" cy="640" r="6"/><circle cx="1090" cy="235" r="6"/><circle cx="1080" cy="645" r="6"/></g>
+
+  <g transform="translate(665 305)" filter="url(#shadow)">
+    <circle cx="135" cy="145" r="175" fill="url(#glow)"/>
+    <path d="M135 8 252 76v138l-117 68L18 214V76z" fill="#10151d" stroke="url(#gold)" stroke-width="3"/>
+    <circle cx="135" cy="145" r="58" fill="none" stroke="#f0d59a" stroke-width="4" stroke-dasharray="8 10"/>
+    <g transform="translate(103 95)" fill="none" stroke="#f0d59a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M32 0a27 27 0 1 1-17 48v29h34V48A27 27 0 1 1 32 0z"/>
+      <circle cx="32" cy="24" r="5" fill="#f0d59a"/>
+    </g>
+    <path d="M106 204h58" stroke="#c8a96b" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <g transform="translate(670 95)" filter="url(#shadow)">
+    <rect width="260" height="125" rx="16" fill="url(#glass)" stroke="#8a7345" stroke-opacity=".52"/>
+    <circle cx="62" cy="62" r="28" fill="none" stroke="#e7cd91" stroke-width="5"/><path d="M62 34v20M62 70v20M34 62h20M70 62h20" stroke="#e7cd91" stroke-width="4"/>
+    <rect x="115" y="34" width="112" height="14" rx="7" fill="#c8a96b" fill-opacity=".34"/><g fill="#f0d59a"><circle cx="128" cy="78" r="5"/><circle cx="150" cy="78" r="5"/><circle cx="172" cy="78" r="5"/><circle cx="194" cy="78" r="5"/></g>
+  </g>
+
+  <g fill="url(#gold)" opacity=".9"><rect x="570" y="334" width="36" height="20" rx="5"/><rect x="1000" y="334" width="36" height="20" rx="5"/><rect x="560" y="566" width="36" height="20" rx="5"/><rect x="1000" y="566" width="36" height="20" rx="5"/></g>
+</svg>
