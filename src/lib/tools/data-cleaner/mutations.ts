@@ -34,6 +34,15 @@ function isBlank(value: CleanerCellValue): boolean {
   return value == null || (typeof value === 'string' && trimOuterWhitespace(value) === '');
 }
 
+export function blankRowIndexes(dataset: CleanerDataset, columnId: string): number[] {
+  const index = columnIndex(dataset, columnId);
+  const rows: number[] = [];
+  dataset.rows.forEach((row, rowIndex) => {
+    if (isBlank(row[index] ?? null)) rows.push(rowIndex);
+  });
+  return rows;
+}
+
 function formatDate(iso: string, format: Extract<CleanerMutationAction, { type: 'date-format' }>['format']): string {
   const [year, month, day] = iso.split('-');
   if (format === 'YYYY/MM/DD') return `${year}/${month}/${day}`;
