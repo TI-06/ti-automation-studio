@@ -5,21 +5,37 @@ interface Props {
   title: string;
   description: string;
   canonical?: string;
+  ogImage?: string;
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const { title, description, canonical } = Astro.props;
+const { title, description, canonical, ogImage, structuredData } = Astro.props;
 const pageTitle = title === 'TI AUTOMATION STUDIO' ? title : `${title} | TI AUTOMATION STUDIO`;
 const canonicalUrl = canonical ?? (Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : Astro.url.toString());
-const ogImage = Astro.site ? new URL('/og-default.svg', Astro.site).toString() : '/og-default.svg';
-const structuredData = {
-  '@context': 'https://schema.org',
-  '@type': 'ProfessionalService',
-  name: 'TI AUTOMATION STUDIO',
-  description: 'Excel・GAS・Python・Web・API・AIを活用した業務改善・自動化開発。',
-  url: Astro.site?.toString() ?? canonicalUrl,
-  areaServed: 'JP',
-  knowsAbout: ['業務自動化', 'Excel', 'Google Apps Script', 'Python', 'Webシステム', 'API連携', 'AI活用'],
-};
+const resolveAssetUrl = (value: string) => Astro.site ? new URL(value, Astro.site).toString() : value;
+const ogImageUrl = resolveAssetUrl(ogImage ?? '/og-default.svg');
+const siteUrl = Astro.site?.toString() ?? canonicalUrl;
+const sharedStructuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'TI AUTOMATION STUDIO',
+    url: siteUrl,
+    inLanguage: 'ja-JP',
+    description: 'Excel・GAS・Python・Web・API・AIを活用した業務改善・自動化開発。',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    name: 'TI AUTOMATION STUDIO',
+    description: 'Excel・GAS・Python・Web・API・AIを活用した業務改善・自動化開発。',
+    url: siteUrl,
+    areaServed: 'JP',
+    knowsAbout: ['業務自動化', 'Excel', 'Google Apps Script', 'Python', 'Webシステム', 'API連携', 'AI活用'],
+  },
+];
+const pageStructuredData = structuredData ? (Array.isArray(structuredData) ? structuredData : [structuredData]) : [];
+const structuredDataItems = [...sharedStructuredData, ...pageStructuredData];
 ---
 <!doctype html>
 <html lang="ja">
@@ -31,14 +47,21 @@ const structuredData = {
     <meta name="google-site-verification" content="R2F-nSTc4w9KY3PCBI2bGG6TvsgPLMwXYng-q31bG3g" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="ja_JP" />
+    <meta property="og:site_name" content="TI AUTOMATION STUDIO" />
+    <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:image" content={ogImageUrl} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{pageTitle}</title>
-    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
+    {structuredDataItems.map((item) => (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(item)}></script>
+    ))}
   </head>
   <body>
     <header class="site-header">
@@ -48,7 +71,7 @@ const structuredData = {
           <span>TI AUTOMATION STUDIO</span>
         </a>
         <nav class="nav-links" aria-label="メインナビゲーション">
-          <a href="/#services">できること</a>
+          <a href="/services">できること</a>
           <a href="/works">実績</a>
           <a href="/tools">公開ツール</a>
           <a href="/#process">開発の流れ</a>
@@ -63,6 +86,8 @@ const structuredData = {
       <div class="container footer-inner">
         <span>© 2026 TI AUTOMATION STUDIO</span>
         <div class="footer-links">
+          <a href="/services">できること</a>
+          <a href="/works">実績</a>
           <a href="/privacy">プライバシーポリシー</a>
           <a href="https://github.com/TI-06" target="_blank" rel="noopener noreferrer">GitHub</a>
         </div>
