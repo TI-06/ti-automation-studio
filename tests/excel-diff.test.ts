@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { compareWorkbooks, validateKeyColumns } from '../src/lib/tools/excel-diff/compare';
-import type { CellPrimitive, NormalizedWorkbook } from '../src/lib/tools/excel-diff/types';
+import { EXCEL_DIFF_STAGES, type CellPrimitive, type NormalizedWorkbook } from '../src/lib/tools/excel-diff/types';
 
 function makeWorkbook(
   sheetName: string,
@@ -116,5 +116,14 @@ describe('Excel差分比較', () => {
     const validation = validateKeyColumns(workbook.sheets[0], ['商品コード']);
     expect(validation.valid).toBe(false);
     if (!validation.valid) expect(validation.message).toContain('空欄');
+  });
+
+  it('進捗段階を日本語で固定する', () => {
+    expect(EXCEL_DIFF_STAGES).toEqual([
+      'ファイルを読み込んでいます',
+      'シート構成を確認しています',
+      '行を照合しています',
+      '変更箇所をまとめています',
+    ]);
   });
 });
