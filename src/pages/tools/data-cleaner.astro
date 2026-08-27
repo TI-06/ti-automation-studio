@@ -97,7 +97,15 @@ const structuredData = [
                 </label>
                 <button class="tool-button tool-button-secondary" type="button" data-add-duplicate-column disabled>列を追加</button>
                 <div class="tool-key-list" data-duplicate-columns></div>
+                <label class="tool-field">
+                  <span>重複したときに残す行</span>
+                  <select data-duplicate-keep disabled>
+                    <option value="first">先頭の行を残す</option>
+                    <option value="last">最後の行を残す</option>
+                  </select>
+                </label>
                 <button class="tool-button" type="button" data-check-duplicates disabled>重複を確認する</button>
+                <p class="tool-panel-copy">削除前に対象行を一覧で確認し、残したい行は個別に除外できます。</p>
               </div>
             </div>
 
@@ -180,7 +188,7 @@ const structuredData = [
                     <tbody data-data-body></tbody>
                   </table>
                   <div class="tool-empty-state" data-data-empty>
-                    <div><strong>データがありません</strong><p>CSV・Excelを選択するか、サンプルデータでお試しください。</p></div>
+                    <div><strong>表示するデータがありません</strong><p>CSV・Excelを選択するか、絞り込み条件を戻してください。</p></div>
                   </div>
                 </div>
               </section>
@@ -218,6 +226,9 @@ const structuredData = [
                   <div class="cleaner-mini-form">
                     <label class="tool-field"><span>空欄に入れる文字</span><input type="text" placeholder="例：未入力" data-blank-value /></label>
                     <button class="tool-button tool-button-secondary" type="button" data-blank-action>空欄を埋める</button>
+                    <button class="tool-button tool-button-secondary" type="button" data-blank-only aria-pressed="false">空欄行だけ表示</button>
+                    <button class="tool-button tool-button-danger" type="button" data-blank-delete>空欄がある行を削除候補にする</button>
+                    <p class="tool-panel-copy">行削除はすぐ実行せず、中央の「変更内容を確認」で対象を確認してから適用します。</p>
                   </div>
 
                   <div class="cleaner-mini-form" data-variant-editor hidden>
@@ -275,13 +286,13 @@ const structuredData = [
           <section class="tool-seo-section" id="cleaner-duplicates">
             <p class="eyebrow">重複整理</p>
             <h2>会社名や商品コードなど、判断したい列を選んで重複確認</h2>
-            <p>単純な完全一致だけでなく、重複を判断する列を選べます。会社名＋電話番号のように複数の列を組み合わせることもでき、削除前にはどの行が対象になるか確認できます。</p>
+            <p>単純な完全一致だけでなく、重複を判断する列を選べます。会社名＋電話番号のように複数の列を組み合わせることもでき、先頭または最後のどちらを残すか選択できます。削除前には対象行を確認し、個別に除外できます。</p>
           </section>
 
           <section class="tool-seo-section" id="cleaner-format">
             <p class="eyebrow">データ整形</p>
             <h2>空白・全角英数字・日付・数値を確認してから統一</h2>
-            <p>前後の空白削除、全角英数字の半角化、セル内改行の整理、明確に解釈できる日付形式の統一などに対応します。商品コードや社員番号のように意味が変わる可能性のある値は、推測だけで数値へ変換しません。</p>
+            <p>前後の空白削除、全角英数字の半角化、セル内改行の整理、明確に解釈できる日付形式の統一などに対応します。空欄は指定文字で埋めるほか、該当行だけを確認して削除候補にできます。商品コードや社員番号のように意味が変わる可能性のある値は、推測だけで数値へ変換しません。</p>
           </section>
 
           <section class="tool-seo-section" id="cleaner-encoding">
@@ -294,7 +305,7 @@ const structuredData = [
             <p class="eyebrow">安全性・制限</p>
             <h2>業務データを外部サーバーへ送信しません</h2>
             <p>選択したCSV・Excelの読み込み、診断、修正、出力はブラウザ内で行います。ファイル内容をTI AUTOMATION STUDIOのサーバーへ送る処理はありません。</p>
-            <p>初期版は1ファイル20MBまで、100,000行までに対応します。50,000行を超えるデータでは処理時間の注意を表示します。Excelは一度に1シートずつ整理します。</p>
+            <p>初期版は1ファイル20MBまで、100,000行までに対応します。50,000行を超えるデータでは処理時間の注意を表示します。Excelは一度に1シートずつ整理し、変更中に別シートへ切り替える場合は確認してから移動します。</p>
           </section>
 
           <section class="tool-seo-section" id="cleaner-faq">
