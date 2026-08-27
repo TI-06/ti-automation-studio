@@ -4,7 +4,7 @@
 
 **Goal:** TI AUTOMATION STUDIO の公開ツール共通UI基盤を作り、ブラウザ内だけで2つのExcelを比較して値・行・列・シート・数式の差分を確認・絞り込み・保存できる「Excel差分比較・変更箇所チェッカー」を公開する。
 
-**Architecture:** Astro はSEO本文・ツール外枠・説明コンテンツをSSR/HTMLとして出力し、Excel解析・比較・エクスポートはTypeScriptへ分離する。`.xlsx` / `.xls` の読み書きには `xlsx` を利用し、比較処理はWeb Workerで実行してUIスレッドを塞がない。ツールページは `/tools/excel-diff` の専用Astroページとし、既存の汎用 `/tools/[slug]` は他の簡易ツール用として残す。
+**Architecture:** Astro はSEO本文・ツール外枠・説明コンテンツをHTMLとして出力し、Excel解析・比較・エクスポートはTypeScriptへ分離する。`.xlsx` / `.xls` の読み書きには `xlsx` を利用し、重い比較処理はWeb Workerで実行してUIスレッドを塞がない。`/tools/excel-diff` を専用ページとし、既存 `/tools/[slug]` は他の簡易ツール用として残す。
 
 **Tech Stack:** Astro, TypeScript 6, Vitest, `xlsx`, Web Worker, browser File/Blob APIs, Cloudflare Workers hosting
 
@@ -22,35 +22,35 @@
 - 書式全面比較、VBAコード比較、パスワード保護Excelは初期対象外。
 - 処理中はスピナーだけでなく、処理段階と可能な範囲で件数を日本語表示する。
 - 色だけで差分種別を表現しない。
-- 既存の黒 `#0B0C0E`、アイボリー `#F2F0EA`、シャンパンゴールド `#C8A96B` をブランド基調として維持する。
-- Playwright E2Eは導入しない。Vitestの純粋ロジックテスト、Astro build、既存content regression testで検証する。
+- ブランド色は `#0B0C0E` / `#F2F0EA` / `#C8A96B` を維持する。
+- Playwright E2Eは導入しない。Vitest、Astro check/build、既存content regression testで検証する。
 
 ---
 
 ## File Structure
 
-### 新規
+### Create
 
-- `src/components/tools/ToolShell.astro` — 4ツール共通のプロダクト用上部バー・安全表示・状態領域。
-- `src/components/tools/ToolProgress.astro` — 処理段階を表示する共通進捗UI。
-- `src/styles/tool-app.css` — 公開ツール共通の3ペイン、ファイル選択、状態、サマリー、レスポンシブUI。
-- `src/lib/tools/excel-diff/types.ts` — Excel差分ツールの公開型。
-- `src/lib/tools/excel-diff/workbook.ts` — `xlsx` から比較用の正規化Workbookへ変換する処理。
-- `src/lib/tools/excel-diff/compare.ts` — 行番号/キー列比較、セル・行・列・シート・数式差分の純粋ロジック。
-- `src/lib/tools/excel-diff/export.ts` — 差分結果Excel/CSV出力。
-- `src/lib/tools/excel-diff/sample.ts` — ブラウザ内でサンプル2ファイルを生成。
-- `src/workers/excel-diff.worker.ts` — ファイル解析・比較をWeb Worker内で実行。
-- `src/scripts/tools/excel-diff.ts` — DOMイベント、Worker通信、画面状態、絞り込み、保存のコントローラー。
-- `src/pages/tools/excel-diff.astro` — Excel差分比較のSEO＋実アプリページ。
-- `tests/excel-diff.test.ts` — 比較ロジックのユニットテスト。
-- `tests/excel-diff-workbook.test.ts` — Excel解析・出力のテスト。
+- `src/components/tools/ToolShell.astro` — 公開ツール共通のプロダクトヘッダー・利用条件表示。
+- `src/components/tools/ToolProgress.astro` — 日本語の処理進捗表示。
+- `src/styles/tool-app.css` — 公開ツール共通の高密度業務UI。
+- `src/lib/tools/excel-diff/types.ts` — Excel差分用の共有型。
+- `src/lib/tools/excel-diff/workbook.ts` — Excelの検証・正規化。
+- `src/lib/tools/excel-diff/compare.ts` — 差分エンジン。
+- `src/lib/tools/excel-diff/export.ts` — Excel/CSV出力。
+- `src/lib/tools/excel-diff/sample.ts` — サンプル2ファイル生成。
+- `src/workers/excel-diff.worker.ts` — ファイル解析・比較Worker。
+- `src/scripts/tools/excel-diff.ts` — DOM状態・Worker通信・結果描画。
+- `src/pages/tools/excel-diff.astro` — SEO＋実アプリページ。
+- `tests/excel-diff.test.ts` — 比較ロジック。
+- `tests/excel-diff-workbook.test.ts` — 読込・出力。
 
-### 変更
+### Modify
 
-- `package.json` / `package-lock.json` — `xlsx` を追加。
-- `src/data/tools.ts` — Excel差分比較を正式な公開ツールとして登録できるデータ形へ拡張。
-- `src/pages/tools/index.astro` — 公開ツール一覧に、完成したツールをUIプレビュー付きで表示可能な構造を追加。
-- `tests/content.test.ts` — `/tools/excel-diff`、プライバシー表示、SEO/構造化データ、公開状態の回帰テストを追加。
+- `package.json`, `package-lock.json` — `xlsx` 追加。
+- `src/data/tools.ts` — 公開ツール用メタデータ拡張。
+- `src/pages/tools/index.astro` — 公開プロダクト一覧へ再設計。
+- `tests/content.test.ts` — SEO/UI/公開状態の回帰テスト。
 
 ---
 
@@ -63,12 +63,13 @@
 - Test: `tests/content.test.ts`
 
 **Interfaces:**
-- Produces: `Tool` に `href`, `shortLabel`, `formats`, `processing`, `features` を追加。
-- Produces: `excel-diff` が `published: true` で `/tools/excel-diff` を指す。
+- Produces `Tool.href: string`
+- Produces `Tool.shortLabel: string`
+- Produces `Tool.formats: string[]`
+- Produces `Tool.processing: 'ブラウザ内処理' | 'サーバー処理'`
+- Produces `Tool.features: string[]`
 
-- [ ] **Step 1: 公開ツールデータの失敗テストを書く**
-
-`tests/content.test.ts` に以下を追加する。
+- [ ] **Step 1: 失敗テストを書く**
 
 ```ts
 it('Excel差分比較ツールを登録不要の公開ツールとして掲載する', () => {
@@ -82,29 +83,21 @@ it('Excel差分比較ツールを登録不要の公開ツールとして掲載�
 });
 ```
 
-- [ ] **Step 2: テストを実行してREDを確認する**
-
-Run:
+- [ ] **Step 2: RED確認**
 
 ```bash
 npm test -- --run tests/content.test.ts
 ```
 
-Expected: `excel-diff` が存在しない、または新規プロパティが存在しないためFAIL。
+Expected: `excel-diff` 不存在または新規プロパティ不存在でFAIL。
 
-- [ ] **Step 3: `xlsx` を追加する**
-
-Run:
+- [ ] **Step 3: 依存追加**
 
 ```bash
 npm install xlsx
 ```
 
-`package.json` の dependencies に `xlsx` が入り、lockfileも更新されることを確認する。
-
-- [ ] **Step 4: `Tool` 型とExcel差分比較データを実装する**
-
-`src/data/tools.ts` の型を以下へ拡張する。
+- [ ] **Step 4: `Tool` 型を拡張**
 
 ```ts
 export interface Tool {
@@ -124,7 +117,7 @@ export interface Tool {
 }
 ```
 
-Excel差分比較は以下の内容で追加する。
+Excel差分比較データ:
 
 ```ts
 {
@@ -142,18 +135,16 @@ Excel差分比較は以下の内容で追加する。
 }
 ```
 
-既存未公開サンプルにも新しい必須プロパティを与え、型エラーを残さない。
+既存の未公開2件にも新しい必須プロパティを追加する。
 
-- [ ] **Step 5: テストとビルドを実行する**
+- [ ] **Step 5: GREEN確認**
 
 ```bash
 npm test -- --run tests/content.test.ts
 npm run build
 ```
 
-Expected: PASS。Astro checkでも`Tool`型エラーなし。
-
-- [ ] **Step 6: コミットする**
+- [ ] **Step 6: Commit**
 
 ```bash
 git add package.json package-lock.json src/data/tools.ts tests/content.test.ts
@@ -170,13 +161,11 @@ git commit -m "feat: define Excel diff public tool"
 - Create: `tests/excel-diff-workbook.test.ts`
 
 **Interfaces:**
-- Produces: `NormalizedWorkbook`, `NormalizedSheet`, `NormalizedCell`, `WorkbookSummary`。
-- Produces: `parseWorkbook(buffer: ArrayBuffer, fileName: string): NormalizedWorkbook`。
-- Produces: `validateExcelFile(file: Pick<File, 'name' | 'size'>): { valid: true } | { valid: false; message: string }`。
+- Produces `NormalizedCell`, `NormalizedSheet`, `NormalizedWorkbook`
+- Produces `validateExcelFile(file: Pick<File, 'name' | 'size'>)`
+- Produces `parseWorkbook(buffer: ArrayBuffer, fileName: string): NormalizedWorkbook`
 
-- [ ] **Step 1: 型と解析の失敗テストを書く**
-
-`tests/excel-diff-workbook.test.ts`:
+- [ ] **Step 1: 失敗テストを書く**
 
 ```ts
 import * as XLSX from 'xlsx';
@@ -184,40 +173,36 @@ import { describe, expect, it } from 'vitest';
 import { parseWorkbook, validateExcelFile } from '../src/lib/tools/excel-diff/workbook';
 
 describe('Excel読込', () => {
-  it('20MB超のファイルを処理前に拒否する', () => {
+  it('20MB超を処理前に拒否する', () => {
     expect(validateExcelFile({ name: 'big.xlsx', size: 20 * 1024 * 1024 + 1 })).toEqual({
       valid: false,
       message: 'ファイルサイズが20MBを超えています。20MB以下のExcelファイルを選択してください。',
     });
   });
 
-  it('値と数式を別に保持して正規化する', () => {
+  it('値と数式を別に保持する', () => {
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.aoa_to_sheet([
       ['商品コード', '数量', '合計'],
-      ['A001', 2, { f: 'B2*100', v: 200 }],
+      ['A001', 2, 200],
     ]);
+    ws.C2 = { t: 'n', v: 200, f: 'B2*100' };
     XLSX.utils.book_append_sheet(wb, ws, '売上');
-    const bytes = XLSX.write(wb, { type: 'array', bookType: 'xlsx' });
+    const bytes = XLSX.write(wb, { type: 'array', bookType: 'xlsx' }) as ArrayBuffer;
     const parsed = parseWorkbook(bytes, 'before.xlsx');
-    expect(parsed.sheets[0].name).toBe('売上');
-    expect(parsed.sheets[0].cells['C2'].formula).toBe('B2*100');
-    expect(parsed.sheets[0].cells['C2'].value).toBe(200);
+    expect(parsed.sheets[0].cells.C2.formula).toBe('B2*100');
+    expect(parsed.sheets[0].cells.C2.value).toBe(200);
   });
 });
 ```
 
-- [ ] **Step 2: REDを確認する**
+- [ ] **Step 2: RED確認**
 
 ```bash
 npm test -- --run tests/excel-diff-workbook.test.ts
 ```
 
-Expected: module not found / function not definedでFAIL。
-
-- [ ] **Step 3: 型を実装する**
-
-`src/lib/tools/excel-diff/types.ts`:
+- [ ] **Step 3: 型を実装**
 
 ```ts
 export type CellPrimitive = string | number | boolean | null;
@@ -232,8 +217,8 @@ export interface NormalizedSheet {
   rowCount: number;
   columnCount: number;
   headers: string[];
-  cells: Record<string, NormalizedCell>;
   rows: CellPrimitive[][];
+  cells: Record<string, NormalizedCell>;
   formulas: Record<string, string>;
 }
 
@@ -244,14 +229,9 @@ export interface NormalizedWorkbook {
 }
 ```
 
-- [ ] **Step 4: ファイル検証と正規化を実装する**
-
-`src/lib/tools/excel-diff/workbook.ts` の主要API:
+- [ ] **Step 4: ファイル検証を実装**
 
 ```ts
-import * as XLSX from 'xlsx';
-import type { CellPrimitive, NormalizedSheet, NormalizedWorkbook } from './types';
-
 const MAX_FILE_BYTES = 20 * 1024 * 1024;
 const MAX_ROWS = 100_000;
 
@@ -265,7 +245,11 @@ export function validateExcelFile(file: Pick<File, 'name' | 'size'>) {
   }
   return { valid: true as const };
 }
+```
 
+- [ ] **Step 5: 正規化を実装**
+
+```ts
 export function parseWorkbook(buffer: ArrayBuffer, fileName: string): NormalizedWorkbook {
   const workbook = XLSX.read(buffer, { type: 'array', cellFormula: true, cellDates: true });
   const sheets = workbook.SheetNames.map((name) => normalizeSheet(name, workbook.Sheets[name]));
@@ -273,17 +257,15 @@ export function parseWorkbook(buffer: ArrayBuffer, fileName: string): Normalized
 }
 ```
 
-`normalizeSheet()` では `XLSX.utils.decode_range()` から行列範囲を得て、100,000行超なら日本語例外を投げる。日付は比較を安定させるためISO文字列へ正規化する。
+`normalizeSheet()` は `XLSX.utils.decode_range()` で範囲を取得し、100,000行超なら `このシートは100,000行を超えているため比較できません。` を投げる。日付はISO文字列へ正規化する。
 
-- [ ] **Step 5: テストをGREENにする**
+- [ ] **Step 6: GREEN確認**
 
 ```bash
 npm test -- --run tests/excel-diff-workbook.test.ts
 ```
 
-Expected: PASS。
-
-- [ ] **Step 6: コミットする**
+- [ ] **Step 7: Commit**
 
 ```bash
 git add src/lib/tools/excel-diff/types.ts src/lib/tools/excel-diff/workbook.ts tests/excel-diff-workbook.test.ts
@@ -300,66 +282,71 @@ git commit -m "feat: normalize Excel workbooks for comparison"
 - Create: `tests/excel-diff.test.ts`
 
 **Interfaces:**
-- Consumes: `NormalizedWorkbook`, `NormalizedSheet`。
-- Produces: `CompareOptions`, `DiffResult`, `CellDiff`, `StructuralDiff`。
-- Produces: `compareWorkbooks(before, after, options, onProgress?): DiffResult`。
+- Produces `CompareOptions`, `DiffKind`, `DiffEntry`, `DiffResult`
+- Produces `validateKeyColumns(sheet, keyColumns)`
+- Produces `compareWorkbooks(before, after, options, onProgress?)`
 
-- [ ] **Step 1: 行番号比較と数式変更の失敗テストを書く**
+- [ ] **Step 1: テストfixture helperを定義**
+
+`tests/excel-diff.test.ts`:
 
 ```ts
 import { describe, expect, it } from 'vitest';
 import { compareWorkbooks } from '../src/lib/tools/excel-diff/compare';
-import type { NormalizedWorkbook } from '../src/lib/tools/excel-diff/types';
+import type { CellPrimitive, NormalizedWorkbook } from '../src/lib/tools/excel-diff/types';
 
+function makeWorkbook(
+  sheetName: string,
+  rows: CellPrimitive[][],
+  formulas: Record<string, string> = {},
+): NormalizedWorkbook {
+  const headers = rows[0].map(String);
+  const cells: Record<string, { value: CellPrimitive; formula?: string }> = {};
+  rows.forEach((row, r) => row.forEach((value, c) => {
+    const address = `${String.fromCharCode(65 + c)}${r + 1}`;
+    cells[address] = { value, formula: formulas[address] };
+  }));
+  return {
+    fileName: 'fixture.xlsx',
+    sheetNames: [sheetName],
+    sheets: [{ name: sheetName, rowCount: rows.length, columnCount: headers.length, headers, rows, cells, formulas }],
+  };
+}
+```
+
+- [ ] **Step 2: 値変更・数式変更の失敗テストを書く**
+
+```ts
 it('値変更と数式変更を別カテゴリで返す', () => {
-  const before = makeWorkbook('Sheet1', [
-    ['コード', '数量', '合計'],
-    ['A001', 2, 200],
-  ], { C2: 'B2*100' });
-  const after = makeWorkbook('Sheet1', [
-    ['コード', '数量', '合計'],
-    ['A001', 3, 300],
-  ], { C2: 'B2*120' });
+  const before = makeWorkbook('Sheet1', [['コード', '数量', '合計'], ['A001', 2, 200]], { C2: 'B2*100' });
+  const after = makeWorkbook('Sheet1', [['コード', '数量', '合計'], ['A001', 3, 300]], { C2: 'B2*120' });
   const result = compareWorkbooks(before, after, { mode: 'row-number', sheetName: 'Sheet1', keyColumns: [] });
   expect(result.summary.changed).toBe(1);
   expect(result.summary.formulaChanged).toBe(1);
-  expect(result.diffs.some((diff) => diff.kind === 'value' && diff.address === 'B2')).toBe(true);
-  expect(result.diffs.some((diff) => diff.kind === 'formula' && diff.address === 'C2')).toBe(true);
+  expect(result.diffs.some((x) => x.kind === 'value' && x.address === 'B2')).toBe(true);
+  expect(result.diffs.some((x) => x.kind === 'formula' && x.address === 'C2')).toBe(true);
 });
 ```
 
-- [ ] **Step 2: キー列比較の失敗テストを書く**
+- [ ] **Step 3: キー列比較の失敗テストを書く**
 
 ```ts
-it('途中に行が追加されてもキー列で既存行を誤変更扱いしない', () => {
-  const before = makeWorkbook('売上', [
-    ['商品コード', '商品名', '価格'],
-    ['A001', '商品A', 100],
-    ['A002', '商品B', 200],
-  ]);
-  const after = makeWorkbook('売上', [
-    ['商品コード', '商品名', '価格'],
-    ['A001', '商品A', 100],
-    ['A999', '商品X', 150],
-    ['A002', '商品B', 200],
-  ]);
+it('途中行追加をキー列で正しく追加扱いする', () => {
+  const before = makeWorkbook('売上', [['商品コード', '商品名', '価格'], ['A001', '商品A', 100], ['A002', '商品B', 200]]);
+  const after = makeWorkbook('売上', [['商品コード', '商品名', '価格'], ['A001', '商品A', 100], ['A999', '商品X', 150], ['A002', '商品B', 200]]);
   const result = compareWorkbooks(before, after, { mode: 'key-columns', sheetName: '売上', keyColumns: ['商品コード'] });
   expect(result.summary.added).toBe(1);
   expect(result.summary.changed).toBe(0);
 });
 ```
 
-- [ ] **Step 3: REDを確認する**
+- [ ] **Step 4: RED確認**
 
 ```bash
 npm test -- --run tests/excel-diff.test.ts
 ```
 
-Expected: comparison module不存在でFAIL。
-
-- [ ] **Step 4: 差分型を追加する**
-
-`types.ts`:
+- [ ] **Step 5: 差分型を実装**
 
 ```ts
 export type DiffKind = 'value' | 'formula' | 'row-added' | 'row-removed' | 'column-added' | 'column-removed' | 'sheet-added' | 'sheet-removed';
@@ -386,19 +373,11 @@ export interface DiffEntry {
 export interface DiffResult {
   diffs: DiffEntry[];
   structuralDiffs: DiffEntry[];
-  summary: {
-    changed: number;
-    added: number;
-    removed: number;
-    formulaChanged: number;
-    structuralChanged: number;
-  };
+  summary: { changed: number; added: number; removed: number; formulaChanged: number; structuralChanged: number };
 }
 ```
 
-- [ ] **Step 5: 比較エンジンを最小実装する**
-
-`compare.ts` は以下の順序で比較する。
+- [ ] **Step 6: 比較APIを実装**
 
 ```ts
 export function compareWorkbooks(
@@ -413,31 +392,30 @@ export function compareWorkbooks(
   const diffs = options.mode === 'key-columns'
     ? compareRowsByKeys(beforeSheet, afterSheet, options.keyColumns, onProgress)
     : compareRowsByNumber(beforeSheet, afterSheet, onProgress);
-  return summarize([...diffs, ...structuralDiffs], diffs, structuralDiffs);
+  return buildDiffResult(diffs, structuralDiffs);
 }
 ```
 
-キー列ではヘッダー名から列indexを解決し、複数列値を `\u001F` で連結した内部キーを生成する。空欄または重複キーは比較開始前検証APIで返す。
+キー列は複数列値を `\u001F` で連結した内部キーにする。空欄キー・重複キーは `validateKeyColumns()` で比較前に拒否する。
 
-- [ ] **Step 6: 列・シート追加削除テストを追加してGREENにする**
+- [ ] **Step 7: 構造差分テストを追加**
 
 ```ts
-it('シートと列の追加削除を構造変更として返す', () => {
-  const result = compareWorkbooks(beforeWithOldColumn, afterWithNewSheetAndColumn, options);
-  expect(result.structuralDiffs.some((x) => x.kind === 'sheet-added')).toBe(true);
-  expect(result.structuralDiffs.some((x) => x.kind === 'column-added')).toBe(true);
+it('追加列を構造変更として返す', () => {
+  const before = makeWorkbook('売上', [['コード', '金額'], ['A001', 100]]);
+  const after = makeWorkbook('売上', [['コード', '金額', '備考'], ['A001', 100, '確認済']]);
+  const result = compareWorkbooks(before, after, { mode: 'row-number', sheetName: '売上', keyColumns: [] });
+  expect(result.structuralDiffs.some((x) => x.kind === 'column-added' && x.columnName === '備考')).toBe(true);
 });
 ```
 
-Run:
+- [ ] **Step 8: GREEN確認**
 
 ```bash
 npm test -- --run tests/excel-diff.test.ts
 ```
 
-Expected: PASS。
-
-- [ ] **Step 7: コミットする**
+- [ ] **Step 9: Commit**
 
 ```bash
 git add src/lib/tools/excel-diff/types.ts src/lib/tools/excel-diff/compare.ts tests/excel-diff.test.ts
@@ -446,7 +424,7 @@ git commit -m "feat: compare Excel values rows formulas and structure"
 
 ---
 
-### Task 4: サンプル生成と差分結果エクスポート
+### Task 4: サンプル生成と結果エクスポート
 
 **Files:**
 - Create: `src/lib/tools/excel-diff/sample.ts`
@@ -454,39 +432,42 @@ git commit -m "feat: compare Excel values rows formulas and structure"
 - Modify: `tests/excel-diff-workbook.test.ts`
 
 **Interfaces:**
-- Produces: `createSampleFiles(): { before: File; after: File }`。
-- Produces: `exportDiffWorkbook(result, metadata): Blob`。
-- Produces: `exportDiffCsv(diffs): Blob`。
+- Produces `createSampleFiles(): { before: File; after: File }`
+- Produces `exportDiffWorkbook(result, metadata): Blob`
+- Produces `exportDiffCsv(diffs): Blob`
 
-- [ ] **Step 1: 出力Excelの失敗テストを書く**
+- [ ] **Step 1: 具体fixtureを使った失敗テストを書く**
 
 ```ts
+import { exportDiffWorkbook } from '../src/lib/tools/excel-diff/export';
+import type { DiffResult } from '../src/lib/tools/excel-diff/types';
+
 it('差分結果Excelに比較概要と変更一覧を作る', async () => {
-  const blob = exportDiffWorkbook(resultFixture, {
+  const result: DiffResult = {
+    diffs: [{ id: '1', kind: 'value', sheetName: '売上', address: 'B2', columnName: '金額', beforeValue: 100, afterValue: 120 }],
+    structuralDiffs: [],
+    summary: { changed: 1, added: 0, removed: 0, formulaChanged: 0, structuralChanged: 0 },
+  };
+  const blob = exportDiffWorkbook(result, {
     beforeFileName: 'before.xlsx',
     afterFileName: 'after.xlsx',
     comparedAt: '2026-08-27T22:00:00+09:00',
-    modeLabel: '行を特定する列で比較',
-    keyColumns: ['商品コード'],
+    modeLabel: '行番号で比較',
+    keyColumns: [],
   });
   const wb = XLSX.read(await blob.arrayBuffer(), { type: 'array' });
   expect(wb.SheetNames).toContain('比較概要');
   expect(wb.SheetNames).toContain('変更一覧');
-  expect(wb.SheetNames).toContain('追加一覧');
 });
 ```
 
-- [ ] **Step 2: REDを確認する**
+- [ ] **Step 2: RED確認**
 
 ```bash
 npm test -- --run tests/excel-diff-workbook.test.ts
 ```
 
-Expected: export module not foundでFAIL。
-
-- [ ] **Step 3: Excel / CSV出力を実装する**
-
-`export.ts`:
+- [ ] **Step 3: Excel/CSV出力を実装**
 
 ```ts
 export function exportDiffWorkbook(result: DiffResult, metadata: ExportMetadata): Blob {
@@ -502,11 +483,9 @@ export function exportDiffWorkbook(result: DiffResult, metadata: ExportMetadata)
 }
 ```
 
-CSVは表示中差分をUTF-8 BOM付きで出力する。
+CSVはUTF-8 BOM付きで出力する。
 
-- [ ] **Step 4: サンプル2ファイルを生成する**
-
-`sample.ts` では値変更・行追加・行削除・数式変更を含む2つのWorkbookを作り、`File` に変換する。
+- [ ] **Step 4: サンプル2ファイルを実装**
 
 ```ts
 export function createSampleFiles() {
@@ -517,15 +496,15 @@ export function createSampleFiles() {
 }
 ```
 
-- [ ] **Step 5: テストをGREENにする**
+サンプルは値変更・行追加・行削除・数式変更を必ず含める。
+
+- [ ] **Step 5: GREEN確認**
 
 ```bash
 npm test -- --run tests/excel-diff-workbook.test.ts
 ```
 
-Expected: PASS。
-
-- [ ] **Step 6: コミットする**
+- [ ] **Step 6: Commit**
 
 ```bash
 git add src/lib/tools/excel-diff/sample.ts src/lib/tools/excel-diff/export.ts tests/excel-diff-workbook.test.ts
@@ -534,7 +513,7 @@ git commit -m "feat: export Excel diff results and sample files"
 
 ---
 
-### Task 5: Web Workerと進捗通信
+### Task 5: Web Workerと日本語進捗
 
 **Files:**
 - Create: `src/workers/excel-diff.worker.ts`
@@ -542,14 +521,15 @@ git commit -m "feat: export Excel diff results and sample files"
 - Modify: `tests/excel-diff.test.ts`
 
 **Interfaces:**
-- Consumes: `parseWorkbook`, `compareWorkbooks`。
-- Produces Worker request: `{ type: 'compare'; before: ArrayBuffer; after: ArrayBuffer; beforeName: string; afterName: string; options: CompareOptions }`。
-- Produces Worker responses: `progress`, `complete`, `error`。
+- Request `{ type: 'compare'; before: ArrayBuffer; after: ArrayBuffer; beforeName: string; afterName: string; options: CompareOptions }`
+- Response union `progress | complete | error`
 
-- [ ] **Step 1: Workerメッセージ型の失敗テストを書く**
+- [ ] **Step 1: 失敗テストを書く**
 
 ```ts
-it('Worker進捗段階は日本語表示用の固定段階を持つ', () => {
+import { EXCEL_DIFF_STAGES } from '../src/lib/tools/excel-diff/types';
+
+it('進捗段階を日本語で固定する', () => {
   expect(EXCEL_DIFF_STAGES).toEqual([
     'ファイルを読み込んでいます',
     'シート構成を確認しています',
@@ -559,15 +539,13 @@ it('Worker進捗段階は日本語表示用の固定段階を持つ', () => {
 });
 ```
 
-- [ ] **Step 2: REDを確認する**
+- [ ] **Step 2: RED確認**
 
 ```bash
 npm test -- --run tests/excel-diff.test.ts
 ```
 
-Expected: `EXCEL_DIFF_STAGES` 不存在でFAIL。
-
-- [ ] **Step 3: Worker通信型と固定段階を定義する**
+- [ ] **Step 3: Worker通信型を追加**
 
 ```ts
 export const EXCEL_DIFF_STAGES = [
@@ -583,10 +561,10 @@ export type ExcelDiffWorkerResponse =
   | { type: 'error'; title: string; message: string };
 ```
 
-- [ ] **Step 4: Workerを実装する**
+- [ ] **Step 4: Workerを実装**
 
 ```ts
-self.onmessage = async (event: MessageEvent<ExcelDiffWorkerRequest>) => {
+self.onmessage = (event: MessageEvent<ExcelDiffWorkerRequest>) => {
   try {
     postProgress(1);
     const before = parseWorkbook(event.data.before, event.data.beforeName);
@@ -603,16 +581,14 @@ self.onmessage = async (event: MessageEvent<ExcelDiffWorkerRequest>) => {
 };
 ```
 
-- [ ] **Step 5: 型テストをGREENにする**
+- [ ] **Step 5: GREEN確認**
 
 ```bash
 npm test -- --run tests/excel-diff.test.ts
 npm run build
 ```
 
-Expected: PASS。Vite/AstroがWorker importを解決できる。
-
-- [ ] **Step 6: コミットする**
+- [ ] **Step 6: Commit**
 
 ```bash
 git add src/workers/excel-diff.worker.ts src/lib/tools/excel-diff/types.ts tests/excel-diff.test.ts
@@ -630,16 +606,16 @@ git commit -m "feat: run Excel comparisons in a Web Worker"
 - Modify: `tests/content.test.ts`
 
 **Interfaces:**
-- Produces: `<ToolShell title subtitle processingLabel>` slot-based wrapper。
-- Produces: `<ToolProgress />` markup contract with `data-tool-progress`, `data-progress-label`, `data-progress-count`。
+- Produces `<ToolShell title subtitle processingLabel>`
+- Produces `data-tool-progress`, `data-progress-label`, `data-progress-count`, `data-progress-bar`
 
-- [ ] **Step 1: 共通UIの失敗テストを書く**
+- [ ] **Step 1: 失敗テストを書く**
 
 ```ts
 const toolCssUrl = new URL('../src/styles/tool-app.css', import.meta.url);
 const toolShellUrl = new URL('../src/components/tools/ToolShell.astro', import.meta.url);
 
-it('公開ツール共通UIに日本語進捗とPC/スマホレイアウトを持つ', () => {
+it('公開ツール共通UIに3ペインとスマホレイアウトを持つ', () => {
   expect(existsSync(toolCssUrl)).toBe(true);
   expect(existsSync(toolShellUrl)).toBe(true);
   const css = existsSync(toolCssUrl) ? readFileSync(toolCssUrl, 'utf-8') : '';
@@ -649,17 +625,13 @@ it('公開ツール共通UIに日本語進捗とPC/スマホレイアウトを�
 });
 ```
 
-- [ ] **Step 2: REDを確認する**
+- [ ] **Step 2: RED確認**
 
 ```bash
 npm test -- --run tests/content.test.ts
 ```
 
-Expected: file不存在でFAIL。
-
-- [ ] **Step 3: ToolShellを実装する**
-
-`ToolShell.astro` は上部にツール名、`無料 / 登録不要 / ブラウザ内処理`、安全表示、`最初からやり直す`領域を持つ。英語の`FREE`を主表示にせず「無料」とする。
+- [ ] **Step 3: `ToolShell.astro` を実装**
 
 ```astro
 <div class="tool-app-shell">
@@ -677,7 +649,7 @@ Expected: file不存在でFAIL。
 </div>
 ```
 
-- [ ] **Step 4: ToolProgressを実装する**
+- [ ] **Step 4: `ToolProgress.astro` を実装**
 
 ```astro
 <div class="tool-progress" data-tool-progress hidden aria-live="polite">
@@ -687,27 +659,24 @@ Expected: file不存在でFAIL。
 </div>
 ```
 
-- [ ] **Step 5: 共通CSSを実装する**
-
-最低限以下を定義する。
+- [ ] **Step 5: 共通CSSを実装**
 
 ```css
-.tool-app-grid { display: grid; grid-template-columns: 280px minmax(0,1fr) 320px; min-height: 680px; border: 1px solid var(--border); }
-.tool-summary-grid { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); border: 1px solid var(--border); }
-.tool-file-zone { border: 1px dashed rgba(200,169,107,.45); background: rgba(255,255,255,.012); }
-.tool-diff-badge[data-kind="changed"] { border-color: rgba(200,169,107,.55); }
-@media (max-width: 1100px) { .tool-app-grid { grid-template-columns: 240px minmax(0,1fr); } .tool-inspector { grid-column: 1 / -1; } }
-@media (max-width: 860px) { .tool-app-grid { grid-template-columns: 1fr; } .tool-summary-grid { grid-template-columns: repeat(2,1fr); } }
+.tool-app-grid { display:grid; grid-template-columns:280px minmax(0,1fr) 320px; min-height:680px; border:1px solid var(--border); }
+.tool-summary-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); border:1px solid var(--border); }
+.tool-file-zone { border:1px dashed rgba(200,169,107,.45); background:rgba(255,255,255,.012); }
+@media (max-width:1100px) { .tool-app-grid { grid-template-columns:240px minmax(0,1fr); } .tool-inspector { grid-column:1 / -1; } }
+@media (max-width:860px) { .tool-app-grid { grid-template-columns:1fr; } .tool-summary-grid { grid-template-columns:repeat(2,1fr); } }
 ```
 
-- [ ] **Step 6: テストとビルドをGREENにする**
+- [ ] **Step 6: GREEN確認**
 
 ```bash
 npm test -- --run tests/content.test.ts
 npm run build
 ```
 
-- [ ] **Step 7: コミットする**
+- [ ] **Step 7: Commit**
 
 ```bash
 git add src/components/tools/ToolShell.astro src/components/tools/ToolProgress.astro src/styles/tool-app.css tests/content.test.ts
@@ -724,15 +693,14 @@ git commit -m "feat: add shared public tool application UI"
 - Modify: `tests/content.test.ts`
 
 **Interfaces:**
-- Consumes: `ToolShell`, `ToolProgress`, sample/export APIs, Worker。
-- Produces DOM selectors: `data-file-before`, `data-file-after`, `data-sheet-select`, `data-compare-mode`, `data-key-columns`, `data-run-compare`, `data-diff-table`, `data-diff-inspector`, `data-export-xlsx`, `data-export-csv`。
+- DOM selectors: `data-file-before`, `data-file-after`, `data-sheet-select`, `data-compare-mode`, `data-key-columns`, `data-run-compare`, `data-diff-table`, `data-diff-inspector`, `data-export-xlsx`, `data-export-csv`
 
-- [ ] **Step 1: ページ構造の失敗テストを書く**
+- [ ] **Step 1: 失敗テストを書く**
 
 ```ts
 const excelDiffPageUrl = new URL('../src/pages/tools/excel-diff.astro', import.meta.url);
 
-it('Excel差分比較ページはその場でファイル比較できるSEOランディングページである', () => {
+it('Excel差分比較ページをその場で使えるSEOランディングページにする', () => {
   expect(existsSync(excelDiffPageUrl)).toBe(true);
   const source = existsSync(excelDiffPageUrl) ? readFileSync(excelDiffPageUrl, 'utf-8') : '';
   expect(source).toContain('2つのExcelファイルを比較します');
@@ -746,17 +714,13 @@ it('Excel差分比較ページはその場でファイル比較できるSEOラ�
 });
 ```
 
-- [ ] **Step 2: REDを確認する**
+- [ ] **Step 2: RED確認**
 
 ```bash
 npm test -- --run tests/content.test.ts
 ```
 
-Expected: page不存在でFAIL。
-
-- [ ] **Step 3: Astroページの入力・条件・結果領域を実装する**
-
-ページ上部はSEO用Heroではなく、そのままアプリを開始できるToolShellとする。初期入力領域は以下のラベルを必須とする。
+- [ ] **Step 3: 入力・条件・結果領域を実装**
 
 ```astro
 <h2>2つのExcelファイルを比較します</h2>
@@ -767,13 +731,9 @@ Expected: page不存在でFAIL。
 <p class="tool-privacy-note">ファイルは外部サーバーへ送信されません。このブラウザ内で比較します。</p>
 ```
 
-比較条件には「比較するシート」「行番号で比較」「行を特定する列で比較」「列を追加」を日本語で置く。
+比較条件に「比較するシート」「行番号で比較」「行を特定する列で比較」「列を追加」を置く。結果領域に5サマリー、差分一覧、詳細、絞り込み、Excel/CSV保存を置く。
 
-結果領域には5つのサマリー、差分一覧、右詳細パネル、絞り込み、保存ボタンを持たせる。
-
-- [ ] **Step 4: SEO説明・FAQ・構造化データを実装する**
-
-`BaseLayout` に固有title/descriptionを渡し、ページ固有構造化データとして以下を追加する。
+- [ ] **Step 4: SEO本文・構造化データを実装**
 
 ```ts
 const structuredData = [
@@ -797,11 +757,9 @@ const structuredData = [
 ];
 ```
 
-本文には「できること」「行番号比較と行を特定する列の違い」「数式変更」「安全性」「よくある質問」「関連サービス/実績」を静的HTMLで置く。
+静的HTML本文に「できること」「行番号比較と行を特定する列の違い」「数式変更」「安全性」「よくある質問」「関連サービス/実績」を置く。
 
-- [ ] **Step 5: クライアントコントローラーを実装する**
-
-`src/scripts/tools/excel-diff.ts` はDOM状態を以下へ限定する。
+- [ ] **Step 5: UI状態を実装**
 
 ```ts
 interface ExcelDiffUiState {
@@ -816,17 +774,13 @@ interface ExcelDiffUiState {
 }
 ```
 
-ファイル選択時は `validateExcelFile()` を即時実行し、50,000行超は解析後に注意表示する。比較ボタンではWorkerへArrayBufferをTransferableとして渡す。
+比較時はArrayBufferをTransferableでWorkerへ渡す。
 
 ```ts
 worker.postMessage({ type: 'compare', before, after, beforeName, afterName, options }, [before, after]);
 ```
 
-Workerの`progress`でToolProgressを更新し、`complete`でサマリー・一覧・詳細を描画する。
-
-- [ ] **Step 6: 差分絞り込み・詳細表示・保存を接続する**
-
-サマリーカード押下で種別filterを更新する。差分行クリックで右詳細を更新する。保存ではブラウザBlob URLを使用する。
+- [ ] **Step 6: 絞り込み・詳細・保存を実装**
 
 ```ts
 function downloadBlob(blob: Blob, fileName: string) {
@@ -839,9 +793,9 @@ function downloadBlob(blob: Blob, fileName: string) {
 }
 ```
 
-- [ ] **Step 7: 日本語エラーを接続する**
+サマリー押下で種別絞り込み、差分行押下で詳細更新、Excel/CSV保存で`downloadBlob()`を呼ぶ。
 
-最低限、以下を画面上で具体表示する。
+- [ ] **Step 7: 日本語エラーを実装**
 
 ```ts
 const errorMessages = {
@@ -852,16 +806,14 @@ const errorMessages = {
 };
 ```
 
-- [ ] **Step 8: ページテストとビルドをGREENにする**
+- [ ] **Step 8: GREEN確認**
 
 ```bash
 npm test -- --run tests/content.test.ts tests/excel-diff.test.ts tests/excel-diff-workbook.test.ts
 npm run build
 ```
 
-Expected: PASS。
-
-- [ ] **Step 9: コミットする**
+- [ ] **Step 9: Commit**
 
 ```bash
 git add src/pages/tools/excel-diff.astro src/scripts/tools/excel-diff.ts tests/content.test.ts
@@ -870,7 +822,7 @@ git commit -m "feat: build Excel diff comparison interface"
 
 ---
 
-### Task 8: 公開ツール一覧をプロダクト入口へ更新
+### Task 8: `/tools` を公開プロダクト入口へ更新
 
 **Files:**
 - Modify: `src/pages/tools/index.astro`
@@ -878,13 +830,14 @@ git commit -m "feat: build Excel diff comparison interface"
 - Modify: `tests/content.test.ts`
 
 **Interfaces:**
-- Consumes: `publishedTools` の新メタデータ。
-- Produces: `/tools` の完成ツールカードに「無料」「登録不要」「処理方式」「対応形式」「代表機能」「使う」導線。
+- Consumes `publishedTools` の `href`, `formats`, `processing`, `features`
 
-- [ ] **Step 1: 一覧の失敗テストを書く**
+- [ ] **Step 1: テストsourceの読込を追加して失敗テストを書く**
 
 ```ts
-it('公開ツール一覧は利用条件と代表機能を日本語で先に伝える', () => {
+const toolsIndexSource = readFileSync(new URL('../src/pages/tools/index.astro', import.meta.url), 'utf-8');
+
+it('公開ツール一覧は利用条件と代表機能を日本語で伝える', () => {
   expect(toolsIndexSource).toContain('仕事で使える、無料の業務ツール。');
   expect(toolsIndexSource).toContain('登録不要');
   expect(toolsIndexSource).toContain('tool-product-card');
@@ -892,51 +845,47 @@ it('公開ツール一覧は利用条件と代表機能を日本語で先に伝�
 });
 ```
 
-- [ ] **Step 2: REDを確認する**
+- [ ] **Step 2: RED確認**
 
 ```bash
 npm test -- --run tests/content.test.ts
 ```
 
-- [ ] **Step 3: `/tools` のヒーローとカードを更新する**
-
-ヒーロー:
+- [ ] **Step 3: ヒーローとカードを更新**
 
 ```astro
 <h1>仕事で使える、<br />無料の業務ツール。</h1>
 <p>登録不要。必要なときに、そのまま使えます。</p>
 ```
 
-カードは `tool.href` へ直接リンクし、以下を表示する。
+カード:
 
 ```astro
-<div class="tool-product-meta">
-  <span>無料</span><span>登録不要</span><span>{tool.processing}</span>
-</div>
-<div class="tags">{tool.formats.map((format) => <span class="tag">{format}</span>)}</div>
-<ul>{tool.features.map((feature) => <li>{feature}</li>)}</ul>
-<span class="tool-product-link">このツールを使う →</span>
+<a class="tool-product-card" href={tool.href}>
+  <div class="tool-product-meta"><span>無料</span><span>登録不要</span><span>{tool.processing}</span></div>
+  <div class="tags">{tool.formats.map((format) => <span class="tag">{format}</span>)}</div>
+  <ul>{tool.features.map((feature) => <li>{feature}</li>)}</ul>
+  <span class="tool-product-link">このツールを使う →</span>
+</a>
 ```
 
-Excel差分カードにはCSSで差分グリッドを模したUIプレビューを入れる。画像1枚だけの装飾ではなく、`変更 31 / 追加 12 / 削除 4` と比較表の抽象UIが見える構成にする。
+Excel差分カードにはCSSだけで差分グリッドを模したUIプレビューを入れ、`変更 31 / 追加 12 / 削除 4` が一覧で分かるようにする。
 
-- [ ] **Step 4: レスポンシブCSSを追加する**
-
-PCはプレビュー＋説明の2カラム、860px以下は縦積みにする。
+- [ ] **Step 4: レスポンシブCSS**
 
 ```css
-.tool-product-card { display: grid; grid-template-columns: minmax(0,1.05fr) minmax(320px,.95fr); }
-@media (max-width: 860px) { .tool-product-card { grid-template-columns: 1fr; } }
+.tool-product-card { display:grid; grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr); }
+@media (max-width:860px) { .tool-product-card { grid-template-columns:1fr; } }
 ```
 
-- [ ] **Step 5: テストとビルドをGREENにする**
+- [ ] **Step 5: GREEN確認**
 
 ```bash
 npm test -- --run tests/content.test.ts
 npm run build
 ```
 
-- [ ] **Step 6: コミットする**
+- [ ] **Step 6: Commit**
 
 ```bash
 git add src/pages/tools/index.astro src/styles/tool-app.css tests/content.test.ts
@@ -945,23 +894,23 @@ git commit -m "feat: redesign public tools landing page"
 
 ---
 
-### Task 9: 最終回帰・アクセシビリティ・本番マージ準備
+### Task 9: 最終回帰・アクセシビリティ・PR準備
 
 **Files:**
-- Modify only if failures require it: files touched in Tasks 1-8
+- Modify only if verification finds a defect.
 
 **Interfaces:**
-- No new interface. This task verifies the complete first public tool slice.
+- No new interface.
 
-- [ ] **Step 1: 全Vitestを実行する**
+- [ ] **Step 1: 全テスト**
 
 ```bash
 npm test
 ```
 
-Expected: 全テストPASS。
+Expected: 全PASS。
 
-- [ ] **Step 2: Cloudflare Workers向けビルドを実行する**
+- [ ] **Step 2: Cloudflare Workers向けbuild**
 
 ```bash
 npm run build
@@ -969,63 +918,56 @@ npm run build
 
 Expected: `wrangler types`, `astro check`, `astro build` 全成功。
 
-- [ ] **Step 3: ソースベースのアクセシビリティ確認を行う**
-
-確認項目:
+- [ ] **Step 3: アクセシビリティ確認**
 
 ```text
-- file inputに日本語labelがある
-- 進捗領域にaria-liveがある
-- 差分種別は色だけでなく「変更 / 追加 / 削除 / 数式」ラベルを持つ
-- 絞り込みinput/selectにlabelがある
-- 「最初からやり直す」がbuttonである
-- 50,000行超の注意がテキスト表示される
+file inputに日本語labelがある
+進捗領域にaria-liveがある
+差分種別は色に加えて「変更 / 追加 / 削除 / 数式」ラベルを持つ
+input/selectにlabelがある
+「最初からやり直す」はbutton
+50,000行超の注意はテキスト表示
 ```
 
-問題があれば該当ファイルを修正して `npm test && npm run build` を再実行する。
+不備があれば修正して `npm test && npm run build` を再実行する。
 
-- [ ] **Step 4: 仕様回帰を確認する**
-
-以下をコード検索で確認する。
+- [ ] **Step 4: 仕様回帰検索**
 
 ```bash
 rg "外部サーバーへ送信されません|20MB|100,000|50,000|行を特定する列|数式変更|差分結果をExcelで保存" src tests
 ```
 
-Expected: 仕様に必要なUI/テスト双方に存在する。
-
-- [ ] **Step 5: 最終差分をレビューする**
+- [ ] **Step 5: 最終差分レビュー**
 
 ```bash
 git diff main...HEAD --stat
 git diff main...HEAD -- src/pages/tools src/lib/tools src/components/tools src/scripts/tools src/workers tests package.json
 ```
 
-確認観点:
+確認:
 
 ```text
-- 顧客情報・秘密情報を含まない
-- ファイル送信APIを追加していない
-- Cloudflare WorkerへExcelをPOSTしていない
-- 英語UI文言が不必要に残っていない
-- 既存 /services /works /contact を壊していない
-- 1ファイルへ比較・UI・出力ロジックを混在させていない
+顧客情報・秘密情報なし
+Excelファイル送信APIなし
+不必要な英語UIなし
+/services /works /contactを壊していない
+比較・UI・出力ロジックが適切に分離されている
 ```
 
-- [ ] **Step 6: 必要な最終修正があればコミットする**
+- [ ] **Step 6: 必要な修正のみコミット**
 
 ```bash
 git add -A
 git commit -m "fix: polish Excel diff public tool"
 ```
 
-変更がなければコミットは作らない。
+変更がなければコミットしない。
 
-- [ ] **Step 7: PR前の最終検証を再実行する**
+- [ ] **Step 7: PR前の最終検証**
 
 ```bash
 npm test
 npm run build
 ```
 
-Expected: 両方成功。これをPR/マージ判断の根拠とする。
+Expected: 両方成功。この結果をPR/マージ判断の根拠にする。
