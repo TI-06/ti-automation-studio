@@ -34,6 +34,16 @@ describe('CSV・Excelデータ整理ページ', () => {
     expect(source).toContain('空欄がある行を削除候補にする');
   });
 
+  it('未保存変更があるシート切替は専用ダイアログで確認する', () => {
+    const pageSource = existsSync(pageUrl) ? readFileSync(pageUrl, 'utf-8') : '';
+    const controllerSource = existsSync(controllerUrl) ? readFileSync(controllerUrl, 'utf-8') : '';
+    expect(pageSource).toContain('data-sheet-change-dialog');
+    expect(pageSource).toContain('変更中のシートを切り替えますか？');
+    expect(controllerSource).toContain('confirmSheetChange');
+    expect(controllerSource).toContain('showModal()');
+    expect(controllerSource).not.toContain('window.confirm');
+  });
+
   it('Worker・修正プレビュー・履歴・保存をブラウザ内で制御する', () => {
     expect(existsSync(controllerUrl)).toBe(true);
     const source = existsSync(controllerUrl) ? readFileSync(controllerUrl, 'utf-8') : '';
@@ -47,8 +57,6 @@ describe('CSV・Excelデータ整理ページ', () => {
     expect(source).toContain('undoHistory');
     expect(source).toContain('exportCleanerCsv');
     expect(source).toContain('exportCleanerWorkbook');
-    expect(source).toContain('confirmSheetChange');
-    expect(source).toContain('window.confirm');
     expect(source).toContain('URL.createObjectURL');
     expect(source).not.toContain('fetch(');
     expect(source).not.toContain('XMLHttpRequest');
