@@ -61,3 +61,61 @@ export interface DiffResult {
     structuralChanged: number;
   };
 }
+
+export const EXCEL_DIFF_STAGES = [
+  'ファイルを読み込んでいます',
+  'シート構成を確認しています',
+  '行を照合しています',
+  '変更箇所をまとめています',
+] as const;
+
+export interface WorkbookInspection {
+  fileName: string;
+  sheetNames: string[];
+  sheets: Array<{
+    name: string;
+    rowCount: number;
+    columnCount: number;
+    headers: string[];
+    large: boolean;
+  }>;
+}
+
+export type ExcelDiffWorkerRequest =
+  | {
+      type: 'inspect';
+      target: 'before' | 'after';
+      buffer: ArrayBuffer;
+      fileName: string;
+    }
+  | {
+      type: 'compare';
+      before: ArrayBuffer;
+      after: ArrayBuffer;
+      beforeName: string;
+      afterName: string;
+      options: CompareOptions;
+    };
+
+export type ExcelDiffWorkerResponse =
+  | {
+      type: 'progress';
+      stage: number;
+      label: string;
+      current?: number;
+      total?: number;
+    }
+  | {
+      type: 'inspected';
+      target: 'before' | 'after';
+      inspection: WorkbookInspection;
+    }
+  | {
+      type: 'complete';
+      result: DiffResult;
+    }
+  | {
+      type: 'error';
+      title: string;
+      message: string;
+    };
