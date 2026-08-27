@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">PDF帳票自動生成のビジュアル</title>
+  <desc id="desc">入力データとフォームが自動化処理を通り、複数の帳票・PDF・保存先へ出力されるイメージ</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#06090d"/><stop offset="1" stop-color="#0b1118"/></linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f1d99f"/><stop offset=".52" stop-color="#c8a96b"/><stop offset="1" stop-color="#7c6234"/></linearGradient>
+    <linearGradient id="glass"><stop stop-color="#202630" stop-opacity=".96"/><stop offset="1" stop-color="#0d1218" stop-opacity=".91"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#c8a96b" stop-opacity=".34"/><stop offset="1" stop-color="#c8a96b" stop-opacity="0"/></radialGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="20" stdDeviation="24" flood-color="#000" flood-opacity=".52"/></filter>
+    <pattern id="dots" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="#c8a96b" opacity=".12"/></pattern>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/><rect width="1600" height="900" fill="url(#dots)"/>
+  <ellipse cx="800" cy="450" rx="410" ry="350" fill="url(#glow)"/>
+
+  <g filter="url(#shadow)">
+    <g transform="translate(80 130)">
+      <rect width="470" height="300" rx="18" fill="url(#glass)" stroke="#8a7345" stroke-opacity=".48"/>
+      <rect x="22" y="22" width="426" height="42" rx="8" fill="#090d13"/>
+      <g transform="translate(30 92)" stroke="#b7a57d" stroke-opacity=".22"><rect width="410" height="170" fill="none"/><path d="M0 34H410M0 68H410M0 102H410M0 136H410M102 0V170M205 0V170M307 0V170"/></g>
+      <rect x="132" y="160" width="102" height="34" fill="#c8a96b" fill-opacity=".28"/>
+    </g>
+    <g transform="translate(105 495)">
+      <rect width="430" height="250" rx="18" fill="url(#glass)" stroke="#8a7345" stroke-opacity=".45"/>
+      <g transform="translate(36 38)">
+        <rect width="358" height="172" rx="10" fill="#f2f0ea" fill-opacity=".92"/>
+        <g stroke="#635944" stroke-opacity=".35"><path d="M34 42H320M34 78H270M34 114H306M34 150H230"/></g>
+        <g fill="none" stroke="#c8a96b" stroke-width="3"><rect x="26" y="32" width="12" height="12"/><rect x="26" y="68" width="12" height="12"/><rect x="26" y="104" width="12" height="12"/></g>
+      </g>
+    </g>
+  </g>
+
+  <g stroke="url(#gold)" stroke-width="3" fill="none" opacity=".88"><path d="M550 270C650 290 685 365 742 405"/><path d="M535 620C645 605 690 525 742 492"/></g>
+  <g fill="#f0d59a"><circle cx="550" cy="270" r="6"/><circle cx="535" cy="620" r="6"/></g>
+
+  <g transform="translate(675 315)" filter="url(#shadow)">
+    <circle cx="125" cy="135" r="166" fill="url(#glow)"/>
+    <path d="M125 5 236 69v132l-111 64L14 201V69z" fill="#10151d" stroke="url(#gold)" stroke-width="3"/>
+    <g transform="translate(76 74)">
+      <path d="M12 0h62l24 24v94H12z" fill="none" stroke="#f0d59a" stroke-width="6" stroke-linejoin="round"/>
+      <path d="M74 0v26h24" fill="none" stroke="#f0d59a" stroke-width="6"/>
+      <path d="M34 51h43M34 72h43M34 93h30" stroke="#f0d59a" stroke-width="5" stroke-linecap="round"/>
+      <g transform="translate(74 80)" fill="none" stroke="#c8a96b" stroke-width="5"><circle cx="20" cy="20" r="13"/><path d="M20 0v7M20 33v7M0 20h7M33 20h7"/></g>
+    </g>
+  </g>
+
+  <g stroke="url(#gold)" stroke-width="3" fill="none" opacity=".9"><path d="M925 385C1015 300 1060 240 1135 225"/><path d="M940 445C1020 445 1060 445 1135 445"/><path d="M925 510C1010 585 1055 650 1135 665"/></g>
+  <g fill="#f0d59a"><circle cx="1135" cy="225" r="6"/><circle cx="1135" cy="445" r="6"/><circle cx="1135" cy="665" r="6"/></g>
+
+  <g filter="url(#shadow)" transform="translate(1135 95)">
+    <path d="M0 18Q0 0 18 0h245l54 54v205q0 18-18 18H18Q0 277 0 259z" fill="#f2f0ea" fill-opacity=".96" stroke="#c8a96b" stroke-opacity=".42"/>
+    <path d="M263 0v54h54" fill="#c8a96b" fill-opacity=".18"/>
+    <circle cx="92" cy="100" r="48" fill="none" stroke="#c8a96b" stroke-width="18" stroke-dasharray="78 48 42 90" transform="rotate(-90 92 100)"/>
+    <g fill="#8b7447"><rect x="176" y="76" width="20" height="94" opacity=".4"/><rect x="213" y="112" width="20" height="58" opacity=".75"/><rect x="250" y="88" width="20" height="82"/></g>
+    <g stroke="#655a46" stroke-opacity=".34"><path d="M42 206H274M42 232H246"/></g>
+  </g>
+
+  <g filter="url(#shadow)" transform="translate(1115 390)">
+    <path d="M35 24Q35 8 51 8h222l42 42v190q0 16-16 16H51q-16 0-16-16z" fill="#f2f0ea" fill-opacity=".87" stroke="#c8a96b" stroke-opacity=".25" transform="translate(30 20)"/>
+    <path d="M0 18Q0 0 18 0h235l50 50v210q0 18-18 18H18Q0 278 0 260z" fill="#f2f0ea" fill-opacity=".97" stroke="#c8a96b" stroke-opacity=".45"/>
+    <g stroke="#655a46" stroke-opacity=".34"><path d="M38 64H258M38 102H258M38 140H258M38 178H258M104 46V214M180 46V214"/></g>
+    <rect x="104" y="102" width="76" height="38" fill="#c8a96b" fill-opacity=".2"/>
+  </g>
+
+  <g filter="url(#shadow)" transform="translate(1160 675)">
+    <rect width="325" height="110" rx="16" fill="url(#glass)" stroke="#8a7345" stroke-opacity=".5"/>
+    <path d="M32 52h80l18 20h54v22H32z" fill="#c8a96b" fill-opacity=".22" stroke="#d9bd7f" stroke-opacity=".55"/>
+    <path d="M224 36c-24 0-42 17-42 38s18 38 42 38h58c20 0 36-14 36-32 0-17-13-30-31-32-7-17-24-28-45-28-20 0-37 10-45 26" fill="none" stroke="#e7cd91" stroke-width="4"/>
+    <path d="M250 49v43M234 76l16 16 16-16" fill="none" stroke="#e7cd91" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>
