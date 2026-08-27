@@ -14,7 +14,8 @@
   "dependencies": {
     "@astrojs/cloudflare": "latest",
     "@astrojs/sitemap": "latest",
-    "astro": "latest"
+    "astro": "latest",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   },
   "devDependencies": {
     "@astrojs/check": "latest",
