@@ -50,10 +50,10 @@ if (root) {
     comparing: false,
   };
 
-  const query = <T extends Element>(selector: string): T => {
-    const element = root.querySelector<T>(selector);
+  const query = <T>(selector: string): T => {
+    const element = root.querySelector(selector);
     if (!element) throw new Error(`必要な画面要素が見つかりません: ${selector}`);
-    return element;
+    return element as unknown as T;
   };
 
   const beforeInput = query<HTMLInputElement>('[data-file-before]');
@@ -160,15 +160,10 @@ if (root) {
     let percent = [10, 30, 70, 96][message.stage - 1] ?? 10;
     let count = '';
     if (message.current != null && message.total != null && message.total > 0) {
-      const ratio = message.current / message.total;
-      percent = 30 + ratio * 58;
+      percent = 30 + (message.current / message.total) * 58;
       count = `${message.current.toLocaleString('ja-JP')} / ${message.total.toLocaleString('ja-JP')} 行`;
     }
     showProgress(message.label, percent, count);
-  }
-
-  function inspectionFor(target: FileTarget): WorkbookInspection | null {
-    return target === 'before' ? state.beforeInspection : state.afterInspection;
   }
 
   function selectedInspectionSheet(inspection: WorkbookInspection | null) {
@@ -193,15 +188,14 @@ if (root) {
     modeInputs.forEach((input) => { input.disabled = busy; });
     addKeyColumnButton.disabled = busy || commonHeaders().length === 0;
 
-    const ready = Boolean(
+    runButton.disabled = !(
       state.beforeFile
       && state.afterFile
       && state.beforeInspection
       && state.afterInspection
       && state.selectedSheet
-      && !busy,
+      && !busy
     );
-    runButton.disabled = !ready;
   }
 
   function refreshLargeWarning(): void {
@@ -218,7 +212,7 @@ if (root) {
       const note = document.createElement('p');
       note.className = 'tool-panel-copy';
       note.textContent = '両方のファイルに共通する列がありません。行番号で比較してください。';
-      keyColumnsContainer.append(note);
+      keyColumnsContainer.appendChild(note);
       state.keyColumns = [];
       return;
     }
@@ -239,7 +233,7 @@ if (root) {
         state.keyColumns[index] = select.value;
         clearError();
       });
-      row.append(select);
+      row.appendChild(select);
 
       const remove = document.createElement('button');
       remove.type = 'button';
@@ -251,8 +245,8 @@ if (root) {
         state.keyColumns.splice(index, 1);
         renderKeyColumns();
       });
-      row.append(remove);
-      keyColumnsContainer.append(row);
+      row.appendChild(remove);
+      keyColumnsContainer.appendChild(row);
     });
   }
 
@@ -266,8 +260,8 @@ if (root) {
     if (union.length === 0) {
       sheetSelect.add(new Option('比較できるシートがありません', ''));
       state.selectedSheet = '';
-      sheetSelect.disabled = true;
       renderKeyColumns();
+      refreshLargeWarning();
       setControlBusy();
       return;
     }
@@ -308,9 +302,9 @@ if (root) {
       worker.postMessage({ type: 'inspect', target, buffer, fileName: file.name }, [buffer]);
     } catch {
       state.pendingInspections.delete(target);
-      showError('ファイルを読み込めませんでした。もう一度選択してください。');
       hideProgress();
       setControlBusy();
+      showError('ファイルを読み込めませんでした。もう一度選択してください。');
     }
   }
 
@@ -323,8 +317,6 @@ if (root) {
       state.afterInspection = null;
     }
     setFileName(target, file);
-    state.result = null;
-    state.selectedDiffId = null;
     clearResults();
     refreshSheetOptions();
     if (file) void inspectFile(target, file);
@@ -347,6 +339,7 @@ if (root) {
       if (!matchesKind(diff)) return false;
       if (state.columnFilter !== 'all' && diff.columnName !== state.columnFilter) return false;
       if (!needle) return true;
+
       const haystack = [
         diff.sheetName,
         diff.rowKey,
@@ -363,7 +356,9 @@ if (root) {
 
   function updateColumnFilter(): void {
     const previous = state.columnFilter;
-    const columns = [...new Set(allDiffs().map((diff) => diff.columnName).filter((value): value is string => Boolean(value)))];
+    const columns = [...new Set(
+      allDiffs().map((diff) => diff.columnName).filter((value): value is string => Boolean(value)),
+    )];
     columnFilter.replaceChildren(new Option('すべて', 'all'));
     columns.forEach((column) => columnFilter.add(new Option(column, column)));
     state.columnFilter = columns.includes(previous) ? previous : 'all';
@@ -385,52 +380,64 @@ if (root) {
     return cell;
   }
 
+  function selectDiff(id: string): void {
+    state.selectedDiffId = id;
+    renderDiffTable();
+    renderInspector();
+  }
+
+  function createDiffRow(diff: DiffEntry): HTMLTableRowElement {
+    const row = document.createElement('tr');
+    row.dataset.diffId = diff.id;
+    row.tabIndex = 0;
+    row.setAttribute('aria-selected', String(diff.id === state.selectedDiffId));
+
+    const kindCell = document.createElement('td');
+    const badge = document.createElement('span');
+    badge.className = 'tool-diff-kind';
+    badge.dataset.kind = diff.kind;
+    badge.textContent = KIND_LABELS[diff.kind];
+    kindCell.appendChild(badge);
+    row.appendChild(kindCell);
+
+    row.appendChild(createCell(diff.sheetName));
+    row.appendChild(createCell(diff.rowKey ?? diff.address ?? '—'));
+    row.appendChild(createCell(diff.columnName ?? '—'));
+    row.appendChild(createCell(formatValue(diff.beforeValue)));
+    row.appendChild(createCell(formatValue(diff.afterValue)));
+
+    row.addEventListener('click', () => selectDiff(diff.id));
+    row.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      selectDiff(diff.id);
+    });
+    return row;
+  }
+
   function renderDiffTable(): void {
     const rows = filteredDiffs();
     diffBody.replaceChildren();
 
-    if (!state.result) {
+    if (!state.result || rows.length === 0) {
       emptyState.hidden = false;
       const strong = emptyState.querySelector('strong');
       const paragraph = emptyState.querySelector('p');
-      if (strong) strong.textContent = 'まだ比較していません';
-      if (paragraph) paragraph.textContent = '左側で変更前・変更後のExcelを選び、「差分を比較する」を押してください。';
-      return;
-    }
-
-    if (rows.length === 0) {
-      emptyState.hidden = false;
-      const strong = emptyState.querySelector('strong');
-      const paragraph = emptyState.querySelector('p');
-      if (strong) strong.textContent = allDiffs().length === 0 ? '差分は見つかりませんでした' : '条件に一致する差分がありません';
-      if (paragraph) paragraph.textContent = allDiffs().length === 0
-        ? '選択したシートと比較条件では変更箇所を検出しませんでした。'
-        : '絞り込み条件を変更して確認してください。';
+      if (!state.result) {
+        if (strong) strong.textContent = 'まだ比較していません';
+        if (paragraph) paragraph.textContent = '左側で変更前・変更後のExcelを選び、「差分を比較する」を押してください。';
+      } else if (allDiffs().length === 0) {
+        if (strong) strong.textContent = '差分は見つかりませんでした';
+        if (paragraph) paragraph.textContent = '選択したシートと比較条件では変更箇所を検出しませんでした。';
+      } else {
+        if (strong) strong.textContent = '条件に一致する差分がありません';
+        if (paragraph) paragraph.textContent = '絞り込み条件を変更して確認してください。';
+      }
       return;
     }
 
     emptyState.hidden = true;
-    rows.forEach((diff) => {
-      const row = document.createElement('tr');
-      row.dataset.diffId = diff.id;
-      row.tabIndex = 0;
-      row.setAttribute('aria-selected', String(diff.id === state.selectedDiffId));
-
-      const kindCell = document.createElement('td');
-      const badge = document.createElement('span');
-      badge.className = 'tool-diff-kind';
-      badge.dataset.kind = diff.kind;
-      badge.textContent = KIND_LABELS[diff.kind];
-      kindCell.append(badge);
-      row.append(kindCell);
-
-      row.append(createCell(diff.sheetName));
-      row.append(createCell(diff.rowKey ?? diff.address ?? '—'));
-      row.append(createCell(diff.columnName ?? '—'));
-      row.append(createCell(formatValue(diff.beforeValue)));
-      row.append(createCell(formatValue(diff.afterValue)));
-      diffBody.append(row);
-    });
+    rows.forEach((diff) => diffBody.appendChild(createDiffRow(diff)));
   }
 
   function renderInspector(): void {
@@ -458,11 +465,9 @@ if (root) {
     renderDiffTable();
     renderInspector();
     const count = allDiffs().length;
-    resultStatus.textContent = state.result
-      ? `比較完了。${count.toLocaleString('ja-JP')}件の差分を確認できます。`
-      : 'ファイルと比較条件を選択してください。';
-    exportXlsxButton.disabled = !state.result;
-    exportCsvButton.disabled = !state.result;
+    resultStatus.textContent = `比較完了。${count.toLocaleString('ja-JP')}件の差分を確認できます。`;
+    exportXlsxButton.disabled = false;
+    exportCsvButton.disabled = false;
   }
 
   function clearResults(): void {
@@ -480,12 +485,6 @@ if (root) {
     resultStatus.textContent = 'ファイルと比較条件を選択してください。';
     exportXlsxButton.disabled = true;
     exportCsvButton.disabled = true;
-  }
-
-  function selectDiff(id: string): void {
-    state.selectedDiffId = id;
-    renderDiffTable();
-    renderInspector();
   }
 
   async function runComparison(): Promise<void> {
@@ -523,11 +522,7 @@ if (root) {
         after,
         beforeName: state.beforeFile.name,
         afterName: state.afterFile.name,
-        options: {
-          mode: state.mode,
-          sheetName: state.selectedSheet,
-          keyColumns,
-        },
+        options: { mode: state.mode, sheetName: state.selectedSheet, keyColumns },
       }, [before, after]);
     } catch {
       state.comparing = false;
@@ -542,19 +537,18 @@ if (root) {
     const anchor = document.createElement('a');
     anchor.href = url;
     anchor.download = fileName;
-    document.body.append(anchor);
+    document.body.appendChild(anchor);
     anchor.click();
     anchor.remove();
     window.setTimeout(() => URL.revokeObjectURL(url), 0);
   }
 
   function outputTimestamp(): string {
-    const now = new Date();
     const parts = new Intl.DateTimeFormat('ja-JP', {
       timeZone: 'Asia/Tokyo',
       year: 'numeric', month: '2-digit', day: '2-digit',
       hour: '2-digit', minute: '2-digit', hour12: false,
-    }).formatToParts(now);
+    }).formatToParts(new Date());
     const part = (type: Intl.DateTimeFormatPartTypes) => parts.find((item) => item.type === type)?.value ?? '';
     return `${part('year')}${part('month')}${part('day')}-${part('hour')}${part('minute')}`;
   }
@@ -673,8 +667,7 @@ if (root) {
   addKeyColumnButton.addEventListener('click', () => {
     const headers = commonHeaders();
     if (headers.length === 0) return;
-    const unused = headers.find((header) => !state.keyColumns.includes(header));
-    state.keyColumns.push(unused ?? headers[0]);
+    state.keyColumns.push(headers.find((header) => !state.keyColumns.includes(header)) ?? headers[0]);
     renderKeyColumns();
   });
 
@@ -701,18 +694,6 @@ if (root) {
       kindFilter.value = value;
       renderDiffTable();
     });
-  });
-
-  diffBody.addEventListener('click', (event) => {
-    const row = (event.target as Element).closest<HTMLTableRowElement>('tr[data-diff-id]');
-    if (row?.dataset.diffId) selectDiff(row.dataset.diffId);
-  });
-  diffBody.addEventListener('keydown', (event) => {
-    if (event.key !== 'Enter' && event.key !== ' ') return;
-    const row = (event.target as Element).closest<HTMLTableRowElement>('tr[data-diff-id]');
-    if (!row?.dataset.diffId) return;
-    event.preventDefault();
-    selectDiff(row.dataset.diffId);
   });
 
   exportXlsxButton.addEventListener('click', exportXlsx);
