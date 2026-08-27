@@ -15,10 +15,12 @@
     "@astrojs/cloudflare": "latest",
     "@astrojs/sitemap": "latest",
     "astro": "latest",
+    "encoding-japanese": "2.2.0",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   },
   "devDependencies": {
     "@astrojs/check": "latest",
+    "@types/encoding-japanese": "2.2.1",
     "typescript": "6.0.2",
     "vitest": "latest",
     "wrangler": "latest"
