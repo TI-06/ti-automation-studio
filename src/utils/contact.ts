@@ -7,7 +7,7 @@ export interface ContactInput {
   budget?: string;
   timing?: string;
   consent: boolean;
-  turnstileToken: string;
+  website?: string;
 }
 
 export interface ValidationResult {
@@ -23,7 +23,6 @@ const limits: Record<string, number> = {
   request: 3000,
   budget: 100,
   timing: 100,
-  turnstileToken: 2048,
 };
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -32,7 +31,6 @@ export function validateContactInput(input: ContactInput): ValidationResult {
   const errors: Record<string, string> = {};
   const email = input.email?.trim() ?? '';
   const problem = input.problem?.trim() ?? '';
-  const turnstileToken = input.turnstileToken?.trim() ?? '';
 
   if (!email) errors.email = 'メールアドレスを入力してください。';
   else if (email.length > limits.email || !emailPattern.test(email)) errors.email = 'メールアドレスの形式を確認してください。';
@@ -41,8 +39,9 @@ export function validateContactInput(input: ContactInput): ValidationResult {
   else if (problem.length > limits.problem) errors.problem = `${limits.problem}文字以内で入力してください。`;
 
   if (!input.consent) errors.consent = '個人情報の取扱いへの同意が必要です。';
-  if (!turnstileToken) errors.turnstileToken = 'Bot確認を完了してください。';
-  else if (turnstileToken.length > limits.turnstileToken) errors.turnstileToken = 'Bot確認の値が不正です。';
+
+  // 通常の利用者には見えない項目。自動入力Botが埋めた場合は拒否する。
+  if (input.website?.trim()) errors.website = '送信内容を確認してください。';
 
   for (const field of ['name', 'category', 'request', 'budget', 'timing'] as const) {
     const value = input[field]?.trim();
@@ -62,6 +61,6 @@ export function normalizeContactInput(input: ContactInput): ContactInput {
     budget: input.budget?.trim() || undefined,
     timing: input.timing?.trim() || undefined,
     consent: input.consent,
-    turnstileToken: input.turnstileToken.trim(),
+    website: '',
   };
 }
