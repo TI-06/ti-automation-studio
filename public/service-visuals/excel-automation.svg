@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Excel業務自動化のビジュアル</title>
+  <desc id="desc">複数の表データが中央の自動化処理を通り、集計・グラフ・帳票へ整理されるイメージ</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07090d"/><stop offset="1" stop-color="#0c1119"/></linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f0d59a"/><stop offset=".5" stop-color="#c8a96b"/><stop offset="1" stop-color="#7e6638"/></linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#202630" stop-opacity=".96"/><stop offset="1" stop-color="#0e1218" stop-opacity=".9"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#c8a96b" stop-opacity=".32"/><stop offset="1" stop-color="#c8a96b" stop-opacity="0"/></radialGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#000" flood-opacity=".48"/></filter>
+    <filter id="soft"><feGaussianBlur stdDeviation="9"/></filter>
+    <pattern id="dots" width="34" height="34" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="#c8a96b" opacity=".13"/></pattern>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="url(#dots)" opacity=".5"/>
+  <ellipse cx="815" cy="450" rx="400" ry="330" fill="url(#glow)"/>
+  <g opacity=".35" stroke="#c8a96b" stroke-width="1">
+    <path d="M0 180H1600M0 720H1600M170 0V900M1430 0V900"/>
+  </g>
+
+  <g filter="url(#shadow)" transform="translate(90 140)">
+    <g transform="translate(0 0) rotate(-2 260 170)">
+      <rect width="510" height="320" rx="18" fill="url(#glass)" stroke="#8f7646" stroke-opacity=".58"/>
+      <rect x="22" y="22" width="466" height="38" rx="8" fill="#0b0f15" stroke="#f0d59a" stroke-opacity=".14"/>
+      <circle cx="44" cy="41" r="5" fill="#c8a96b"/><circle cx="63" cy="41" r="5" fill="#6f5c38"/><circle cx="82" cy="41" r="5" fill="#3d3527"/>
+      <g transform="translate(24 82)" stroke="#b7a57d" stroke-opacity=".24">
+        <rect width="460" height="208" fill="#0b0f15" stroke="#8f7646" stroke-opacity=".34"/>
+        <path d="M0 38H460M0 76H460M0 114H460M0 152H460M0 190H460M92 0V208M184 0V208M276 0V208M368 0V208"/>
+        <rect x="92" y="76" width="92" height="38" fill="#d7b979" fill-opacity=".35" stroke="none"/>
+        <rect x="276" y="152" width="92" height="38" fill="#f2f0ea" fill-opacity=".12" stroke="none"/>
+      </g>
+    </g>
+    <g transform="translate(70 300) rotate(2 210 130)">
+      <rect width="420" height="250" rx="16" fill="url(#glass)" stroke="#8f7646" stroke-opacity=".4"/>
+      <g transform="translate(22 28)" stroke="#b7a57d" stroke-opacity=".22"><path d="M0 32H376M0 66H376M0 100H376M0 134H376M0 168H376M94 0V190M188 0V190M282 0V190"/><rect width="376" height="190" fill="none"/></g>
+      <path d="M24 28H396" stroke="#c8a96b" stroke-opacity=".25"/>
+    </g>
+  </g>
+
+  <g stroke="url(#gold)" stroke-width="3" fill="none" opacity=".9">
+    <path d="M560 285C670 285 690 395 760 430"/>
+    <path d="M520 448C640 448 675 448 760 448"/>
+    <path d="M535 610C665 610 700 500 760 470"/>
+  </g>
+  <g fill="#f0d59a"><circle cx="560" cy="285" r="6"/><circle cx="520" cy="448" r="6"/><circle cx="535" cy="610" r="6"/></g>
+
+  <g transform="translate(735 340)" filter="url(#shadow)">
+    <circle cx="110" cy="110" r="132" fill="url(#glow)" opacity=".75"/>
+    <path d="M110 0 205 55v110l-95 55-95-55V55z" fill="#10151d" stroke="url(#gold)" stroke-width="3"/>
+    <circle cx="110" cy="110" r="58" fill="none" stroke="#e6c987" stroke-width="4" stroke-dasharray="8 10"/>
+    <g transform="translate(76 76)" fill="none" stroke="#f0d59a" stroke-width="8" stroke-linecap="round">
+      <circle cx="34" cy="34" r="17"/>
+      <path d="M34 0v11M34 57v11M0 34h11M57 34h11M10 10l8 8M50 50l8 8M58 10l-8 8M18 50l-8 8"/>
+    </g>
+  </g>
+
+  <g stroke="url(#gold)" stroke-width="3" fill="none" opacity=".9">
+    <path d="M940 405C1030 360 1055 270 1125 260"/>
+    <path d="M952 448C1040 448 1055 448 1125 448"/>
+    <path d="M940 492C1030 540 1050 620 1125 635"/>
+  </g>
+  <g fill="#f0d59a"><circle cx="1125" cy="260" r="6"/><circle cx="1125" cy="448" r="6"/><circle cx="1125" cy="635" r="6"/></g>
+
+  <g filter="url(#shadow)" transform="translate(1125 125)">
+    <rect width="380" height="255" rx="18" fill="url(#glass)" stroke="#8f7646" stroke-opacity=".54"/>
+    <rect x="24" y="24" width="145" height="145" rx="10" fill="#0a0e14" stroke="#c8a96b" stroke-opacity=".2"/>
+    <circle cx="96" cy="96" r="52" fill="none" stroke="#c8a96b" stroke-width="20" stroke-dasharray="90 60 46 130" transform="rotate(-90 96 96)"/>
+    <g transform="translate(205 42)" fill="#c8a96b"><rect width="20" height="125" opacity=".35"/><rect x="40" y="55" width="20" height="70" opacity=".7"/><rect x="80" y="22" width="20" height="103"/><rect x="120" y="74" width="20" height="51" opacity=".55"/></g>
+    <g stroke="#a89c7d" stroke-opacity=".25"><path d="M205 185H350M205 205H330M205 225H370"/></g>
+  </g>
+  <g filter="url(#shadow)" transform="translate(1125 420)">
+    <rect width="360" height="265" rx="18" fill="#f2f0ea" fill-opacity=".96" stroke="#c8a96b" stroke-opacity=".42"/>
+    <g stroke="#5f5440" stroke-opacity=".4"><path d="M32 62H328M32 104H328M32 146H328M32 188H328M104 42V220M196 42V220M278 42V220"/></g>
+    <rect x="32" y="42" width="296" height="28" fill="#c8a96b" fill-opacity=".16"/>
+    <rect x="218" y="228" width="110" height="8" rx="4" fill="#c8a96b"/>
+  </g>
+  <g opacity=".28" filter="url(#soft)"><circle cx="1320" cy="700" r="90" fill="#c8a96b"/></g>
+</svg>
