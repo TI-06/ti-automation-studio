@@ -10,6 +10,7 @@ import {
   safeVariantKey,
   trimOuterWhitespace,
 } from '../src/lib/tools/data-cleaner/normalize';
+import { createCleanerSample } from '../src/lib/tools/data-cleaner/sample';
 import type { CleanerDataset, DiagnosticCategory } from '../src/lib/tools/data-cleaner/types';
 
 const dataset: CleanerDataset = {
@@ -96,5 +97,23 @@ describe('データ健康診断', () => {
     expect(parseNumericCandidate('1,200')?.value).toBe(1200);
     expect(parseNumericCandidate('１２００')?.style).toBe('fullwidth');
     expect(parseNumericCandidate('商品001')).toBeNull();
+  });
+
+  it('サンプルデータだけで主要な整理候補を体験できる', () => {
+    const sample = createCleanerSample();
+    const found = categories(diagnoseDataset(sample));
+
+    expect(sample.sheetName).toBe('サンプル顧客一覧');
+    expect(sample.rows.length).toBeGreaterThanOrEqual(8);
+    expect(found).toEqual(expect.arrayContaining([
+      'duplicate',
+      'trim-space',
+      'blank',
+      'width-mixed',
+      'date-mixed',
+      'number-mixed',
+      'line-break',
+      'notation-variant',
+    ]));
   });
 });
