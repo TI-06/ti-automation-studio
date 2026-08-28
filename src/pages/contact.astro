@@ -1,5 +1,9 @@
 ---
+import { parseToolSource, TOOL_CONVERSION_CONFIG } from '../data/tool-conversion';
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const toolSource = parseToolSource(Astro.url.searchParams.get('source'));
+const sourceConfig = toolSource ? TOOL_CONVERSION_CONFIG[toolSource] : null;
 ---
 <BaseLayout
   title="問い合わせ"
@@ -28,6 +32,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </aside>
 
       <div>
+        {sourceConfig && (
+          <div class="contact-source-context">
+            <span>TOOL RESULT</span>
+            <strong>{sourceConfig.contextLabel}</strong>
+            <p>ツールに読み込んだファイルや結果は、この問い合わせ画面には引き継がれていません。必要な範囲だけご記入ください。</p>
+          </div>
+        )}
+
         <form id="contact-form" class="form-grid" novalidate>
           <div class="field">
             <label for="name">お名前または会社名 <small>任意</small></label>
@@ -48,14 +60,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             <label for="category">相談内容</label>
             <select id="category" name="category">
               <option value="">選択してください</option>
-              <option>Excel・スプレッドシート自動化</option>
-              <option>GAS・Google Workspace</option>
-              <option>Webシステム・管理画面</option>
-              <option>Python・データ処理</option>
-              <option>API・外部サービス連携</option>
-              <option>AI活用・自動化</option>
-              <option>既存ツールの改修</option>
-              <option>その他・まだ分からない</option>
+              <option value="Excel・スプレッドシート自動化" selected={sourceConfig?.category === 'Excel・スプレッドシート自動化'}>Excel・スプレッドシート自動化</option>
+              <option value="GAS・Google Workspace" selected={sourceConfig?.category === 'GAS・Google Workspace'}>GAS・Google Workspace</option>
+              <option value="Webシステム・管理画面" selected={sourceConfig?.category === 'Webシステム・管理画面'}>Webシステム・管理画面</option>
+              <option value="Python・データ処理" selected={sourceConfig?.category === 'Python・データ処理'}>Python・データ処理</option>
+              <option value="API・外部サービス連携" selected={sourceConfig?.category === 'API・外部サービス連携'}>API・外部サービス連携</option>
+              <option value="AI活用・自動化" selected={sourceConfig?.category === 'AI活用・自動化'}>AI活用・自動化</option>
+              <option value="既存ツールの改修" selected={sourceConfig?.category === '既存ツールの改修'}>既存ツールの改修</option>
+              <option value="その他・まだ分からない" selected={sourceConfig?.category === 'その他・まだ分からない'}>その他・まだ分からない</option>
             </select>
           </div>
 
@@ -97,6 +109,38 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .contact-source-context {
+    margin-bottom: 22px;
+    padding: 20px 22px;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+  }
+
+  .contact-source-context > span {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--accent);
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .16em;
+  }
+
+  .contact-source-context > strong {
+    display: block;
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .contact-source-context > p {
+    margin: 8px 0 0;
+    color: var(--muted);
+    font-size: .86rem;
+    line-height: 1.75;
+  }
+</style>
 
 <script>
   type ContactResponse = {
