@@ -66,13 +66,14 @@ export interface DashboardWidgetResult {
 
 export interface DashboardConfig {
   schemaVersion: 1;
-  sourceColumns: Array<{ name: string; role: DashboardColumnRole }>;
+  sourceColumns: Array<{ id: string; name: string; role: DashboardColumnRole }>;
   widgets: DashboardWidget[];
   filters: Array<Pick<DashboardFilter, 'columnId' | 'type'>>;
 }
 
 export interface DashboardConfigMapping {
   config: DashboardConfig;
+  columns: DashboardColumn[];
   widgets: DashboardWidget[];
   filters: DashboardFilter[];
   missingColumnNames: string[];
