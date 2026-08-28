@@ -108,6 +108,45 @@ const structuredData = {
                       <span>診断</span><i>→</i><span>変更内容を確認してから適用</span><i>→</i><span>保存</span>
                     </div>
                   </div>
+                ) : tool.slug === 'dashboard-builder' ? (
+                  <div class="dashboard-builder-preview">
+                    <div class="dashboard-builder-preview-head">
+                      <div>
+                        <span>自動ダッシュボード</span>
+                        <strong>売上データを読み込んだ例</strong>
+                      </div>
+                      <small>表示イメージ</small>
+                    </div>
+                    <div class="dashboard-builder-preview-kpis">
+                      <div><span>売上合計</span><strong>¥12.45M</strong></div>
+                      <div><span>注文件数</span><strong>1,284</strong></div>
+                      <div><span>平均単価</span><strong>¥9,697</strong></div>
+                    </div>
+                    <div class="dashboard-builder-preview-main">
+                      <div class="dashboard-builder-preview-chart">
+                        <div class="dashboard-builder-preview-label"><span>月別推移</span><b>+18.4%</b></div>
+                        <svg viewBox="0 0 280 112" role="presentation">
+                          <defs>
+                            <linearGradient id="dashboard-preview-fill" x1="0" x2="0" y1="0" y2="1">
+                              <stop offset="0%" stop-color="currentColor" stop-opacity=".28" />
+                              <stop offset="100%" stop-color="currentColor" stop-opacity="0" />
+                            </linearGradient>
+                          </defs>
+                          <path class="preview-area" d="M0 91 L40 78 L80 82 L120 56 L160 63 L200 35 L240 42 L280 16 L280 112 L0 112 Z" />
+                          <path class="preview-line" d="M0 91 L40 78 L80 82 L120 56 L160 63 L200 35 L240 42 L280 16" />
+                          <circle cx="280" cy="16" r="4" />
+                        </svg>
+                        <div class="dashboard-builder-preview-months"><span>1月</span><span>3月</span><span>5月</span><span>7月</span></div>
+                      </div>
+                      <div class="dashboard-builder-preview-ranking">
+                        <span>店舗ランキング</span>
+                        <div><b>1</b><em>東京店</em><strong>¥4.8M</strong></div>
+                        <div><b>2</b><em>大阪店</em><strong>¥3.9M</strong></div>
+                        <div><b>3</b><em>名古屋店</em><strong>¥2.7M</strong></div>
+                      </div>
+                    </div>
+                    <div class="dashboard-builder-preview-foot"><span>Excel / CSV</span><i>→</i><span>自動判定</span><i>→</i><span>KPI・グラフ作成</span></div>
+                  </div>
                 ) : (
                   <div class="tool-preview-placeholder">
                     <span>{tool.shortLabel}</span>
@@ -156,7 +195,8 @@ const structuredData = {
   .tools-product-list { display: grid; gap: 18px; }
   .tool-product-copy .card-kicker { margin: 22px 0 0; }
   .excel-diff-preview,
-  .data-cleaner-preview { height: 100%; display: flex; flex-direction: column; border: 1px solid var(--border); background: #0b0d10; }
+  .data-cleaner-preview,
+  .dashboard-builder-preview { height: 100%; display: flex; flex-direction: column; border: 1px solid var(--border); background: #0b0d10; }
   .excel-diff-preview-head { min-height: 54px; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
   .excel-diff-preview-head span { color: #e1dfd8; font-size: .75rem; font-weight: 600; }
   .excel-diff-preview-head small { color: var(--soft); font-size: .62rem; }
@@ -190,6 +230,35 @@ const structuredData = {
   .data-cleaner-preview-flow { margin-top: auto; padding: 11px 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; border-top: 1px solid var(--border); color: #bdbbb4; font-size: .56rem; }
   .data-cleaner-preview-flow i { color: var(--accent); font-style: normal; }
 
+  .dashboard-builder-preview { min-height: 316px; }
+  .dashboard-builder-preview-head { min-height: 64px; padding: 13px 15px; display: flex; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--border); }
+  .dashboard-builder-preview-head span { display: block; color: var(--accent); font-size: .57rem; letter-spacing: .09em; }
+  .dashboard-builder-preview-head strong { display: block; margin-top: 5px; color: #e5e2da; font-size: .76rem; font-weight: 600; }
+  .dashboard-builder-preview-head small { color: var(--soft); font-size: .6rem; }
+  .dashboard-builder-preview-kpis { display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 1px solid var(--border); }
+  .dashboard-builder-preview-kpis div { min-width: 0; padding: 12px 13px; border-right: 1px solid var(--border); }
+  .dashboard-builder-preview-kpis div:last-child { border-right: 0; }
+  .dashboard-builder-preview-kpis span { display: block; color: var(--muted); font-size: .55rem; }
+  .dashboard-builder-preview-kpis strong { display: block; margin-top: 5px; color: #ece9e1; font-size: .92rem; font-weight: 500; letter-spacing: -.025em; }
+  .dashboard-builder-preview-main { flex: 1; display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(115px, .75fr); }
+  .dashboard-builder-preview-chart { min-width: 0; padding: 12px 14px 9px; border-right: 1px solid var(--border); color: var(--accent); }
+  .dashboard-builder-preview-label { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .dashboard-builder-preview-label span { color: #d9d6cf; font-size: .61rem; font-weight: 600; }
+  .dashboard-builder-preview-label b { color: #aabda9; font-size: .55rem; font-weight: 500; }
+  .dashboard-builder-preview-chart svg { display: block; width: 100%; height: 88px; margin-top: 4px; overflow: visible; }
+  .dashboard-builder-preview-chart .preview-area { fill: url(#dashboard-preview-fill); stroke: none; }
+  .dashboard-builder-preview-chart .preview-line { fill: none; stroke: currentColor; stroke-width: 2; vector-effect: non-scaling-stroke; }
+  .dashboard-builder-preview-chart circle { fill: currentColor; }
+  .dashboard-builder-preview-months { display: flex; justify-content: space-between; color: var(--soft); font-size: .48rem; }
+  .dashboard-builder-preview-ranking { padding: 12px; }
+  .dashboard-builder-preview-ranking > span { display: block; margin-bottom: 7px; color: #d9d6cf; font-size: .6rem; font-weight: 600; }
+  .dashboard-builder-preview-ranking > div { display: grid; grid-template-columns: 14px minmax(0, 1fr) auto; gap: 5px; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(242,240,234,.06); }
+  .dashboard-builder-preview-ranking b { color: var(--accent); font-size: .52rem; font-weight: 600; }
+  .dashboard-builder-preview-ranking em { min-width: 0; color: #bdbbb4; font-size: .55rem; font-style: normal; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dashboard-builder-preview-ranking strong { color: #ddd9d1; font-size: .55rem; font-weight: 500; }
+  .dashboard-builder-preview-foot { padding: 10px 14px; display: flex; flex-wrap: wrap; gap: 6px; border-top: 1px solid var(--border); color: #bdbbb4; font-size: .54rem; }
+  .dashboard-builder-preview-foot i { color: var(--accent); font-style: normal; }
+
   .tool-preview-placeholder { min-height: 220px; height: 100%; display: grid; place-items: center; border: 1px solid var(--border); text-align: center; }
   .tool-preview-placeholder span, .tool-preview-placeholder strong { display: block; }
   .tool-preview-placeholder span { color: var(--muted); font-size: .72rem; }
@@ -205,5 +274,7 @@ const structuredData = {
     .data-cleaner-preview-health div { border-bottom: 1px solid var(--border); }
     .data-cleaner-preview-health div:nth-child(2n) { border-right: 0; }
     .data-cleaner-preview-health div:nth-last-child(-n + 2) { border-bottom: 0; }
+    .dashboard-builder-preview-main { grid-template-columns: 1fr; }
+    .dashboard-builder-preview-chart { border-right: 0; border-bottom: 1px solid var(--border); }
   }
 </style>
