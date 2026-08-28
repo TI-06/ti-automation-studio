@@ -34,4 +34,15 @@ describe('公開ツール定義', () => {
     expect(tool?.processing).toBe('ブラウザ内処理');
     expect(tool?.features.length).toBeGreaterThanOrEqual(3);
   });
+
+  it('業務自動化診断を登録不要の公開ツールとして掲載する', () => {
+    const tool = tools.find((item) => item.slug === 'automation-diagnosis');
+
+    expect(tool).toBeTruthy();
+    expect(tool?.published).toBe(true);
+    expect(tool?.href).toBe('/tools/automation-diagnosis');
+    expect(tool?.formats).toEqual([]);
+    expect(tool?.processing).toBe('ブラウザ内処理');
+    expect(tool?.features.length).toBeGreaterThanOrEqual(3);
+  });
 });
