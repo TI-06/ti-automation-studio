@@ -32,6 +32,20 @@ const structuredData = {
     </div>
   </section>
 
+  <section class="tools-purpose-section">
+    <div class="container">
+      <nav class="tools-purpose-nav" aria-label="目的から公開ツールを選ぶ">
+        <p class="eyebrow">目的から選ぶ</p>
+        <div class="tools-purpose-grid">
+          <a href="/tools/excel-diff"><span>比較する</span><small>2つのExcelの変更箇所を確認</small></a>
+          <a href="/tools/data-cleaner"><span>整える</span><small>CSV・Excelの重複や表記を整理</small></a>
+          <a href="/tools/dashboard-builder"><span>見える化する</span><small>表データからKPI・グラフを作成</small></a>
+          <a href="/tools/automation-diagnosis"><span>自動化できるか調べる</span><small>工数と自動化適性を診断</small></a>
+        </div>
+      </nav>
+    </div>
+  </section>
+
   <section class="section-tight">
     <div class="container">
       {publishedTools.length > 0 ? (
@@ -115,6 +129,14 @@ const structuredData = {
   .tools-product-hero p { max-width: 760px; }
   .tools-hero-meta { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 8px; }
   .tools-hero-meta span { padding: 6px 10px; border: 1px solid var(--border); color: #d1cfc8; font-size: .7rem; }
+  .tools-purpose-section { margin-top: clamp(-28px,-3vw,-16px); padding-bottom: clamp(28px,4vw,44px); }
+  .tools-purpose-nav { padding: 18px; border: 1px solid var(--border); background: rgba(255,255,255,.015); }
+  .tools-purpose-nav .eyebrow { margin-bottom: 12px; }
+  .tools-purpose-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; }
+  .tools-purpose-grid a { min-width: 0; padding: 14px 15px; border: 1px solid var(--border); background: #0b0d10; transition: border-color .2s ease, transform .2s ease, background .2s ease; }
+  .tools-purpose-grid a:hover { border-color: rgba(200,169,107,.55); background: rgba(200,169,107,.035); transform: translateY(-1px); }
+  .tools-purpose-grid span { display: block; color: #ece9e1; font-size: .82rem; font-weight: 600; }
+  .tools-purpose-grid small { display: block; margin-top: 6px; color: var(--muted); font-size: .64rem; line-height: 1.55; }
   .tools-product-list { display: grid; gap: 18px; }
   .tool-product-copy .card-kicker { margin: 22px 0 0; }
   .product-preview { height: 100%; min-height: 300px; display: flex; flex-direction: column; border: 1px solid var(--border); background: #0b0d10; }
@@ -175,8 +197,13 @@ const structuredData = {
   .diagnosis-preview-saving p strong { color: #e4e1d9; font-size: .62rem; font-weight: 550; }
   .tool-preview-placeholder { min-height: 220px; height: 100%; display: grid; place-items: center; border: 1px solid var(--border); text-align: center; }
   .tools-policy-section { margin-top: clamp(28px,5vw,60px); }
-  @media (max-width: 860px) { .tool-product-preview { min-height: 300px; } }
+  @media (max-width: 860px) {
+    .tools-purpose-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .tool-product-preview { min-height: 300px; }
+  }
   @media (max-width: 520px) {
+    .tools-purpose-nav { padding: 14px; }
+    .tools-purpose-grid { grid-template-columns: 1fr; }
     .preview-metrics.four { grid-template-columns: repeat(2,1fr); }
     .dashboard-preview-main { grid-template-columns: 1fr; }
     .dashboard-preview-chart { border-right: 0; border-bottom: 1px solid var(--border); }
