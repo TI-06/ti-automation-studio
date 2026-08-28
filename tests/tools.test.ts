@@ -23,4 +23,15 @@ describe('公開ツール定義', () => {
     expect(cleaner?.processing).toBe('ブラウザ内処理');
     expect(cleaner?.features.length).toBeGreaterThanOrEqual(3);
   });
+
+  it('ダッシュボード作成ツールを公開する', () => {
+    const tool = tools.find((item) => item.slug === 'dashboard-builder');
+
+    expect(tool).toBeTruthy();
+    expect(tool?.published).toBe(true);
+    expect(tool?.href).toBe('/tools/dashboard-builder');
+    expect(tool?.formats).toEqual(expect.arrayContaining(['CSV', 'XLSX', 'XLS']));
+    expect(tool?.processing).toBe('ブラウザ内処理');
+    expect(tool?.features.length).toBeGreaterThanOrEqual(3);
+  });
 });
