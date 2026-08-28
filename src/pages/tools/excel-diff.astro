@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ToolProgress from '../../components/tools/ToolProgress.astro';
+import ToolResultCTA from '../../components/tools/ToolResultCTA.astro';
 import ToolShell from '../../components/tools/ToolShell.astro';
 import '../../styles/tool-app.css';
 
@@ -126,72 +127,22 @@ const structuredData = [
 
             <div class="tool-workspace-body">
               <div class="tool-summary-grid" aria-label="差分件数">
-                <button class="tool-summary-item" type="button" data-summary-kind="value">
-                  <span class="tool-summary-label">値の変更</span>
-                  <strong class="tool-summary-value" data-summary-changed>0</strong>
-                </button>
-                <button class="tool-summary-item" type="button" data-summary-kind="row-added">
-                  <span class="tool-summary-label">追加</span>
-                  <strong class="tool-summary-value" data-summary-added>0</strong>
-                </button>
-                <button class="tool-summary-item" type="button" data-summary-kind="row-removed">
-                  <span class="tool-summary-label">削除</span>
-                  <strong class="tool-summary-value" data-summary-removed>0</strong>
-                </button>
-                <button class="tool-summary-item" type="button" data-summary-kind="formula">
-                  <span class="tool-summary-label">数式変更</span>
-                  <strong class="tool-summary-value" data-summary-formula>0</strong>
-                </button>
-                <button class="tool-summary-item" type="button" data-summary-kind="structural">
-                  <span class="tool-summary-label">構造変更</span>
-                  <strong class="tool-summary-value" data-summary-structural>0</strong>
-                </button>
+                <button class="tool-summary-item" type="button" data-summary-kind="value"><span class="tool-summary-label">値の変更</span><strong class="tool-summary-value" data-summary-changed>0</strong></button>
+                <button class="tool-summary-item" type="button" data-summary-kind="row-added"><span class="tool-summary-label">追加</span><strong class="tool-summary-value" data-summary-added>0</strong></button>
+                <button class="tool-summary-item" type="button" data-summary-kind="row-removed"><span class="tool-summary-label">削除</span><strong class="tool-summary-value" data-summary-removed>0</strong></button>
+                <button class="tool-summary-item" type="button" data-summary-kind="formula"><span class="tool-summary-label">数式変更</span><strong class="tool-summary-value" data-summary-formula>0</strong></button>
+                <button class="tool-summary-item" type="button" data-summary-kind="structural"><span class="tool-summary-label">構造変更</span><strong class="tool-summary-value" data-summary-structural>0</strong></button>
               </div>
 
               <div class="tool-filter-bar" aria-label="差分の絞り込み">
-                <label class="tool-field">
-                  <span>種類</span>
-                  <select data-kind-filter>
-                    <option value="all">すべて</option>
-                    <option value="value">値の変更</option>
-                    <option value="row-added">追加</option>
-                    <option value="row-removed">削除</option>
-                    <option value="formula">数式変更</option>
-                    <option value="structural">構造変更</option>
-                  </select>
-                </label>
-                <label class="tool-field">
-                  <span>項目・列</span>
-                  <select data-column-filter>
-                    <option value="all">すべて</option>
-                  </select>
-                </label>
-                <label class="tool-field">
-                  <span>検索</span>
-                  <input type="search" placeholder="セル、行キー、変更前後の値で検索" data-query-filter />
-                </label>
+                <label class="tool-field"><span>種類</span><select data-kind-filter><option value="all">すべて</option><option value="value">値の変更</option><option value="row-added">追加</option><option value="row-removed">削除</option><option value="formula">数式変更</option><option value="structural">構造変更</option></select></label>
+                <label class="tool-field"><span>項目・列</span><select data-column-filter><option value="all">すべて</option></select></label>
+                <label class="tool-field"><span>検索</span><input type="search" placeholder="セル、行キー、変更前後の値で検索" data-query-filter /></label>
               </div>
 
               <div class="tool-table-wrap">
-                <table class="tool-table" data-diff-table>
-                  <thead>
-                    <tr>
-                      <th>種類</th>
-                      <th>シート</th>
-                      <th>行・セル</th>
-                      <th>項目</th>
-                      <th>変更前</th>
-                      <th>変更後</th>
-                    </tr>
-                  </thead>
-                  <tbody data-diff-body></tbody>
-                </table>
-                <div class="tool-empty-state" data-empty-state>
-                  <div>
-                    <strong>まだ比較していません</strong>
-                    <p>左側で変更前・変更後のExcelを選び、「差分を比較する」を押してください。</p>
-                  </div>
-                </div>
+                <table class="tool-table" data-diff-table><thead><tr><th>種類</th><th>シート</th><th>行・セル</th><th>項目</th><th>変更前</th><th>変更後</th></tr></thead><tbody data-diff-body></tbody></table>
+                <div class="tool-empty-state" data-empty-state><div><strong>まだ比較していません</strong><p>左側で変更前・変更後のExcelを選び、「差分を比較する」を押してください。</p></div></div>
               </div>
             </div>
           </section>
@@ -200,117 +151,31 @@ const structuredData = [
             <h2 class="tool-panel-title">選択した差分</h2>
             <p class="tool-panel-copy" data-inspector-empty>一覧から差分を選択すると、変更前後の値や数式を確認できます。</p>
             <div class="tool-inspector-card" data-inspector-card hidden>
-              <div class="tool-inspector-row">
-                <span>種類</span>
-                <strong data-inspector-kind>—</strong>
-              </div>
-              <div class="tool-inspector-row">
-                <span>場所</span>
-                <strong data-inspector-location>—</strong>
-              </div>
-              <div class="tool-inspector-row">
-                <span>項目</span>
-                <strong data-inspector-column>—</strong>
-              </div>
-              <div class="tool-inspector-row">
-                <span>変更前</span>
-                <div class="tool-value-before" data-inspector-before>—</div>
-                <span style="margin-top:10px">変更後</span>
-                <div class="tool-value-after" data-inspector-after>—</div>
-              </div>
-              <div class="tool-inspector-row" data-formula-detail hidden>
-                <span>数式</span>
-                <code data-inspector-formula>—</code>
-              </div>
+              <div class="tool-inspector-row"><span>種類</span><strong data-inspector-kind>—</strong></div>
+              <div class="tool-inspector-row"><span>場所</span><strong data-inspector-location>—</strong></div>
+              <div class="tool-inspector-row"><span>項目</span><strong data-inspector-column>—</strong></div>
+              <div class="tool-inspector-row"><span>変更前</span><div class="tool-value-before" data-inspector-before>—</div><span style="margin-top:10px">変更後</span><div class="tool-value-after" data-inspector-after>—</div></div>
+              <div class="tool-inspector-row" data-formula-detail hidden><span>数式</span><code data-inspector-formula>—</code></div>
             </div>
           </aside>
         </div>
+        <ToolResultCTA source="excel-diff" />
       </ToolShell>
 
       <div class="tool-seo-content">
         <nav class="tool-seo-nav" aria-label="このツールの説明">
-          <a href="#excel-diff-can">できること</a>
-          <a href="#excel-diff-match">行の比較方法</a>
-          <a href="#excel-diff-formula">数式変更</a>
-          <a href="#excel-diff-safety">安全性・制限</a>
-          <a href="#excel-diff-faq">よくある質問</a>
+          <a href="#excel-diff-can">できること</a><a href="#excel-diff-match">行の比較方法</a><a href="#excel-diff-formula">数式変更</a><a href="#excel-diff-safety">安全性・制限</a><a href="#excel-diff-faq">よくある質問</a>
         </nav>
-
         <div class="tool-seo-body">
-          <section class="tool-seo-section" id="excel-diff-can">
-            <p class="eyebrow">できること</p>
-            <h2>Excelの「どこが変わった？」を一覧で確認</h2>
-            <p>更新前と更新後のExcelを見比べる作業を、セルを一つずつ探すのではなく差分一覧にまとめます。値の変更だけでなく、行の追加・削除、列の追加・削除、シートの追加・削除、数式変更も分けて確認できます。</p>
-            <ul>
-              <li>値が変わったセルを変更前・変更後で比較</li>
-              <li>追加された行・削除された行を検出</li>
-              <li>列・シートの構造変更を検出</li>
-              <li>数式そのものが変わったセルを別カテゴリで表示</li>
-              <li>差分結果をExcelまたはCSVで保存</li>
-            </ul>
-          </section>
-
-          <section class="tool-seo-section" id="excel-diff-match">
-            <p class="eyebrow">照合方法</p>
-            <h2>行番号比較と「行を特定する列」の違い</h2>
-            <h3>行番号で比較</h3>
-            <p>変更前の2行目と変更後の2行目、3行目と3行目というように同じ位置を比較します。行の並びがほぼ変わらない帳票や一覧に向いています。</p>
-            <h3>行を特定する列で比較</h3>
-            <p>商品コード、社員番号、管理番号など、行を一意に特定できる列を使って照合します。途中に行が追加されても、それ以降をすべて変更扱いにしにくい方式です。複数列の組み合わせにも対応しています。</p>
-          </section>
-
-          <section class="tool-seo-section" id="excel-diff-formula">
-            <p class="eyebrow">数式</p>
-            <h2>計算結果だけでなく、数式変更を分けて確認</h2>
-            <p>数式セルは計算結果の値だけを見ると、式そのものが変更されたことを見落とす場合があります。このツールでは数式の文字列を比較し、「数式変更」として別に表示します。同じ数式でExcel内部のキャッシュ値だけが違う場合は、不要な差分として扱わない設計です。</p>
-          </section>
-
-          <section class="tool-seo-section" id="excel-diff-safety">
-            <p class="eyebrow">安全性・制限</p>
-            <h2>Excelファイルは外部へアップロードしません</h2>
-            <p>選択したファイルの読み込み・比較・結果生成はブラウザ内で行います。比較のためにTI AUTOMATION STUDIOのサーバーへExcelを送信する処理はありません。</p>
-            <p>初期版は .xlsx / .xls に対応し、1ファイル20MBまで、1シート100,000行までを対象としています。50,000行を超える場合は処理時間の注意を表示します。書式の全面比較、VBAコードの比較、パスワード保護されたExcelの比較は対象外です。</p>
-          </section>
-
-          <section class="tool-seo-section" id="excel-diff-faq">
-            <p class="eyebrow">よくある質問</p>
-            <h2>Excel差分比較について</h2>
-            <dl class="tool-faq-list">
-              <div class="tool-faq-item">
-                <dt>無料で使えますか？</dt>
-                <dd>はい。登録不要で、そのまま利用できます。</dd>
-              </div>
-              <div class="tool-faq-item">
-                <dt>CSV同士の比較はできますか？</dt>
-                <dd>現在はExcel（.xlsx / .xls）の比較に限定しています。CSVは差分結果の保存形式として利用できます。</dd>
-              </div>
-              <div class="tool-faq-item">
-                <dt>書式や色の変更も比較できますか？</dt>
-                <dd>初期版では値・行・列・シート・数式を対象とし、セル色や罫線など書式の全面比較は対象外です。</dd>
-              </div>
-              <div class="tool-faq-item">
-                <dt>業務に合わせた比較ルールを追加できますか？</dt>
-                <dd>個別開発では、複数ファイル一括比較、独自キー、帳票専用ルール、結果レポート自動化などにも対応できます。</dd>
-              </div>
-            </dl>
-          </section>
-
-          <section class="tool-seo-section">
-            <p class="eyebrow">関連</p>
-            <h2>Excel業務そのものを自動化したい場合</h2>
-            <p>毎回同じ比較を行う、複数ファイルをまとめて確認する、結果を別帳票へ転記するといった定型作業は、専用のExcel/VBA・Pythonツールとして自動化できる場合があります。</p>
-            <div class="hero-actions">
-              <a class="btn" href="/services/excel-automation">Excel自動化について見る</a>
-              <a class="btn" href="/works/excel-business-application">Excel開発実績を見る</a>
-              <a class="btn btn-primary" href="/contact">相談する</a>
-            </div>
-          </section>
+          <section class="tool-seo-section" id="excel-diff-can"><p class="eyebrow">できること</p><h2>Excelの「どこが変わった？」を一覧で確認</h2><p>更新前と更新後のExcelを見比べる作業を、セルを一つずつ探すのではなく差分一覧にまとめます。値の変更だけでなく、行の追加・削除、列の追加・削除、シートの追加・削除、数式変更も分けて確認できます。</p><ul><li>値が変わったセルを変更前・変更後で比較</li><li>追加された行・削除された行を検出</li><li>列・シートの構造変更を検出</li><li>数式そのものが変わったセルを別カテゴリで表示</li><li>差分結果をExcelまたはCSVで保存</li></ul></section>
+          <section class="tool-seo-section" id="excel-diff-match"><p class="eyebrow">照合方法</p><h2>行番号比較と「行を特定する列」の違い</h2><h3>行番号で比較</h3><p>変更前の2行目と変更後の2行目、3行目と3行目というように同じ位置を比較します。行の並びがほぼ変わらない帳票や一覧に向いています。</p><h3>行を特定する列で比較</h3><p>商品コード、社員番号、管理番号など、行を一意に特定できる列を使って照合します。途中に行が追加されても、それ以降をすべて変更扱いにしにくい方式です。複数列の組み合わせにも対応しています。</p></section>
+          <section class="tool-seo-section" id="excel-diff-formula"><p class="eyebrow">数式</p><h2>計算結果だけでなく、数式変更を分けて確認</h2><p>数式セルは計算結果の値だけを見ると、式そのものが変更されたことを見落とす場合があります。このツールでは数式の文字列を比較し、「数式変更」として別に表示します。同じ数式でExcel内部のキャッシュ値だけが違う場合は、不要な差分として扱わない設計です。</p></section>
+          <section class="tool-seo-section" id="excel-diff-safety"><p class="eyebrow">安全性・制限</p><h2>Excelファイルは外部へアップロードしません</h2><p>選択したファイルの読み込み・比較・結果生成はブラウザ内で行います。比較のためにTI AUTOMATION STUDIOのサーバーへExcelを送信する処理はありません。</p><p>初期版は .xlsx / .xls に対応し、1ファイル20MBまで、1シート100,000行までを対象としています。50,000行を超える場合は処理時間の注意を表示します。書式の全面比較、VBAコードの比較、パスワード保護されたExcelの比較は対象外です。</p></section>
+          <section class="tool-seo-section" id="excel-diff-faq"><p class="eyebrow">よくある質問</p><h2>Excel差分比較について</h2><dl class="tool-faq-list"><div class="tool-faq-item"><dt>無料で使えますか？</dt><dd>はい。登録不要で、そのまま利用できます。</dd></div><div class="tool-faq-item"><dt>CSV同士の比較はできますか？</dt><dd>現在はExcel（.xlsx / .xls）の比較に限定しています。CSVは差分結果の保存形式として利用できます。</dd></div><div class="tool-faq-item"><dt>書式や色の変更も比較できますか？</dt><dd>初期版では値・行・列・シート・数式を対象とし、セル色や罫線など書式の全面比較は対象外です。</dd></div><div class="tool-faq-item"><dt>業務に合わせた比較ルールを追加できますか？</dt><dd>個別開発では、複数ファイル一括比較、独自キー、帳票専用ルール、結果レポート自動化などにも対応できます。</dd></div></dl></section>
+          <section class="tool-seo-section"><p class="eyebrow">関連</p><h2>Excel業務そのものを自動化したい場合</h2><p>毎回同じ比較を行う、複数ファイルをまとめて確認する、結果を別帳票へ転記するといった定型作業は、専用のExcel/VBA・Pythonツールとして自動化できる場合があります。</p><div class="hero-actions"><a class="btn" href="/services/excel-automation">Excel自動化について見る</a><a class="btn" href="/works/excel-business-application">Excel開発実績を見る</a><a class="btn btn-primary" href="/contact">相談する</a></div></section>
         </div>
       </div>
     </div>
   </section>
-
-  <script>
-    import '../../scripts/tools/excel-diff';
-  </script>
+  <script>import '../../scripts/tools/excel-diff';</script>
 </BaseLayout>
