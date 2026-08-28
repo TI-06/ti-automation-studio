@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
+import { TOOL_CONVERSION_CONFIG, parseToolSource } from '../src/data/tool-conversion';
 import { validateContactInput } from '../src/utils/contact';
 
 const contactApiSource = readFileSync(new URL('../src/pages/api/contact.ts', import.meta.url), 'utf-8');
@@ -63,5 +64,22 @@ describe('問い合わせAPIのGAS転送', () => {
   it('フォームにhoneypotを持たせる', () => {
     expect(contactPageSource).toContain('name="website"');
     expect(contactPageSource).toContain('aria-hidden="true"');
+  });
+});
+
+describe('問い合わせ画面のツール文脈', () => {
+  it('問い合わせsourceは固定4値以外を無視する', () => {
+    expect(parseToolSource('excel-diff')).toBe('excel-diff');
+    expect(parseToolSource('javascript:alert(1)')).toBeNull();
+  });
+
+  it('問い合わせ画面はsource文脈を表示するがツール結果を引き継がない', () => {
+    expect(contactPageSource).toContain("Astro.url.searchParams.get('source')");
+    expect(contactPageSource).toContain('ツールに読み込んだファイルや結果は、この問い合わせ画面には引き継がれていません');
+    expect(contactPageSource).toContain('sourceConfig?.category');
+    expect(contactPageSource).not.toContain('fileName');
+    expect(contactPageSource).not.toContain('annualHours');
+    expect(contactPageSource).not.toContain('diagnosisScore');
+    expect(TOOL_CONVERSION_CONFIG['data-cleaner'].category).toBe('Python・データ処理');
   });
 });
