@@ -9,6 +9,8 @@ const cleanerPage = readFileSync(new URL('../src/pages/tools/data-cleaner.astro'
 const cleanerClient = readFileSync(new URL('../src/scripts/tools/data-cleaner.ts', import.meta.url), 'utf-8');
 const dashboardPage = readFileSync(new URL('../src/pages/tools/dashboard-builder.astro', import.meta.url), 'utf-8');
 const dashboardClient = readFileSync(new URL('../src/scripts/tools/dashboard-builder/controller.ts', import.meta.url), 'utf-8');
+const diagnosisPage = readFileSync(new URL('../src/pages/tools/automation-diagnosis.astro', import.meta.url), 'utf-8');
+const diagnosisClient = readFileSync(new URL('../src/scripts/tools/automation-diagnosis/controller.ts', import.meta.url), 'utf-8');
 
 describe('結果後相談CTA', () => {
   it('初期非表示でsourceだけを問い合わせへ渡す', () => {
@@ -46,5 +48,12 @@ describe('結果後相談CTA', () => {
     expect(dashboardClient).toContain("bindToolResultCta('dashboard-builder')");
     expect(dashboardClient).toContain('resultCta.show()');
     expect(dashboardClient).toContain('resultCta.hide()');
+  });
+
+  it('自動化診断は結果表示後にCTAを出しPDF印刷から除外する', () => {
+    expect(diagnosisPage).toContain('<ToolResultCTA source="automation-diagnosis" printIgnore');
+    expect(diagnosisClient).toContain("bindToolResultCta('automation-diagnosis')");
+    expect(diagnosisClient).toContain('resultCta.show()');
+    expect(diagnosisClient).toContain('resultCta.hide()');
   });
 });
