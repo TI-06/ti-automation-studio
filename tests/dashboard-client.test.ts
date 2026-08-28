@@ -24,7 +24,7 @@ const result: DashboardWidgetResult = {
 describe('ダッシュボードのクライアント操作', () => {
   it('Chart.js用の棒・折れ線・ドーナツ設定を生成する', () => {
     expect(buildDashboardChartSpec(widget({ kind: 'bar' }), result).type).toBe('bar');
-    expect(buildDashboardChartSpec(widget({ kind: 'horizontal-bar' }), result).options.indexAxis).toBe('y');
+    expect(buildDashboardChartSpec(widget({ kind: 'horizontal-bar' }), result).options?.indexAxis).toBe('y');
     expect(buildDashboardChartSpec(widget({ kind: 'line' }), result).type).toBe('line');
     expect(buildDashboardChartSpec(widget({ kind: 'donut' }), result).type).toBe('doughnut');
   });
