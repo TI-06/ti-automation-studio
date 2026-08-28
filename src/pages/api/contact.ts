@@ -1,13 +1,8 @@
 import type { APIRoute } from 'astro';
-import { env } from 'cloudflare:workers';
+import { getSecret } from 'astro:env/server';
 import { normalizeContactInput, validateContactInput, type ContactInput } from '../../utils/contact';
 
 export const prerender = false;
-
-type RuntimeEnv = {
-  CONTACT_GAS_URL?: string;
-  CONTACT_SHARED_SECRET?: string;
-};
 
 type GasResponse = {
   ok?: boolean;
@@ -41,9 +36,8 @@ export const POST: APIRoute = async ({ request }) => {
     }
   }
 
-  const runtimeEnv = env as unknown as RuntimeEnv;
-  const gasUrl = runtimeEnv.CONTACT_GAS_URL;
-  const sharedSecret = runtimeEnv.CONTACT_SHARED_SECRET;
+  const gasUrl = getSecret('CONTACT_GAS_URL');
+  const sharedSecret = getSecret('CONTACT_SHARED_SECRET');
 
   if (!gasUrl || !sharedSecret) {
     console.error('Contact environment variables are not configured.');
