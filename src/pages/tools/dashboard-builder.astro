@@ -1,0 +1,266 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ToolProgress from '../../components/tools/ToolProgress.astro';
+import ToolShell from '../../components/tools/ToolShell.astro';
+import '../../styles/tool-app.css';
+import '../../styles/dashboard-builder.css';
+
+const canonical = Astro.site ? new URL('/tools/dashboard-builder', Astro.site).toString() : undefined;
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Excel・CSV ダッシュボード自動作成ツール',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Web',
+    browserRequirements: 'JavaScript',
+    inLanguage: 'ja-JP',
+    description: 'Excel・CSVをブラウザ内で読み込み、KPI・推移・分類別集計・ランキングを自動作成できる無料ダッシュボードツール。',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'JPY' },
+    url: canonical,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'トップ', item: Astro.site ? new URL('/', Astro.site).toString() : '/' },
+      { '@type': 'ListItem', position: 2, name: '公開ツール', item: Astro.site ? new URL('/tools', Astro.site).toString() : '/tools' },
+      { '@type': 'ListItem', position: 3, name: 'ダッシュボード自動作成', item: canonical },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Excel・CSV ダッシュボード自動作成ツール"
+  description="Excel・CSVを無料・登録不要で見える化。列の種類を自動判定し、KPI・推移・分類別グラフ・ランキングを作成。画像・PDF・Excel・設定JSONで保存できます。"
+  canonical={canonical}
+  structuredData={structuredData}
+>
+  <section class="tool-page">
+    <div class="container dashboard-page-container">
+      <ToolShell
+        title="Excel・CSVからダッシュボードを作成します"
+        subtitle="ファイルを選ぶだけで、数値・日付・分類項目を判定し、KPIやグラフを自動で組み立てます。必要な部分だけ後から調整できます。"
+        processingLabel="ブラウザ内処理"
+      >
+        <div class="dashboard-app" data-dashboard-app>
+          <section class="dashboard-source-bar" aria-label="データの読み込み">
+            <div class="dashboard-source-main">
+              <label class="tool-file-zone dashboard-file-zone">
+                <strong>分析するExcel・CSV</strong>
+                <small>.csv / .xlsx / .xls ・ 1ファイル20MBまで</small>
+                <input type="file" accept=".csv,.xlsx,.xls" data-dashboard-file />
+                <span class="tool-file-name" data-dashboard-file-name>未選択</span>
+              </label>
+
+              <div class="dashboard-source-actions">
+                <button class="tool-button tool-button-secondary" type="button" data-dashboard-sample>サンプルデータで試す</button>
+                <button class="tool-button tool-button-secondary" type="button" data-dashboard-reset>最初からやり直す</button>
+                <label class="tool-button tool-button-secondary dashboard-config-import-button">
+                  設定ファイルを読み込む
+                  <input type="file" accept="application/json,.json" data-config-import />
+                </label>
+              </div>
+            </div>
+
+            <div class="dashboard-source-meta">
+              <p class="tool-privacy-note">ファイルは外部サーバーへ送信されません。読み込み、集計、グラフ作成、保存までこのブラウザ内で行います。</p>
+              <p class="tool-error-message" data-dashboard-error hidden role="alert"></p>
+              <p class="tool-row-warning" data-dashboard-large-warning hidden>50,000行を超えるデータです。処理に少し時間がかかる場合があります。100,000行を超えるデータは処理できません。</p>
+            </div>
+
+            <div class="dashboard-source-settings" data-dashboard-file-settings hidden>
+              <label class="tool-field" data-dashboard-sheet-field hidden>
+                <span>分析するシート</span>
+                <select data-dashboard-sheet></select>
+              </label>
+              <label class="tool-field" data-dashboard-encoding-field hidden>
+                <span>CSV文字コード</span>
+                <select data-dashboard-encoding>
+                  <option value="auto">自動判定</option>
+                  <option value="utf-8">UTF-8</option>
+                  <option value="shift_jis">Shift_JIS</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="dashboard-progress-wrap"><ToolProgress /></div>
+          </section>
+
+          <details class="dashboard-columns-panel" data-dashboard-column-panel>
+            <summary>
+              <span><strong>列の種類を確認</strong><small>自動判定が違う場合だけ変更してください</small></span>
+              <span data-dashboard-column-summary>データ未読込</span>
+            </summary>
+            <div class="dashboard-columns-body">
+              <div class="dashboard-column-legend" aria-label="列の種類">
+                <span>日付</span><span>数値</span><span>分類</span><span>文字列</span><span>ID・コード</span>
+              </div>
+              <div class="dashboard-columns-grid" data-dashboard-columns>
+                <div class="tool-empty-state dashboard-compact-empty"><div><strong>列情報はまだありません</strong><p>ファイルを読み込むと、自動判定した列の種類を表示します。</p></div></div>
+              </div>
+            </div>
+          </details>
+
+          <section class="dashboard-toolbar" aria-label="ダッシュボード操作">
+            <div class="dashboard-tabs" role="tablist" aria-label="表示切替">
+              <button type="button" role="tab" aria-selected="true" data-dashboard-tab="dashboard">ダッシュボード</button>
+              <button type="button" role="tab" aria-selected="false" data-dashboard-tab="data">元データ</button>
+            </div>
+            <div class="dashboard-toolbar-actions" data-export-ignore>
+              <button class="tool-button tool-button-secondary" type="button" data-widget-add disabled>グラフを追加</button>
+              <button class="tool-button tool-button-secondary" type="button" data-export-image disabled>画像で保存</button>
+              <button class="tool-button tool-button-secondary" type="button" data-export-pdf disabled>PDFで保存</button>
+              <button class="tool-button tool-button-secondary" type="button" data-export-excel disabled>Excelで保存</button>
+              <button class="tool-button tool-button-primary" type="button" data-export-config disabled>設定を保存</button>
+            </div>
+          </section>
+
+          <div class="dashboard-main-view" data-dashboard-view="dashboard">
+            <section class="dashboard-filter-section" data-export-ignore>
+              <div class="dashboard-section-head">
+                <div><p class="tool-app-kicker">FILTER</p><h2>絞り込み</h2></div>
+                <button class="dashboard-text-button" type="button" data-filter-reset disabled>すべて解除</button>
+              </div>
+              <div class="dashboard-filter-grid" data-dashboard-filters>
+                <p class="dashboard-muted">分類や日付として判定した列がある場合、ここに絞り込み条件を表示します。</p>
+              </div>
+            </section>
+
+            <section class="dashboard-board" data-dashboard-export-area>
+              <div class="dashboard-board-heading">
+                <div>
+                  <p class="tool-app-kicker">DASHBOARD</p>
+                  <h2 data-dashboard-title>集計結果</h2>
+                  <p data-dashboard-status>ファイルを選ぶか、サンプルデータでお試しください。</p>
+                </div>
+                <div class="dashboard-board-meta"><span data-dashboard-row-count>0行</span><span data-dashboard-widget-count>0項目</span></div>
+              </div>
+              <div class="dashboard-widget-grid" data-dashboard-grid>
+                <div class="tool-empty-state dashboard-board-empty" data-dashboard-empty>
+                  <div><strong>ダッシュボードはまだありません</strong><p>Excel・CSVを読み込むと、データ内容に合わせてKPI・グラフ・ランキングを自動作成します。</p></div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <section class="dashboard-data-view" data-dashboard-view="data" hidden>
+            <div class="dashboard-data-toolbar">
+              <div>
+                <p class="tool-app-kicker">SOURCE DATA</p>
+                <h2>元データ</h2>
+                <p>現在の絞り込み条件を反映したデータを確認できます。ここではデータを書き換えません。</p>
+              </div>
+              <label class="tool-field dashboard-search-field"><span>データ内検索</span><input type="search" placeholder="店舗名・担当者・商品コードなど" data-dashboard-search /></label>
+            </div>
+            <p class="dashboard-data-note" data-dashboard-data-note>先頭500行まで表示します。</p>
+            <div class="tool-table-wrap dashboard-data-table-wrap">
+              <table class="tool-table dashboard-data-table" data-dashboard-data-table>
+                <thead data-dashboard-data-head></thead>
+                <tbody data-dashboard-data-body></tbody>
+              </table>
+              <div class="tool-empty-state" data-dashboard-data-empty><div><strong>データがありません</strong><p>ファイルを読み込むと、元データをここで確認できます。</p></div></div>
+            </div>
+          </section>
+        </div>
+      </ToolShell>
+
+      <div class="tool-seo-content">
+        <nav class="tool-seo-nav" aria-label="このツールの説明">
+          <a href="#dashboard-suitable">向いているデータ</a>
+          <a href="#dashboard-auto">自動生成の考え方</a>
+          <a href="#dashboard-columns">列の種類</a>
+          <a href="#dashboard-config">設定ファイル</a>
+          <a href="#dashboard-safety">安全性</a>
+          <a href="#dashboard-faq">よくある質問</a>
+        </nav>
+        <div class="tool-seo-body">
+          <section class="tool-seo-section" id="dashboard-suitable">
+            <p class="eyebrow">向いているデータ</p>
+            <h2>売上・受注・在庫・問い合わせなど、表形式の業務データを見える化</h2>
+            <p>1行目に列名があり、その下に明細が並ぶExcel・CSVに向いています。売上日、店舗、担当者、商品カテゴリ、数量、金額などが入っていれば、合計値や推移、分類別集計、ランキングを自動で組み立てます。</p>
+          </section>
+
+          <section class="tool-seo-section" id="dashboard-auto">
+            <p class="eyebrow">自動生成の考え方</p>
+            <h2>AIへデータを送らず、列の種類と値からルールベースで作成</h2>
+            <p>日付と数値があれば推移、分類項目と数値があれば分類別グラフ、主要な数値があればKPIを候補にします。意味が曖昧なグラフを大量に並べず、初期表示は重要な項目に絞ります。</p>
+          </section>
+
+          <section class="tool-seo-section" id="dashboard-columns">
+            <p class="eyebrow">列の種類</p>
+            <h2>日付・数値・分類・文字列・ID・コードを判定</h2>
+            <p>商品コード、社員番号、郵便番号のような値を、数字だけという理由で売上や数量として集計しないように判定します。自動判定が業務上の意味と違う場合は、画面から列の種類を変更できます。</p>
+          </section>
+
+          <section class="tool-seo-section" id="dashboard-config">
+            <p class="eyebrow">設定ファイル</p>
+            <h2>同じ形式のデータなら、ダッシュボード設定をJSONで再利用</h2>
+            <p>グラフの配置、集計方法、列の役割などを設定ファイルとして保存できます。設定JSONには元データそのものや現在のフィルター選択値を含めません。同じ列名を持つ翌月データなどへ再適用できます。</p>
+          </section>
+
+          <section class="tool-seo-section" id="dashboard-safety">
+            <p class="eyebrow">安全性・制限</p>
+            <h2>業務データを外部サーバーへ送信しません</h2>
+            <p>ファイル解析、集計、グラフ描画、画像・Excel・設定ファイル生成はブラウザ内で行います。初期版は1ファイル20MB、100,000行まで。50,000行を超える場合は処理時間の注意を表示します。</p>
+            <p>複数ファイルの結合、データベースやAPIへの直接接続、クラウドへの自動保存、共同編集はこの無料版の対象外です。</p>
+          </section>
+
+          <section class="tool-seo-section" id="dashboard-faq">
+            <p class="eyebrow">よくある質問</p>
+            <h2>Excel・CSVのダッシュボード作成について</h2>
+            <dl class="tool-faq-list">
+              <div class="tool-faq-item"><dt>無料で使えますか？</dt><dd>はい。登録不要で利用できます。</dd></div>
+              <div class="tool-faq-item"><dt>グラフは自分で変更できますか？</dt><dd>はい。種類、集計方法、対象列、サイズ、順番を変更できます。最大12項目まで追加できます。</dd></div>
+              <div class="tool-faq-item"><dt>PDFはどう保存しますか？</dt><dd>PDFで保存を押すと印刷画面を開きます。A4横向けに整えたレイアウトから、ブラウザの「PDFに保存」を利用できます。</dd></div>
+              <div class="tool-faq-item"><dt>毎月同じExcelを自動で集計できますか？</dt><dd>このツールでは設定JSONを再利用できます。さらにファイル取込から帳票作成まで完全自動化したい場合は、専用ツールとして構築できます。</dd></div>
+            </dl>
+          </section>
+
+          <section class="tool-seo-section">
+            <p class="eyebrow">関連</p>
+            <h2>集計作業そのものをなくしたい場合</h2>
+            <p>毎月同じExcelを集計してグラフを更新している、複数ファイルをまとめて管理したい、社内共有画面として常時更新したい、といった運用は専用のExcel・Python・Webシステムへ発展できます。</p>
+            <div class="hero-actions">
+              <a class="btn" href="/services/excel-automation">Excel自動化を見る</a>
+              <a class="btn" href="/services/python-data-processing">データ処理自動化を見る</a>
+              <a class="btn btn-primary" href="/contact">相談する</a>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <dialog class="dashboard-widget-dialog" data-widget-dialog aria-labelledby="dashboard-widget-dialog-title">
+    <form method="dialog" class="dashboard-dialog-card" data-widget-form>
+      <div class="dashboard-dialog-head">
+        <div><p class="tool-app-kicker">WIDGET</p><h2 id="dashboard-widget-dialog-title" data-widget-dialog-title>グラフを追加</h2></div>
+        <button class="dashboard-dialog-close" type="button" data-widget-dialog-close aria-label="閉じる">×</button>
+      </div>
+      <input type="hidden" data-widget-id />
+      <div class="dashboard-dialog-grid">
+        <label class="tool-field"><span>タイトル</span><input type="text" data-widget-title required /></label>
+        <label class="tool-field"><span>表示形式</span><select data-widget-kind><option value="kpi">KPI</option><option value="bar">棒グラフ</option><option value="horizontal-bar">横棒グラフ</option><option value="line">折れ線グラフ</option><option value="donut">ドーナツ</option><option value="ranking">ランキング</option><option value="table">集計表</option></select></label>
+        <label class="tool-field"><span>集計方法</span><select data-widget-aggregate><option value="sum">合計</option><option value="count">件数</option><option value="average">平均</option><option value="max">最大</option><option value="min">最小</option></select></label>
+        <label class="tool-field"><span>集計する数値列</span><select data-widget-value-column></select></label>
+        <label class="tool-field"><span>分類する列</span><select data-widget-group-column></select></label>
+        <label class="tool-field"><span>日付列</span><select data-widget-date-column></select></label>
+        <label class="tool-field"><span>日付のまとめ方</span><select data-widget-date-grain><option value="day">日別</option><option value="year-month">月別</option></select></label>
+        <label class="tool-field"><span>サイズ</span><select data-widget-dialog-size><option value="small">小</option><option value="medium">中</option><option value="large">大</option></select></label>
+      </div>
+      <p class="tool-error-message" data-widget-error hidden role="alert"></p>
+      <div class="dashboard-dialog-actions"><button class="tool-button tool-button-secondary" type="button" data-widget-dialog-cancel>キャンセル</button><button class="tool-button tool-button-primary" type="submit">反映する</button></div>
+    </form>
+  </dialog>
+
+  <dialog class="dashboard-confirm-dialog" data-dashboard-confirm-dialog aria-labelledby="dashboard-confirm-title">
+    <div class="dashboard-dialog-card dashboard-confirm-card">
+      <p class="tool-app-kicker">CONFIRM</p>
+      <h2 id="dashboard-confirm-title">現在の調整内容を破棄しますか？</h2>
+      <p data-dashboard-confirm-message>シートを切り替えると、現在のグラフ設定と絞り込み条件を作り直します。</p>
+      <div class="dashboard-dialog-actions"><button class="tool-button tool-button-secondary" type="button" data-dashboard-confirm-cancel>戻る</button><button class="tool-button tool-button-primary" type="button" data-dashboard-confirm-accept>破棄して続ける</button></div>
+    </div>
+  </dialog>
+</BaseLayout>
