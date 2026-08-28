@@ -1,3 +1,4 @@
+import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
   aggregateWidget,
@@ -60,7 +61,6 @@ describe('ダッシュボードフィルター', () => {
       values: ['東京店'],
     }];
     const rows = applyDashboardFilters(dataset, columns, filters);
-
     expect(rows).toHaveLength(4);
     expect(rows.every((row) => row[1] === '東京店')).toBe(true);
     expect(dashboardFilteredRowIndexes(dataset, columns, filters)).toEqual([0, 1, 3, 5]);
@@ -71,7 +71,6 @@ describe('ダッシュボードフィルター', () => {
       { id: 'store', columnId: 'store', type: 'category', values: ['東京店', '大阪店'] },
       { id: 'period', columnId: 'date', type: 'date-range', start: '2026-08-01', end: '2026-08-31' },
     ]);
-
     expect(rows).toHaveLength(3);
     expect(rows.map((row) => row[0])).toEqual(['2026-08-01', '2026-08-02', '2026-08-15']);
   });
@@ -97,32 +96,18 @@ describe('ダッシュボード集計', () => {
   });
 
   it('値列のない件数KPIは行数を数える', () => {
-    const result = aggregateWidget(dataset, columns, widget({ aggregate: 'count', valueColumnId: undefined }));
-    expect(result.scalar).toBe(6);
+    expect(aggregateWidget(dataset, columns, widget({ aggregate: 'count', valueColumnId: undefined })).scalar).toBe(6);
   });
 
   it('月別時系列を日付昇順で集計する', () => {
-    const result = aggregateWidget(dataset, columns, widget({
-      kind: 'line',
-      dateColumnId: 'date',
-      dateGrain: 'year-month',
-    }));
-
+    const result = aggregateWidget(dataset, columns, widget({ kind: 'line', dateColumnId: 'date', dateGrain: 'year-month' }));
     expect(result.labels).toEqual(['2026-07', '2026-08', '2026-09']);
     expect(result.values).toEqual([5000, 45000, 10000]);
   });
 
   it('分類別ランキングを値降順・Top Nで返す', () => {
-    const result = aggregateWidget(dataset, columns, widget({
-      kind: 'ranking',
-      groupColumnId: 'store',
-      limit: 2,
-    }));
-
-    expect(result.rows).toEqual([
-      { label: '東京店', value: 32000 },
-      { label: '大阪店', value: 28000 },
-    ]);
+    const result = aggregateWidget(dataset, columns, widget({ kind: 'ranking', groupColumnId: 'store', limit: 2 }));
+    expect(result.rows).toEqual([{ label: '東京店', value: 32000 }, { label: '大阪店', value: 28000 }]);
     expect(result.labels).toEqual(['東京店', '大阪店']);
     expect(result.values).toEqual([32000, 28000]);
   });
@@ -136,7 +121,6 @@ describe('ダッシュボード集計', () => {
     const result = aggregateWidgets(dataset, columns, widgets, [
       { id: 'period', columnId: 'date', type: 'date-range', start: '2026-08-01', end: '2026-08-31' },
     ]);
-
     expect(result.filteredRowIndexes).toEqual([1, 2, 3]);
     expect(result.results.find((item) => item.widgetId === 'sum')?.scalar).toBe(45000);
     expect(result.results.find((item) => item.widgetId === 'count')?.scalar).toBe(3);
@@ -145,5 +129,22 @@ describe('ダッシュボード集計', () => {
   it('日本語向け桁区切りで数値を表示する', () => {
     expect(formatDashboardNumber(12450000)).toBe('12,450,000');
     expect(formatDashboardNumber(1234.5)).toBe('1,234.5');
+  });
+});
+
+describe('ダッシュボードWorker契約', () => {
+  it('列型推定・自動構成・フィルター候補・再集計をWorkerへ分離する', () => {
+    const url = new URL('../src/workers/dashboard-builder.worker.ts', import.meta.url);
+    expect(existsSync(url)).toBe(true);
+    const source = existsSync(url) ? readFileSync(url, 'utf-8') : '';
+    expect(source).toContain('inferDashboardColumns');
+    expect(source).toContain('buildInitialDashboardWidgets');
+    expect(source).toContain('buildFilterCandidates');
+    expect(source).toContain('aggregateWidgets');
+    expect(source).toContain('ファイルを読み込んでいます');
+    expect(source).toContain('列の種類を確認しています');
+    expect(source).toContain('集計候補を作っています');
+    expect(source).toContain('ダッシュボードを作成しています');
+    expect(source).toContain('絞り込み条件で再集計しています');
   });
 });
