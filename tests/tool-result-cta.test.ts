@@ -56,4 +56,15 @@ describe('結果後相談CTA', () => {
     expect(diagnosisClient).toContain('resultCta.show()');
     expect(diagnosisClient).toContain('resultCta.hide()');
   });
+
+  it('結果CTA連携は入力データ送信やブラウザ永続化を追加しない', () => {
+    [excelClient, cleanerClient, dashboardClient, diagnosisClient].forEach((source) => {
+      expect(source).not.toContain('localStorage');
+      expect(source).not.toContain('sessionStorage');
+      expect(source).not.toContain('fetch(');
+    });
+    expect(component).not.toContain('fileName');
+    expect(component).not.toContain('annualHours');
+    expect(component).not.toContain('savedCost');
+  });
 });
