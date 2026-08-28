@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ToolResultCTA from '../../components/tools/ToolResultCTA.astro';
 import ToolShell from '../../components/tools/ToolShell.astro';
 import '../../styles/tool-app.css';
 import '../../styles/automation-diagnosis.css';
@@ -264,6 +265,8 @@ const structuredData = [
                   <button class="tool-button tool-button-secondary" type="button" data-diagnosis-restart>入力内容を見直す</button>
                   <button class="tool-button tool-button-primary" type="button" data-diagnosis-print>診断結果をPDFで保存</button>
                 </div>
+
+                <ToolResultCTA source="automation-diagnosis" printIgnore />
               </section>
 
               <div class="diagnosis-footer-actions" data-print-ignore>
