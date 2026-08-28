@@ -1,0 +1,110 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const personStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'TI AUTOMATION STUDIO 制作者',
+  jobTitle: 'システムエンジニア',
+  description: '現役SEとして約10年、Excel・Google Apps Script・Python・Web・APIを活用した業務改善・自動化開発に取り組んでいます。',
+  knowsAbout: ['業務自動化', 'Excel', 'Google Apps Script', 'Python', 'Webシステム', 'API連携', 'AI活用'],
+  url: Astro.site ? new URL('/about', Astro.site).toString() : Astro.url.toString(),
+};
+
+const capabilities = [
+  ['01', 'Excel・VBA・スプレッドシート', '集計、転記、帳票作成、入力支援など、日々繰り返している作業を減らします。'],
+  ['02', 'Google Apps Script', 'スプレッドシート、Drive、Gmailなどをつなぎ、Google Workspace上の業務を仕組み化します。'],
+  ['03', 'Python・データ処理', 'CSV・Excelの整形、検証、変換、集計など、大量データの処理を効率化します。'],
+  ['04', 'Web・API連携', 'ブラウザで使う業務画面や、外部サービスとのデータ連携・認証処理を構築します。'],
+  ['05', 'PDF・帳票自動化', '定型帳票やPDFの生成、保存、出力までを業務フローに合わせて自動化します。'],
+  ['06', 'AIを使った業務効率化', 'AIを使うこと自体を目的にせず、分類・要約・入力支援など実務で使える形に落とし込みます。'],
+];
+
+const principles = [
+  ['01', '現場で迷わないこと', '機能を増やすより、利用する人が次に何をすればいいか分かる画面と動線を優先します。'],
+  ['02', '処理中かどうかが分かること', '時間のかかる処理でも、動いているのか止まっているのか分からない状態をできるだけ作りません。'],
+  ['03', '既存環境を活かすこと', 'ExcelやGoogle Workspaceなど、すでに使っている環境を捨てずに改善できるなら、その方法を優先します。'],
+  ['04', '使い続けられること', 'その場で動くだけではなく、修正しやすさ、運用しやすさ、例外時の扱いまで考えて設計します。'],
+];
+---
+<BaseLayout
+  title="制作者について"
+  description="TI AUTOMATION STUDIOの制作者プロフィール。現役SEとして約10年、Excel・GAS・Python・Web・APIを使った業務改善・自動化開発を行っています。"
+  structuredData={personStructuredData}
+>
+  <section class="page-hero about-page-hero">
+    <div class="container reveal">
+      <p class="eyebrow">制作者について</p>
+      <h1>現場で使われ続ける、<br />業務の仕組みを作る。</h1>
+      <p>現役SEとして約10年、業務システムの開発・改修と、Excel・Google Apps Script・Python・Web・APIを使った業務改善に取り組んでいます。新しい技術を使うことより、毎日の仕事が実際に軽くなることを重視しています。</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container about-profile-grid">
+      <aside class="about-profile-summary" aria-label="プロフィール概要">
+        <div><span>経験</span><strong>システム開発 約10年</strong></div>
+        <div><span>対応実績</span><strong>開発・業務改善 約100件</strong></div>
+        <div><span>主な領域</span><strong>Excel / GAS / Python / Web / API</strong></div>
+        <div><span>対応範囲</span><strong>小規模改善〜個別システム開発</strong></div>
+      </aside>
+
+      <div class="about-story">
+        <p class="eyebrow">これまで</p>
+        <h2 class="section-title">「便利そう」ではなく、<br />実際の業務で使えるものを。</h2>
+        <p>業務システムの開発・改修を続ける中で、Excelへの手入力や転記、毎月同じ形で行う集計、複数サービス間のデータ移動など、システム化するほどではないと思われている手作業を多く見てきました。</p>
+        <p>TI AUTOMATION STUDIOでは、そうした作業を一つずつ整理し、Excel・VBA、Google Apps Script、Python、Webアプリ、API連携などから、その業務に合う方法を選んで仕組みに変えています。</p>
+        <p>大きなシステムを最初から導入するのではなく、いま使っているファイルや運用を活かしながら、小さく改善していく開発も得意としています。</p>
+        <div class="hero-actions">
+          <a class="btn" href="/works">開発実績を見る <span aria-hidden="true">→</span></a>
+          <a class="btn" href="/contact">相談する <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">対応できること</p>
+      <h2 class="section-title">技術を固定せず、<br />業務に合わせて組み合わせます。</h2>
+      <div class="about-capability-grid">
+        {capabilities.map(([no, title, copy]) => (
+          <article class="about-capability">
+            <span>{no}</span>
+            <h3>{title}</h3>
+            <p>{copy}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">開発で大切にしていること</p>
+      <h2 class="section-title">作って終わりではなく、<br />使い続けられる状態まで考える。</h2>
+      <div class="about-principle-grid">
+        {principles.map(([no, title, copy]) => (
+          <article class="about-principle">
+            <span>{no}</span>
+            <h3>{title}</h3>
+            <p>{copy}</p>
+          </article>
+        ))}
+      </div>
+      <div class="about-privacy-note">
+        本名・勤務先などの個人情報は公開していません。また、依頼者や案件を特定できる顧客名・固有データ・秘密情報も公開せず、実績は公開可能な範囲に一般化して掲載しています。
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container cta-band-inner">
+      <div>
+        <p class="eyebrow">問い合わせ</p>
+        <h2>「これ、自動化できる？」から<br />相談できます。</h2>
+      </div>
+      <a class="btn btn-primary" href="/contact">開発について相談する <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+</BaseLayout>

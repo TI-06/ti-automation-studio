@@ -57,6 +57,26 @@ const process = [
     </div>
   </section>
 
+  <section class="section creator-intro">
+    <div class="container creator-intro-grid">
+      <div>
+        <p class="eyebrow">制作者について</p>
+        <h2 class="section-title">現役SEとして約10年。<br />実務の中で使える仕組みを作っています。</h2>
+      </div>
+      <div class="creator-intro-copy">
+        <p>業務システムの開発・改修と、Excel・Google Apps Script・Python・Web・APIを使った業務改善を中心に、約100件の開発・改善に対応してきました。新しい技術を使うことより、利用する人が迷わず、日々の業務で使い続けられることを重視しています。</p>
+        <div class="creator-facts" aria-label="制作者概要">
+          <div class="creator-fact"><span>経験</span><strong>システム開発 約10年</strong></div>
+          <div class="creator-fact"><span>主な領域</span><strong>業務改善 / 自動化 / Web</strong></div>
+          <div class="creator-fact"><span>対応</span><strong>小規模改善〜個別システム</strong></div>
+        </div>
+        <div class="hero-actions">
+          <a class="btn" href="/about">制作者について詳しく見る <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section id="services" class="section">
     <div class="container">
       <p class="eyebrow">できること</p>
@@ -133,27 +153,6 @@ const process = [
         {process.map(([no, title, copy]) => (
           <article class="process-item"><span class="process-no">{no}</span><h3>{title}</h3><p>{copy}</p></article>
         ))}
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container about-panel">
-      <div>
-        <p class="eyebrow">プロフィール</p>
-        <h2 class="section-title">実務を止めずに、<br />仕組みを変える。</h2>
-      </div>
-      <div>
-        <div class="about-body">
-          <p>30代のシステムエンジニアとして、業務システムの開発・改修と、Excel・GAS・Pythonを使った業務改善を行っています。</p>
-          <p>新しい技術を使うこと自体よりも、利用する人が迷わず、処理中かどうかが分かり、日常業務の中で使い続けられることを重視しています。</p>
-          <p>会社名・顧客名・個人情報は公開していません。公開可能な範囲で、実績と技術内容を紹介しています。</p>
-        </div>
-        <div class="about-meta">
-          <div><span>経験</span><strong>システム開発 約10年</strong></div>
-          <div><span>主な領域</span><strong>業務改善 / 自動化 / Web</strong></div>
-          <div><span>対応</span><strong>小規模改善〜個別システム開発</strong></div>
-        </div>
       </div>
     </div>
   </section>
