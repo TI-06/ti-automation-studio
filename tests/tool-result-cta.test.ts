@@ -5,6 +5,8 @@ const component = readFileSync(new URL('../src/components/tools/ToolResultCTA.as
 const helper = readFileSync(new URL('../src/scripts/tools/result-cta.ts', import.meta.url), 'utf-8');
 const excelPage = readFileSync(new URL('../src/pages/tools/excel-diff.astro', import.meta.url), 'utf-8');
 const excelClient = readFileSync(new URL('../src/scripts/tools/excel-diff.ts', import.meta.url), 'utf-8');
+const cleanerPage = readFileSync(new URL('../src/pages/tools/data-cleaner.astro', import.meta.url), 'utf-8');
+const cleanerClient = readFileSync(new URL('../src/scripts/tools/data-cleaner.ts', import.meta.url), 'utf-8');
 
 describe('結果後相談CTA', () => {
   it('初期非表示でsourceだけを問い合わせへ渡す', () => {
@@ -27,5 +29,12 @@ describe('結果後相談CTA', () => {
     expect(excelClient).toContain("bindToolResultCta('excel-diff')");
     expect(excelClient).toContain('resultCta.show()');
     expect(excelClient).toContain('resultCta.hide()');
+  });
+
+  it('データ整理は健康診断完了後だけCTAを表示する', () => {
+    expect(cleanerPage).toContain('<ToolResultCTA source="data-cleaner"');
+    expect(cleanerClient).toContain("bindToolResultCta('data-cleaner')");
+    expect(cleanerClient).toContain('resultCta.show()');
+    expect(cleanerClient).toContain('resultCta.hide()');
   });
 });
