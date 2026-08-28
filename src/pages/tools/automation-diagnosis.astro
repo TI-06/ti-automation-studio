@@ -1,0 +1,325 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ToolShell from '../../components/tools/ToolShell.astro';
+import '../../styles/tool-app.css';
+import '../../styles/automation-diagnosis.css';
+
+const canonical = Astro.site ? new URL('/tools/automation-diagnosis', Astro.site).toString() : undefined;
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: '業務自動化診断・工数削減シミュレーター',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Web',
+    browserRequirements: 'JavaScript',
+    inLanguage: 'ja-JP',
+    description: '作業時間・頻度・人数・作業の特徴から、現在工数、自動化適性、改善候補、削減シミュレーションをルールベースで確認できる無料ツール。',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'JPY' },
+    url: canonical,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'トップ', item: Astro.site ? new URL('/', Astro.site).toString() : '/' },
+      { '@type': 'ListItem', position: 2, name: '公開ツール', item: Astro.site ? new URL('/tools', Astro.site).toString() : '/tools' },
+      { '@type': 'ListItem', position: 3, name: '業務自動化診断', item: canonical },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'この診断はAIを使っていますか？',
+        acceptedAnswer: { '@type': 'Answer', text: 'いいえ。入力した作業時間、頻度、定型度、判断の多さなどを、あらかじめ定めた判定ルールで計算しています。' },
+      },
+      {
+        '@type': 'Question',
+        name: '入力した業務内容はサーバーに送信されますか？',
+        acceptedAnswer: { '@type': 'Answer', text: 'いいえ。診断の入力内容と計算結果はブラウザ内だけで扱い、外部サーバーへ送信しません。' },
+      },
+      {
+        '@type': 'Question',
+        name: '表示された削減時間は保証されますか？',
+        acceptedAnswer: { '@type': 'Answer', text: 'いいえ。削減率は入力条件に基づくシミュレーションです。実際の効果は例外処理や運用方法によって変わります。' },
+      },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="業務自動化診断・工数削減シミュレーター"
+  description="作業時間・頻度・人数・業務内容から、自動化の向き不向き、年間工数、削減シミュレーションを無料・登録不要で確認できます。AIを使わない説明可能なルール診断です。"
+  canonical={canonical}
+  structuredData={structuredData}
+>
+  <section class="tool-page">
+    <div class="container">
+      <ToolShell
+        title="業務自動化診断・工数削減シミュレーター"
+        subtitle="いまの作業時間と業務の特徴を入力すると、現在工数・自動化適性・改善候補・人が残すべき部分を整理し、削減シミュレーションまで確認できます。"
+        processingLabel="ブラウザ内処理"
+      >
+        <div class="diagnosis-app" data-diagnosis-app>
+          <div class="diagnosis-meta-bar" data-print-ignore>
+            <div class="diagnosis-progress-block">
+              <div class="diagnosis-progress-label">
+                <span>DIAGNOSIS</span>
+                <strong data-diagnosis-progress>1 / 6 作業量について</strong>
+              </div>
+              <div class="diagnosis-progress-track" aria-hidden="true"><span data-diagnosis-progress-bar></span></div>
+            </div>
+            <p class="diagnosis-rule-note">この診断はAIによる推測ではありません。入力した条件を、あらかじめ定めた判定ルールで計算します。</p>
+          </div>
+
+          <div class="diagnosis-layout">
+            <aside class="diagnosis-side" data-print-ignore aria-label="診断ステップ">
+              <p class="diagnosis-side-title">診断の流れ</p>
+              <div class="diagnosis-step-list" aria-hidden="true">
+                <span>作業量</span>
+                <span>作業内容</span>
+                <span>作業の特徴</span>
+                <span>利用環境</span>
+                <span>入力確認</span>
+                <span>診断結果</span>
+              </div>
+              <div class="diagnosis-side-actions">
+                <button class="tool-button tool-button-secondary" type="button" data-diagnosis-sample>例を使って試す</button>
+                <button class="tool-button tool-button-secondary" type="button" data-diagnosis-reset>最初からやり直す</button>
+              </div>
+              <p class="diagnosis-side-note">入力内容は外部サーバーへ送信されません。氏名・会社名・メールアドレスの入力も不要です。</p>
+            </aside>
+
+            <main class="diagnosis-workspace">
+              <p class="diagnosis-error" data-diagnosis-error hidden role="alert"></p>
+              <p class="diagnosis-warning" data-diagnosis-warning hidden role="status"></p>
+
+              <section class="diagnosis-step" data-diagnosis-step="1" data-step-label="作業量について">
+                <header class="diagnosis-step-head">
+                  <p class="diagnosis-step-number">STEP 01</p>
+                  <h2>まず、どれくらい時間を使っているか教えてください。</h2>
+                  <p>現在工数は「1回あたりの作業時間 × 年間回数 × 作業人数」で計算します。複数人が同じ時間を使う前提です。</p>
+                </header>
+                <div class="diagnosis-question-grid">
+                  <div class="diagnosis-question">
+                    <label for="diagnosis-minutes">1回あたりの作業時間</label>
+                    <div class="diagnosis-input-row"><input id="diagnosis-minutes" type="number" min="1" step="1" value="30" data-minutes /><span>分</span></div>
+                    <small>例：30分なら「30」、2時間なら「120」と入力します。</small>
+                  </div>
+                  <div class="diagnosis-question">
+                    <label for="diagnosis-people">この作業をする人数</label>
+                    <div class="diagnosis-input-row"><input id="diagnosis-people" type="number" min="1" step="1" value="1" data-people /><span>人</span></div>
+                    <small>全員が同じ作業時間を使う前提で計算します。</small>
+                  </div>
+                  <div class="diagnosis-question diagnosis-question-wide">
+                    <label for="diagnosis-frequency">実施頻度</label>
+                    <select id="diagnosis-frequency" data-frequency>
+                      <option value="daily">毎日</option>
+                      <option value="weekly-multiple">週に数回</option>
+                      <option value="weekly" selected>週1回</option>
+                      <option value="monthly-multiple">月に数回</option>
+                      <option value="monthly">月1回</option>
+                      <option value="yearly-multiple">年に数回</option>
+                      <option value="custom">回数を直接入力</option>
+                    </select>
+                    <div class="diagnosis-custom-frequency" data-custom-frequency hidden>
+                      <input type="number" min="1" step="1" placeholder="回数" data-custom-count aria-label="実施回数" />
+                      <select data-custom-period aria-label="実施回数の期間">
+                        <option value="">期間</option>
+                        <option value="week">1週間あたり</option>
+                        <option value="month">1か月あたり</option>
+                        <option value="year">1年あたり</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <p class="diagnosis-inline-note">1回の作業時間が24時間を超える入力も可能ですが、複数日分をまとめて入力していないか確認メッセージを表示します。</p>
+              </section>
+
+              <section class="diagnosis-step" data-diagnosis-step="2" data-step-label="作業内容について" hidden>
+                <header class="diagnosis-step-head">
+                  <p class="diagnosis-step-number">STEP 02</p>
+                  <h2>主に、どんな作業をしていますか？</h2>
+                  <p>当てはまるものを複数選べます。ここで選んだ内容から、自動化しやすい部分の候補を整理します。</p>
+                </header>
+                <div class="diagnosis-choice-grid">
+                  <label class="diagnosis-choice"><input type="checkbox" name="diagnosis-task" value="excel-input" /><span><strong>Excelへの入力</strong>手入力・追記・更新</span></label>
+                  <label class="diagnosis-choice"><input type="checkbox" name="diagnosis-task" value="file-transfer" /><span><strong>別ファイルへの転記</strong>コピー・貼り付け・転記</span></label>
+                  <label class="diagnosis-choice"><input type="checkbox" name="diagnosis-task" value="aggregation" /><span><strong>データ集計</strong>合計・分類・集計表</span></label>
+                  <label class="diagnosis-choice"><input type="checkbox" name="diagnosis-task" value="verification" /><span><strong>データの確認・照合</strong>差分・重複・内容確認</span></label>
+                  <label class="diagnosis-choice"><input type="checkbox" name="diagnosis-task" value="email" /><span><strong>メール送信</strong>定型連絡・通知</span></label>
+                  <label class="diagnosis-choice"><input type="checkbox" name="diagnosis-task" value="pdf-report" /><span><strong>PDF・帳票作成</strong>請求書・報告書・定型帳票</span></label>
+                  <label class="diagnosis-choice"><input type="checkbox" name="diagnosis-task" value="web-input" /><span><strong>Webサイトへの入力</strong>管理画面・フォーム入力</span></label>
+                  <label class="diagnosis-choice"><input type="checkbox" name="diagnosis-task" value="file-management" /><span><strong>ファイル整理・保存</strong>命名・分類・フォルダ保存</span></label>
+                  <label class="diagnosis-choice"><input type="checkbox" name="diagnosis-task" value="approval" /><span><strong>承認・確認作業</strong>内容確認・承認判断</span></label>
+                  <label class="diagnosis-choice"><input type="checkbox" name="diagnosis-task" value="external-registration" /><span><strong>外部サービスへの登録</strong>商品・顧客・データ登録</span></label>
+                  <label class="diagnosis-choice"><input type="checkbox" name="diagnosis-task" value="other" /><span><strong>その他</strong>上記にない業務</span></label>
+                </div>
+                <div class="diagnosis-question" data-other-task hidden style="margin-top:14px">
+                  <label for="diagnosis-other-task">その他の作業メモ</label>
+                  <input id="diagnosis-other-task" type="text" maxlength="120" placeholder="例：紙の申請書から内容を転記" data-other-task-note />
+                  <small>この自由文をAI解析して診断点数へ加えることはありません。レポートの補足としてのみ扱います。</small>
+                </div>
+              </section>
+
+              <section class="diagnosis-step" data-diagnosis-step="3" data-step-label="作業の特徴について" hidden>
+                <header class="diagnosis-step-head">
+                  <p class="diagnosis-step-number">STEP 03</p>
+                  <h2>作業の「決まり方」を確認します。</h2>
+                  <p>作業量が大きくても、人の判断や例外が多い場合は高い自動化適性にはしません。</p>
+                </header>
+                <div class="diagnosis-question-grid">
+                  <fieldset class="diagnosis-question"><legend>手順は毎回どれくらい同じですか？</legend><div class="diagnosis-choice-grid"><label class="diagnosis-choice"><input type="radio" name="routine-level" value="same" checked /><span><strong>ほぼ毎回同じ</strong></span></label><label class="diagnosis-choice"><input type="radio" name="routine-level" value="partial" /><span><strong>一部だけ変わる</strong></span></label><label class="diagnosis-choice"><input type="radio" name="routine-level" value="different" /><span><strong>毎回かなり違う</strong></span></label></div></fieldset>
+                  <fieldset class="diagnosis-question"><legend>人による判断はどれくらい必要ですか？</legend><div class="diagnosis-choice-grid"><label class="diagnosis-choice"><input type="radio" name="judgment-level" value="low" checked /><span><strong>ほとんど不要</strong></span></label><label class="diagnosis-choice"><input type="radio" name="judgment-level" value="some" /><span><strong>一部必要</strong></span></label><label class="diagnosis-choice"><input type="radio" name="judgment-level" value="high" /><span><strong>判断が多い</strong></span></label></div></fieldset>
+                  <fieldset class="diagnosis-question"><legend>入力データの形式は一定ですか？</legend><div class="diagnosis-choice-grid"><label class="diagnosis-choice"><input type="radio" name="data-consistency" value="same" checked /><span><strong>ほぼ同じ</strong></span></label><label class="diagnosis-choice"><input type="radio" name="data-consistency" value="partial" /><span><strong>一部変わる</strong></span></label><label class="diagnosis-choice"><input type="radio" name="data-consistency" value="different" /><span><strong>毎回違う</strong></span></label></div></fieldset>
+                  <fieldset class="diagnosis-question"><legend>例外処理はどれくらいありますか？</legend><div class="diagnosis-choice-grid"><label class="diagnosis-choice"><input type="radio" name="exception-level" value="low" checked /><span><strong>ほとんどない</strong></span></label><label class="diagnosis-choice"><input type="radio" name="exception-level" value="some" /><span><strong>時々ある</strong></span></label><label class="diagnosis-choice"><input type="radio" name="exception-level" value="high" /><span><strong>多い</strong></span></label></div></fieldset>
+                </div>
+              </section>
+
+              <section class="diagnosis-step" data-diagnosis-step="4" data-step-label="利用環境・費用について" hidden>
+                <header class="diagnosis-step-head">
+                  <p class="diagnosis-step-number">STEP 04</p>
+                  <h2>いま使っている環境を教えてください。</h2>
+                  <p>利用環境から、Excel・GAS・Webツール・API連携などの実現方法を参考候補として提示します。</p>
+                </header>
+                <div class="diagnosis-choice-grid two">
+                  <label class="diagnosis-choice"><input type="checkbox" name="diagnosis-environment" value="excel" /><span><strong>Excel</strong>ファイル・マクロを含む</span></label>
+                  <label class="diagnosis-choice"><input type="checkbox" name="diagnosis-environment" value="google-sheets" /><span><strong>Googleスプレッドシート</strong>共有表・集計表</span></label>
+                  <label class="diagnosis-choice"><input type="checkbox" name="diagnosis-environment" value="google-workspace" /><span><strong>Gmail / Google Drive</strong>メール・ファイル保存</span></label>
+                  <label class="diagnosis-choice"><input type="checkbox" name="diagnosis-environment" value="internal-web" /><span><strong>社内Webシステム</strong>社内管理画面・データベース</span></label>
+                  <label class="diagnosis-choice"><input type="checkbox" name="diagnosis-environment" value="external-web" /><span><strong>外部Webサービス</strong>EC・SaaS・外部管理画面</span></label>
+                  <label class="diagnosis-choice"><input type="checkbox" name="diagnosis-environment" value="pdf-paper" /><span><strong>PDF / 紙帳票</strong>帳票・印刷物</span></label>
+                  <label class="diagnosis-choice"><input type="checkbox" name="diagnosis-environment" value="other" /><span><strong>その他</strong>上記以外</span></label>
+                </div>
+                <div class="diagnosis-question-grid" style="margin-top:16px">
+                  <div class="diagnosis-question">
+                    <label for="diagnosis-hourly-cost">1時間あたりの人件費（任意）</label>
+                    <div class="diagnosis-input-row"><input id="diagnosis-hourly-cost" type="number" min="0" step="100" placeholder="例：3000" data-hourly-cost /><span>円</span></div>
+                    <small>未入力でも診断できます。入力すると年間作業コストと削減コストを試算します。</small>
+                  </div>
+                  <div class="diagnosis-question">
+                    <label for="diagnosis-report-title">レポートタイトル（任意）</label>
+                    <input id="diagnosis-report-title" type="text" maxlength="80" placeholder="例：月次売上集計の自動化診断" data-report-title />
+                    <small>氏名や会社名の入力は必要ありません。</small>
+                  </div>
+                </div>
+              </section>
+
+              <section class="diagnosis-step" data-diagnosis-step="5" data-step-label="入力内容の確認" hidden>
+                <header class="diagnosis-step-head">
+                  <p class="diagnosis-step-number">STEP 05</p>
+                  <h2>入力内容を確認してください。</h2>
+                  <p>問題なければ「診断結果を見る」を押してください。前へ戻ると内容を修正できます。</p>
+                </header>
+                <div class="diagnosis-review" data-diagnosis-review></div>
+                <p class="diagnosis-inline-note">診断結果は見積・契約条件・削減効果の保証ではありません。入力条件を整理するための参考シミュレーションです。</p>
+              </section>
+
+              <section class="diagnosis-step diagnosis-result-step" data-diagnosis-step="6" data-step-label="診断結果" hidden>
+                <div class="diagnosis-report" data-diagnosis-report>
+                  <header class="diagnosis-report-head">
+                    <div><p class="diagnosis-step-number">AUTOMATION DIAGNOSIS REPORT</p><h2 data-result-report-title>業務自動化診断レポート</h2></div>
+                    <div class="diagnosis-report-meta"><span>TI AUTOMATION STUDIO</span><span data-result-generated-at></span></div>
+                  </header>
+
+                  <div class="diagnosis-result-hero">
+                    <div class="diagnosis-result-metric"><span>自動化適性</span><strong class="diagnosis-suitability" data-result-suitability>—</strong></div>
+                    <div class="diagnosis-result-metric"><span>年間作業時間</span><strong data-result-annual-hours>—</strong></div>
+                    <div class="diagnosis-result-metric"><span>月間作業時間</span><strong data-result-monthly-hours>—</strong></div>
+                    <div class="diagnosis-result-metric"><span>年間実施回数</span><strong data-result-annual-runs>—</strong></div>
+                  </div>
+
+                  <div class="diagnosis-result-body">
+                    <section class="diagnosis-report-section diagnosis-section-positive"><h3>自動化しやすい理由</h3><ul data-result-positive></ul></section>
+                    <section class="diagnosis-report-section diagnosis-section-caution"><h3>注意が必要な点</h3><ul data-result-cautions></ul></section>
+                    <section class="diagnosis-report-section"><h3>自動化しやすい部分</h3><ul data-result-automatable></ul></section>
+                    <section class="diagnosis-report-section"><h3>人が残す方がよい部分</h3><ul data-result-human></ul></section>
+                    <section class="diagnosis-report-section"><h3>実現方法の一例</h3><ul data-result-technologies></ul><p>技術名は参考候補です。実際の構成は既存環境や運用方法によって変わります。</p></section>
+                    <section class="diagnosis-report-section"><h3>現在の作業コスト</h3><p>入力した人件費をもとにした単純試算です。</p><strong data-result-annual-cost>人件費未入力</strong></section>
+
+                    <section class="diagnosis-simulation">
+                      <div class="diagnosis-simulation-head"><div><p class="diagnosis-step-number">SIMULATION</p><h3>削減シミュレーション</h3></div><strong data-reduction-value>60%</strong></div>
+                      <div class="diagnosis-rate-buttons" data-print-ignore>
+                        <button type="button" data-reduction-rate="20" aria-pressed="false">20%</button>
+                        <button type="button" data-reduction-rate="40" aria-pressed="false">40%</button>
+                        <button type="button" data-reduction-rate="60" aria-pressed="true">60%</button>
+                        <button type="button" data-reduction-rate="80" aria-pressed="false">80%</button>
+                      </div>
+                      <input class="diagnosis-range" type="range" min="20" max="80" step="20" value="60" data-reduction-range data-print-ignore aria-label="削減率" />
+                      <div class="diagnosis-saving-metrics">
+                        <div><span>年間削減時間</span><strong data-result-saved-hours>—</strong></div>
+                        <div><span>自動化後に残る時間</span><strong data-result-remaining-hours>—</strong></div>
+                        <div><span>年間削減コスト</span><strong data-result-saved-cost>人件費未入力</strong></div>
+                      </div>
+                    </section>
+                  </div>
+                  <p class="diagnosis-disclaimer">実際の削減率は業務内容、例外処理、運用方法によって異なります。この結果は入力条件によるシミュレーションであり、削減効果を保証するものではありません。</p>
+                </div>
+
+                <div class="diagnosis-result-actions" data-print-ignore>
+                  <button class="tool-button tool-button-secondary" type="button" data-diagnosis-restart>入力内容を見直す</button>
+                  <button class="tool-button tool-button-primary" type="button" data-diagnosis-print>診断結果をPDFで保存</button>
+                </div>
+              </section>
+
+              <div class="diagnosis-footer-actions" data-print-ignore>
+                <button class="tool-button tool-button-secondary" type="button" data-diagnosis-prev>前へ</button>
+                <button class="tool-button tool-button-primary" type="button" data-diagnosis-next>次へ</button>
+              </div>
+            </main>
+          </div>
+        </div>
+      </ToolShell>
+
+      <div class="diagnosis-seo">
+        <div class="diagnosis-seo-grid">
+          <section class="diagnosis-seo-card">
+            <p class="eyebrow">AUTOMATION FIT</p>
+            <h2>自動化に向いている業務</h2>
+            <p>手順が毎回ほぼ同じ、入力データの形式が一定、判断や例外が少ない、繰り返し回数が多い業務は自動化と相性がよい傾向があります。転記・集計・定型メール・帳票作成・ファイル整理などは、特に改善候補を切り出しやすい作業です。</p>
+          </section>
+          <section class="diagnosis-seo-card">
+            <p class="eyebrow">HUMAN JUDGMENT</p>
+            <h2>自動化しにくい業務</h2>
+            <p>顧客ごとに判断基準が違う、毎回手順が大きく変わる、例外対応が多い業務は、全部を自動化するより「定型部分だけ機械に任せ、判断は人に残す」設計が現実的です。この診断でも作業量だけで高評価にはしません。</p>
+          </section>
+          <section class="diagnosis-seo-card">
+            <p class="eyebrow">CALCULATION</p>
+            <h2>工数削減シミュレーションの計算方法</h2>
+            <p>年間作業時間は「1回あたりの作業時間 × 年間実施回数 × 作業人数」で計算します。削減シミュレーションは、その年間時間に20%・40%・60%・80%の仮定を掛けた参考値です。人件費を入力した場合のみ、同じ割合で年間削減コストも表示します。</p>
+          </section>
+          <section class="diagnosis-seo-card">
+            <p class="eyebrow">TECHNOLOGY</p>
+            <h2>Excel / GAS / Web / APIの使い分け</h2>
+            <p>Excel中心ならVBAやPython、Google Workspace中心ならGoogle Apps Script、複数人で同じデータを扱うならWebツール、外部サービスと安定して連携できる場合はAPI連携が候補になります。実際には既存環境や運用人数を見て構成を決めます。</p>
+          </section>
+          <section class="diagnosis-seo-card diagnosis-seo-wide">
+            <p class="eyebrow">FAQ</p>
+            <h2>よくある質問</h2>
+            <h3>この診断はAIを使っていますか？</h3><p>いいえ。AI APIは使用していません。入力した作業時間・頻度・定型度などを、あらかじめ定めた判定ルールで計算しています。</p>
+            <h3>入力した内容は保存されますか？</h3><p>このツールでは診断内容を外部サーバーへ送信せず、ブラウザ内だけで扱います。ページを閉じると入力状態は保持されません。</p>
+            <h3>表示された削減時間は保証されますか？</h3><p>保証値ではありません。実際の削減率は例外処理、確認工程、既存システム、運用方法などによって変わります。</p>
+          </section>
+          <section class="diagnosis-seo-card diagnosis-seo-wide">
+            <p class="eyebrow">NEXT STEP</p>
+            <h2>実際の業務に合わせて、自動化できる範囲を整理できます。</h2>
+            <p>この診断結果だけで相談する必要はありません。PDF保存まで無料で利用できます。実際のファイル構成や運用人数まで含めて設計したい場合は、関連サービス・実績もご確認ください。</p>
+            <div class="hero-actions">
+              <a class="btn" href="/services">業務自動化サービスを見る</a>
+              <a class="btn" href="/works">関連実績を見る</a>
+              <a class="btn btn-primary" href="/contact">開発について相談する</a>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import '../../scripts/tools/automation-diagnosis';
+  </script>
+</BaseLayout>
