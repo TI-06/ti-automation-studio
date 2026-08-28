@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ToolProgress from '../../components/tools/ToolProgress.astro';
+import ToolResultCTA from '../../components/tools/ToolResultCTA.astro';
 import ToolShell from '../../components/tools/ToolShell.astro';
 import '../../styles/tool-app.css';
 import '../../styles/dashboard-builder.css';
@@ -144,6 +145,8 @@ const structuredData = [
               </div>
             </section>
           </div>
+
+          <ToolResultCTA source="dashboard-builder" />
 
           <section class="dashboard-data-view" data-dashboard-view="data" hidden>
             <div class="dashboard-data-toolbar">
