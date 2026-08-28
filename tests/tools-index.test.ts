@@ -39,4 +39,14 @@ describe('公開ツール一覧', () => {
     expect(source).toContain('店舗ランキング');
     expect(source).toContain('dashboard-builder-preview');
   });
+
+  it('業務自動化診断の年間工数・適性・削減試算が伝わる専用プレビューを持つ', () => {
+    expect(source).toContain("tool.slug === 'automation-diagnosis'");
+    expect(source).toContain('業務自動化診断');
+    expect(source).toContain('年間工数');
+    expect(source).toContain('自動化適性');
+    expect(source).toContain('削減シミュレーション');
+    expect(source).toContain('automation-diagnosis-preview');
+    expect(source).toContain('表示イメージ');
+  });
 });
