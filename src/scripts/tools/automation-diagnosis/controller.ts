@@ -13,6 +13,7 @@ import type {
   JudgmentLevel,
   RoutineLevel,
 } from '../../../lib/tools/automation-diagnosis/types';
+import { bindToolResultCta } from '../result-cta';
 
 export interface AutomationDiagnosisValidation {
   valid: boolean;
@@ -147,6 +148,7 @@ function setList(container: HTMLElement, values: string[], emptyText: string): v
 export function initAutomationDiagnosis(appRoot: HTMLElement): void {
   let currentStep = 1;
   let reductionRate = 60;
+  const resultCta = bindToolResultCta('automation-diagnosis');
 
   const query = <T>(selector: string): T => {
     const element = appRoot.querySelector(selector);
@@ -321,8 +323,12 @@ export function initAutomationDiagnosis(appRoot: HTMLElement): void {
     const input = readInput();
     const validation = validateAutomationDiagnosisInput(input);
     showMessages(validation.messages, validation.warnings);
-    if (!validation.valid) return false;
+    if (!validation.valid) {
+      resultCta.hide();
+      return false;
+    }
     renderResult(buildAutomationDiagnosisReport(input, reductionRate));
+    resultCta.show();
     return true;
   }
 
@@ -380,6 +386,7 @@ export function initAutomationDiagnosis(appRoot: HTMLElement): void {
   }
 
   function reset(): void {
+    resultCta.hide();
     fillInput({
       minutesPerRun: 30,
       frequency: 'weekly',
@@ -411,7 +418,10 @@ export function initAutomationDiagnosis(appRoot: HTMLElement): void {
   });
 
   resetButton.addEventListener('click', reset);
-  restartButton.addEventListener('click', () => renderStep(1));
+  restartButton.addEventListener('click', () => {
+    resultCta.hide();
+    renderStep(1);
+  });
 
   all<HTMLButtonElement>('[data-reduction-rate]').forEach((button) => {
     button.addEventListener('click', () => {
