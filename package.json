@@ -15,7 +15,9 @@
     "@astrojs/cloudflare": "latest",
     "@astrojs/sitemap": "latest",
     "astro": "latest",
+    "chart.js": "latest",
     "encoding-japanese": "2.2.0",
+    "html-to-image": "latest",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   },
   "devDependencies": {

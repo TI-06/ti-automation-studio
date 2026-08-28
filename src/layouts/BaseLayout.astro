@@ -94,5 +94,10 @@ const structuredDataItems = [...sharedStructuredData, ...pageStructuredData];
         </div>
       </div>
     </footer>
+    <script>
+      if (document.querySelector('[data-dashboard-app]')) {
+        void import('../scripts/tools/dashboard-builder');
+      }
+    </script>
   </body>
 </html>

@@ -30,4 +30,13 @@ describe('公開ツール一覧', () => {
     expect(source).toContain('表記の違い');
     expect(source).toContain('変更内容を確認してから適用');
   });
+
+  it('ダッシュボード作成ツールのKPI・推移・ランキングが伝わる専用プレビューを持つ', () => {
+    expect(source).toContain("tool.slug === 'dashboard-builder'");
+    expect(source).toContain('自動ダッシュボード');
+    expect(source).toContain('売上合計');
+    expect(source).toContain('月別推移');
+    expect(source).toContain('店舗ランキング');
+    expect(source).toContain('dashboard-builder-preview');
+  });
 });
