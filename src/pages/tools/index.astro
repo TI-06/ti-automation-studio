@@ -19,7 +19,7 @@ const structuredData = {
 
 <BaseLayout
   title="無料の業務ツール"
-  description="登録不要ですぐ使える、Excel・データ処理などの無料業務ツール。TI AUTOMATION STUDIOが実務向けに設計した公開ツールを掲載しています。"
+  description="登録不要ですぐ使える、Excel・データ処理・業務改善の無料ツール。TI AUTOMATION STUDIOが実務向けに設計した公開ツールを掲載しています。"
   canonical={canonical}
   structuredData={structuredData}
 >
@@ -28,11 +28,7 @@ const structuredData = {
       <p class="eyebrow">公開ツール</p>
       <h1>仕事で使える、<br /><span>無料の業務ツール。</span></h1>
       <p>登録不要。必要なときに、そのまま使えます。公開ツールは使い方と処理条件を明示し、業務で迷いにくい画面を優先して設計しています。</p>
-      <div class="tools-hero-meta" aria-label="公開ツールの利用条件">
-        <span>無料</span>
-        <span>登録不要</span>
-        <span>日本語UI</span>
-      </div>
+      <div class="tools-hero-meta" aria-label="公開ツールの利用条件"><span>無料</span><span>登録不要</span><span>日本語UI</span></div>
     </div>
   </section>
 
@@ -43,125 +39,62 @@ const structuredData = {
           {publishedTools.map((tool) => (
             <a class="tool-product-card" href={tool.href} aria-label={`${tool.title}を使う`}>
               <div class="tool-product-copy">
-                <div class="tool-product-meta">
-                  <span>無料</span>
-                  <span>登録不要</span>
-                  <span>{tool.processing}</span>
-                </div>
-
+                <div class="tool-product-meta"><span>無料</span><span>登録不要</span><span>{tool.processing}</span></div>
                 <p class="card-kicker">{tool.shortLabel}</p>
                 <h2>{tool.title}</h2>
                 <p>{tool.description}</p>
-
-                <div class="tags">
-                  {tool.formats.map((format) => <span class="tag">{format}</span>)}
-                </div>
-
-                <ul>
-                  {tool.features.map((feature) => <li>{feature}</li>)}
-                </ul>
-
+                <div class="tags">{tool.formats.map((format) => <span class="tag">{format}</span>)}</div>
+                <ul>{tool.features.map((feature) => <li>{feature}</li>)}</ul>
                 <span class="tool-product-link">このツールを使う →</span>
               </div>
 
               <div class="tool-product-preview" aria-hidden="true">
                 {tool.slug === 'excel-diff' ? (
-                  <div class="excel-diff-preview">
-                    <div class="excel-diff-preview-head">
-                      <span>差分プレビュー</span>
-                      <small>表示イメージ</small>
-                    </div>
-                    <div class="excel-diff-preview-summary">
-                      <div><span>変更</span><strong>31</strong></div>
-                      <div><span>追加</span><strong>12</strong></div>
-                      <div><span>削除</span><strong>4</strong></div>
-                    </div>
-                    <div class="excel-diff-preview-table">
+                  <div class="product-preview excel-diff-preview">
+                    <div class="preview-top"><div><span>差分プレビュー</span><strong>2つのExcelを比較</strong></div><small>表示イメージ</small></div>
+                    <div class="preview-metrics three"><div><span>変更</span><strong>31</strong></div><div><span>追加</span><strong>12</strong></div><div><span>削除</span><strong>4</strong></div></div>
+                    <div class="preview-table">
                       <div class="preview-row preview-head"><span>種類</span><span>項目</span><span>変更前</span><span>変更後</span></div>
                       <div class="preview-row"><span>変更</span><span>数量</span><span>12</span><span>15</span></div>
                       <div class="preview-row"><span>追加</span><span>商品コード</span><span>—</span><span>A-104</span></div>
                       <div class="preview-row"><span>数式</span><span>合計</span><span>=B2*C2</span><span>=B2*D2</span></div>
                     </div>
-                    <div class="excel-diff-preview-foot">Excelを2つ選択 → 条件指定 → 差分一覧 → 保存</div>
+                    <div class="preview-flow"><span>Excelを2つ選択</span><i>→</i><span>差分一覧</span><i>→</i><span>保存</span></div>
                   </div>
                 ) : tool.slug === 'data-cleaner' ? (
-                  <div class="data-cleaner-preview">
-                    <div class="data-cleaner-preview-head">
-                      <div>
-                        <span>データ健康診断</span>
-                        <strong>整理候補を先に確認</strong>
-                      </div>
-                      <small>表示イメージ</small>
-                    </div>
-                    <div class="data-cleaner-preview-health">
-                      <div><span>重複</span><strong>18</strong></div>
-                      <div><span>前後空白</span><strong>42</strong></div>
-                      <div><span>空欄</span><strong>7</strong></div>
-                      <div><span>表記の違い</span><strong>11</strong></div>
-                    </div>
-                    <div class="data-cleaner-preview-card">
-                      <div class="data-cleaner-preview-card-head"><span>会社名</span><b>整理候補</b></div>
-                      <p>「株式会社ＡＢＣ」と「株式会社ABC 」を確認できます。</p>
-                      <div><span>株式会社ＡＢＣ</span><b>→</b><span>株式会社ABC</span></div>
-                    </div>
-                    <div class="data-cleaner-preview-flow">
-                      <span>診断</span><i>→</i><span>変更内容を確認してから適用</span><i>→</i><span>保存</span>
-                    </div>
+                  <div class="product-preview data-cleaner-preview">
+                    <div class="preview-top"><div><span>データ健康診断</span><strong>整理候補を先に確認</strong></div><small>表示イメージ</small></div>
+                    <div class="preview-metrics four"><div><span>重複</span><strong>18</strong></div><div><span>前後空白</span><strong>42</strong></div><div><span>空欄</span><strong>7</strong></div><div><span>表記の違い</span><strong>11</strong></div></div>
+                    <div class="cleaner-change-card"><div><span>会社名</span><b>整理候補</b></div><p>「株式会社ＡＢＣ」と「株式会社ABC 」を確認</p><div><span>株式会社ＡＢＣ</span><b>→</b><span>株式会社ABC</span></div></div>
+                    <div class="preview-flow"><span>診断</span><i>→</i><span>変更内容を確認してから適用</span><i>→</i><span>保存</span></div>
                   </div>
                 ) : tool.slug === 'dashboard-builder' ? (
-                  <div class="dashboard-builder-preview">
-                    <div class="dashboard-builder-preview-head">
-                      <div>
-                        <span>自動ダッシュボード</span>
-                        <strong>売上データを読み込んだ例</strong>
-                      </div>
-                      <small>表示イメージ</small>
+                  <div class="product-preview dashboard-builder-preview">
+                    <div class="preview-top"><div><span>自動ダッシュボード</span><strong>売上データを読み込んだ例</strong></div><small>表示イメージ</small></div>
+                    <div class="preview-metrics three"><div><span>売上合計</span><strong>¥12.45M</strong></div><div><span>注文件数</span><strong>1,284</strong></div><div><span>平均単価</span><strong>¥9,697</strong></div></div>
+                    <div class="dashboard-preview-main">
+                      <div class="dashboard-preview-chart"><div><span>月別推移</span><b>+18.4%</b></div><svg viewBox="0 0 280 112" role="presentation"><path class="area" d="M0 91 L40 78 L80 82 L120 56 L160 63 L200 35 L240 42 L280 16 L280 112 L0 112 Z"/><path class="line" d="M0 91 L40 78 L80 82 L120 56 L160 63 L200 35 L240 42 L280 16"/><circle cx="280" cy="16" r="4"/></svg></div>
+                      <div class="dashboard-preview-ranking"><span>店舗ランキング</span><div><b>1</b><em>東京店</em><strong>¥4.8M</strong></div><div><b>2</b><em>大阪店</em><strong>¥3.9M</strong></div><div><b>3</b><em>名古屋店</em><strong>¥2.7M</strong></div></div>
                     </div>
-                    <div class="dashboard-builder-preview-kpis">
-                      <div><span>売上合計</span><strong>¥12.45M</strong></div>
-                      <div><span>注文件数</span><strong>1,284</strong></div>
-                      <div><span>平均単価</span><strong>¥9,697</strong></div>
-                    </div>
-                    <div class="dashboard-builder-preview-main">
-                      <div class="dashboard-builder-preview-chart">
-                        <div class="dashboard-builder-preview-label"><span>月別推移</span><b>+18.4%</b></div>
-                        <svg viewBox="0 0 280 112" role="presentation">
-                          <defs>
-                            <linearGradient id="dashboard-preview-fill" x1="0" x2="0" y1="0" y2="1">
-                              <stop offset="0%" stop-color="currentColor" stop-opacity=".28" />
-                              <stop offset="100%" stop-color="currentColor" stop-opacity="0" />
-                            </linearGradient>
-                          </defs>
-                          <path class="preview-area" d="M0 91 L40 78 L80 82 L120 56 L160 63 L200 35 L240 42 L280 16 L280 112 L0 112 Z" />
-                          <path class="preview-line" d="M0 91 L40 78 L80 82 L120 56 L160 63 L200 35 L240 42 L280 16" />
-                          <circle cx="280" cy="16" r="4" />
-                        </svg>
-                        <div class="dashboard-builder-preview-months"><span>1月</span><span>3月</span><span>5月</span><span>7月</span></div>
-                      </div>
-                      <div class="dashboard-builder-preview-ranking">
-                        <span>店舗ランキング</span>
-                        <div><b>1</b><em>東京店</em><strong>¥4.8M</strong></div>
-                        <div><b>2</b><em>大阪店</em><strong>¥3.9M</strong></div>
-                        <div><b>3</b><em>名古屋店</em><strong>¥2.7M</strong></div>
-                      </div>
-                    </div>
-                    <div class="dashboard-builder-preview-foot"><span>Excel / CSV</span><i>→</i><span>自動判定</span><i>→</i><span>KPI・グラフ作成</span></div>
+                    <div class="preview-flow"><span>Excel / CSV</span><i>→</i><span>KPI・グラフ作成</span><i>→</i><span>保存</span></div>
+                  </div>
+                ) : tool.slug === 'automation-diagnosis' ? (
+                  <div class="product-preview automation-diagnosis-preview">
+                    <div class="preview-top"><div><span>業務自動化診断</span><strong>作業条件から改善候補を整理</strong></div><small>表示イメージ</small></div>
+                    <div class="diagnosis-preview-status"><div><span>自動化適性</span><strong>比較的高い</strong></div><div class="diagnosis-preview-ring"><span>年間工数</span><b>180h</b></div></div>
+                    <div class="diagnosis-preview-analysis"><div><span>自動化しやすい部分</span><strong>転記・集計・帳票</strong></div><div><span>人が残す部分</span><strong>例外時の確認</strong></div></div>
+                    <div class="diagnosis-preview-saving"><div><span>削減シミュレーション</span><b>60%</b></div><div class="diagnosis-preview-bar"><i></i></div><p><span>年間削減時間</span><strong>108h</strong><span>残る作業</span><strong>72h</strong></p></div>
+                    <div class="preview-flow"><span>6ステップで入力</span><i>→</i><span>改善レポート</span><i>→</i><span>PDF保存</span></div>
                   </div>
                 ) : (
-                  <div class="tool-preview-placeholder">
-                    <span>{tool.shortLabel}</span>
-                    <strong>公開中</strong>
-                  </div>
+                  <div class="tool-preview-placeholder"><span>{tool.shortLabel}</span><strong>公開中</strong></div>
                 )}
               </div>
             </a>
           ))}
         </div>
       ) : (
-        <div class="empty-state">
-          <p class="eyebrow">準備中</p>
-          <p>現在、公開用ツールを調整しています。安全性と操作性を確認できたものから追加します。</p>
-        </div>
+        <div class="empty-state"><p class="eyebrow">準備中</p><p>現在、公開用ツールを調整しています。安全性と操作性を確認できたものから追加します。</p></div>
       )}
     </div>
   </section>
@@ -169,112 +102,84 @@ const structuredData = {
   <section class="section tools-policy-section">
     <div class="container">
       <div class="about-panel">
-        <div>
-          <p class="eyebrow">公開方針</p>
-          <h2 class="section-title">デモではなく、<br />その場で使えるものを。</h2>
-        </div>
-        <div class="about-body">
-          <p>公開ツールは「機能があることを見せる」だけではなく、ファイル制限・処理方法・対応範囲を画面上で分かるようにします。</p>
-          <p>業務データを扱うツールでは、外部送信の有無も明記します。個別の業務ルールや大量処理が必要な場合は、公開ツールを起点に専用システムへ拡張できます。</p>
-          <div class="hero-actions">
-            <a class="btn" href="/services">対応サービスを見る</a>
-            <a class="btn btn-primary" href="/contact">業務に合わせて相談する</a>
-          </div>
-        </div>
+        <div><p class="eyebrow">公開方針</p><h2 class="section-title">デモではなく、<br />その場で使えるものを。</h2></div>
+        <div class="about-body"><p>公開ツールは「機能があることを見せる」だけではなく、ファイル制限・処理方法・対応範囲を画面上で分かるようにします。</p><p>業務データを扱うツールでは、外部送信の有無も明記します。個別の業務ルールや大量処理が必要な場合は、公開ツールを起点に専用システムへ拡張できます。</p><div class="hero-actions"><a class="btn" href="/services">対応サービスを見る</a><a class="btn btn-primary" href="/contact">業務に合わせて相談する</a></div></div>
       </div>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .tools-product-hero { padding-bottom: clamp(52px, 7vw, 84px); }
+  .tools-product-hero { padding-bottom: clamp(52px,7vw,84px); }
   .tools-product-hero h1 span { color: var(--accent); }
   .tools-product-hero p { max-width: 760px; }
   .tools-hero-meta { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 8px; }
   .tools-hero-meta span { padding: 6px 10px; border: 1px solid var(--border); color: #d1cfc8; font-size: .7rem; }
   .tools-product-list { display: grid; gap: 18px; }
   .tool-product-copy .card-kicker { margin: 22px 0 0; }
-  .excel-diff-preview,
-  .data-cleaner-preview,
-  .dashboard-builder-preview { height: 100%; display: flex; flex-direction: column; border: 1px solid var(--border); background: #0b0d10; }
-  .excel-diff-preview-head { min-height: 54px; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
-  .excel-diff-preview-head span { color: #e1dfd8; font-size: .75rem; font-weight: 600; }
-  .excel-diff-preview-head small { color: var(--soft); font-size: .62rem; }
-  .excel-diff-preview-summary { display: grid; grid-template-columns: repeat(3,1fr); border-bottom: 1px solid var(--border); }
-  .excel-diff-preview-summary div { padding: 14px; border-right: 1px solid var(--border); }
-  .excel-diff-preview-summary div:last-child { border-right: 0; }
-  .excel-diff-preview-summary span { display: block; color: var(--muted); font-size: .6rem; }
-  .excel-diff-preview-summary strong { display: block; margin-top: 4px; font-size: 1.1rem; font-weight: 500; }
-  .excel-diff-preview-table { flex: 1; padding: 12px 14px; }
+  .product-preview { height: 100%; min-height: 300px; display: flex; flex-direction: column; border: 1px solid var(--border); background: #0b0d10; }
+  .preview-top { min-height: 64px; padding: 13px 15px; display: flex; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--border); }
+  .preview-top span { display: block; color: var(--accent); font-size: .57rem; letter-spacing: .09em; }
+  .preview-top strong { display: block; margin-top: 5px; color: #e5e2da; font-size: .76rem; font-weight: 600; }
+  .preview-top small { color: var(--soft); font-size: .6rem; }
+  .preview-metrics { display: grid; border-bottom: 1px solid var(--border); }
+  .preview-metrics.three { grid-template-columns: repeat(3,1fr); }
+  .preview-metrics.four { grid-template-columns: repeat(4,1fr); }
+  .preview-metrics div { min-width: 0; padding: 12px 11px; border-right: 1px solid var(--border); }
+  .preview-metrics div:last-child { border-right: 0; }
+  .preview-metrics span { display: block; color: var(--muted); font-size: .54rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .preview-metrics strong { display: block; margin-top: 5px; color: #ece9e1; font-size: .92rem; font-weight: 500; }
+  .preview-flow { margin-top: auto; padding: 11px 14px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; border-top: 1px solid var(--border); color: #bdbbb4; font-size: .55rem; }
+  .preview-flow i { color: var(--accent); font-style: normal; }
+  .preview-table { flex: 1; padding: 12px 14px; }
   .preview-row { min-width: 0; display: grid; grid-template-columns: .65fr 1fr .9fr .9fr; gap: 8px; padding: 9px 5px; border-bottom: 1px solid rgba(242,240,234,.07); color: #c9c7bf; font-size: .64rem; }
-  .preview-row span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .preview-row span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .preview-head { color: var(--soft); font-size: .58rem; }
-  .excel-diff-preview-foot { padding: 12px 16px; border-top: 1px solid var(--border); color: var(--accent); font-size: .62rem; }
-
-  .data-cleaner-preview-head { min-height: 66px; padding: 13px 15px; display: flex; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--border); }
-  .data-cleaner-preview-head span { display: block; color: var(--accent); font-size: .58rem; letter-spacing: .08em; }
-  .data-cleaner-preview-head strong { display: block; margin-top: 5px; color: #e1dfd8; font-size: .76rem; font-weight: 600; }
-  .data-cleaner-preview-head small { color: var(--soft); font-size: .6rem; }
-  .data-cleaner-preview-health { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--border); }
-  .data-cleaner-preview-health div { min-width: 0; padding: 12px 9px; border-right: 1px solid var(--border); }
-  .data-cleaner-preview-health div:last-child { border-right: 0; }
-  .data-cleaner-preview-health span { display: block; color: var(--muted); font-size: .54rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .data-cleaner-preview-health strong { display: block; margin-top: 5px; font-size: 1rem; font-weight: 500; }
-  .data-cleaner-preview-card { margin: 14px; padding: 13px; border: 1px solid rgba(200,169,107,.28); background: rgba(200,169,107,.025); }
-  .data-cleaner-preview-card-head { display: flex; justify-content: space-between; gap: 10px; }
-  .data-cleaner-preview-card-head span { font-size: .7rem; font-weight: 600; }
-  .data-cleaner-preview-card-head b { color: var(--accent); font-size: .56rem; font-weight: 500; }
-  .data-cleaner-preview-card p { margin: 8px 0; color: var(--muted); font-size: .58rem; line-height: 1.55; }
-  .data-cleaner-preview-card > div:last-child { display: grid; grid-template-columns: 1fr auto 1fr; gap: 7px; color: #cac8c1; font-size: .6rem; }
-  .data-cleaner-preview-card > div:last-child b { color: var(--accent); font-weight: 500; }
-  .data-cleaner-preview-flow { margin-top: auto; padding: 11px 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; border-top: 1px solid var(--border); color: #bdbbb4; font-size: .56rem; }
-  .data-cleaner-preview-flow i { color: var(--accent); font-style: normal; }
-
-  .dashboard-builder-preview { min-height: 316px; }
-  .dashboard-builder-preview-head { min-height: 64px; padding: 13px 15px; display: flex; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--border); }
-  .dashboard-builder-preview-head span { display: block; color: var(--accent); font-size: .57rem; letter-spacing: .09em; }
-  .dashboard-builder-preview-head strong { display: block; margin-top: 5px; color: #e5e2da; font-size: .76rem; font-weight: 600; }
-  .dashboard-builder-preview-head small { color: var(--soft); font-size: .6rem; }
-  .dashboard-builder-preview-kpis { display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 1px solid var(--border); }
-  .dashboard-builder-preview-kpis div { min-width: 0; padding: 12px 13px; border-right: 1px solid var(--border); }
-  .dashboard-builder-preview-kpis div:last-child { border-right: 0; }
-  .dashboard-builder-preview-kpis span { display: block; color: var(--muted); font-size: .55rem; }
-  .dashboard-builder-preview-kpis strong { display: block; margin-top: 5px; color: #ece9e1; font-size: .92rem; font-weight: 500; letter-spacing: -.025em; }
-  .dashboard-builder-preview-main { flex: 1; display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(115px, .75fr); }
-  .dashboard-builder-preview-chart { min-width: 0; padding: 12px 14px 9px; border-right: 1px solid var(--border); color: var(--accent); }
-  .dashboard-builder-preview-label { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
-  .dashboard-builder-preview-label span { color: #d9d6cf; font-size: .61rem; font-weight: 600; }
-  .dashboard-builder-preview-label b { color: #aabda9; font-size: .55rem; font-weight: 500; }
-  .dashboard-builder-preview-chart svg { display: block; width: 100%; height: 88px; margin-top: 4px; overflow: visible; }
-  .dashboard-builder-preview-chart .preview-area { fill: url(#dashboard-preview-fill); stroke: none; }
-  .dashboard-builder-preview-chart .preview-line { fill: none; stroke: currentColor; stroke-width: 2; vector-effect: non-scaling-stroke; }
-  .dashboard-builder-preview-chart circle { fill: currentColor; }
-  .dashboard-builder-preview-months { display: flex; justify-content: space-between; color: var(--soft); font-size: .48rem; }
-  .dashboard-builder-preview-ranking { padding: 12px; }
-  .dashboard-builder-preview-ranking > span { display: block; margin-bottom: 7px; color: #d9d6cf; font-size: .6rem; font-weight: 600; }
-  .dashboard-builder-preview-ranking > div { display: grid; grid-template-columns: 14px minmax(0, 1fr) auto; gap: 5px; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(242,240,234,.06); }
-  .dashboard-builder-preview-ranking b { color: var(--accent); font-size: .52rem; font-weight: 600; }
-  .dashboard-builder-preview-ranking em { min-width: 0; color: #bdbbb4; font-size: .55rem; font-style: normal; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .dashboard-builder-preview-ranking strong { color: #ddd9d1; font-size: .55rem; font-weight: 500; }
-  .dashboard-builder-preview-foot { padding: 10px 14px; display: flex; flex-wrap: wrap; gap: 6px; border-top: 1px solid var(--border); color: #bdbbb4; font-size: .54rem; }
-  .dashboard-builder-preview-foot i { color: var(--accent); font-style: normal; }
-
+  .cleaner-change-card { margin: 14px; padding: 13px; border: 1px solid rgba(200,169,107,.28); background: rgba(200,169,107,.025); }
+  .cleaner-change-card > div { display: grid; grid-template-columns: 1fr auto 1fr; gap: 7px; color: #cac8c1; font-size: .6rem; }
+  .cleaner-change-card > div:first-child { display: flex; justify-content: space-between; }
+  .cleaner-change-card b { color: var(--accent); font-weight: 500; }
+  .cleaner-change-card p { margin: 8px 0; color: var(--muted); font-size: .58rem; }
+  .dashboard-preview-main { flex: 1; display: grid; grid-template-columns: minmax(0,1.35fr) minmax(115px,.75fr); }
+  .dashboard-preview-chart { padding: 12px 14px 9px; border-right: 1px solid var(--border); color: var(--accent); }
+  .dashboard-preview-chart > div { display: flex; justify-content: space-between; color: #d9d6cf; font-size: .6rem; }
+  .dashboard-preview-chart b { color: #aabda9; font-size: .55rem; font-weight: 500; }
+  .dashboard-preview-chart svg { display: block; width: 100%; height: 92px; margin-top: 6px; }
+  .dashboard-preview-chart .area { fill: rgba(200,169,107,.08); }
+  .dashboard-preview-chart .line { fill: none; stroke: currentColor; stroke-width: 2; }
+  .dashboard-preview-chart circle { fill: currentColor; }
+  .dashboard-preview-ranking { padding: 12px; }
+  .dashboard-preview-ranking > span { display: block; margin-bottom: 7px; color: #d9d6cf; font-size: .6rem; font-weight: 600; }
+  .dashboard-preview-ranking > div { display: grid; grid-template-columns: 14px 1fr auto; gap: 5px; padding: 7px 0; border-bottom: 1px solid rgba(242,240,234,.06); font-size: .55rem; }
+  .dashboard-preview-ranking b { color: var(--accent); }
+  .dashboard-preview-ranking em { color: #bdbbb4; font-style: normal; }
+  .dashboard-preview-ranking strong { font-weight: 500; }
+  .diagnosis-preview-status { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border); }
+  .diagnosis-preview-status > div { min-height: 82px; padding: 14px; border-right: 1px solid var(--border); }
+  .diagnosis-preview-status > div:last-child { border-right: 0; }
+  .diagnosis-preview-status span { display: block; color: var(--muted); font-size: .55rem; }
+  .diagnosis-preview-status strong { display: block; margin-top: 8px; color: var(--accent); font-size: 1rem; font-weight: 500; }
+  .diagnosis-preview-ring { display: grid; align-content: center; justify-items: center; }
+  .diagnosis-preview-ring b { margin-top: 5px; font-size: 1.35rem; font-weight: 500; }
+  .diagnosis-preview-analysis { display: grid; grid-template-columns: repeat(2,1fr); border-bottom: 1px solid var(--border); }
+  .diagnosis-preview-analysis div { padding: 11px 13px; border-right: 1px solid var(--border); }
+  .diagnosis-preview-analysis div:last-child { border-right: 0; }
+  .diagnosis-preview-analysis span { display: block; color: var(--muted); font-size: .52rem; }
+  .diagnosis-preview-analysis strong { display: block; margin-top: 5px; font-size: .62rem; font-weight: 550; }
+  .diagnosis-preview-saving { padding: 12px 14px; }
+  .diagnosis-preview-saving > div:first-child { display: flex; justify-content: space-between; color: #d9d6cf; font-size: .6rem; }
+  .diagnosis-preview-saving b { color: var(--accent); font-weight: 550; }
+  .diagnosis-preview-bar { height: 3px; margin-top: 9px; background: rgba(255,255,255,.07); }
+  .diagnosis-preview-bar i { display: block; width: 60%; height: 100%; background: var(--accent); }
+  .diagnosis-preview-saving p { margin: 10px 0 0; display: grid; grid-template-columns: 1fr auto 1fr auto; gap: 6px; align-items: center; color: var(--muted); font-size: .52rem; }
+  .diagnosis-preview-saving p strong { color: #e4e1d9; font-size: .62rem; font-weight: 550; }
   .tool-preview-placeholder { min-height: 220px; height: 100%; display: grid; place-items: center; border: 1px solid var(--border); text-align: center; }
-  .tool-preview-placeholder span, .tool-preview-placeholder strong { display: block; }
-  .tool-preview-placeholder span { color: var(--muted); font-size: .72rem; }
-  .tool-preview-placeholder strong { margin-top: 6px; font-size: 1.2rem; font-weight: 500; }
   .tools-policy-section { margin-top: clamp(28px,5vw,60px); }
-  @media (max-width: 860px) {
-    .tool-product-preview { min-height: 300px; }
-  }
+  @media (max-width: 860px) { .tool-product-preview { min-height: 300px; } }
   @media (max-width: 520px) {
-    .excel-diff-preview-summary strong { font-size: .95rem; }
-    .preview-row { grid-template-columns: .6fr 1fr .8fr .8fr; font-size: .58rem; }
-    .data-cleaner-preview-health { grid-template-columns: repeat(2, 1fr); }
-    .data-cleaner-preview-health div { border-bottom: 1px solid var(--border); }
-    .data-cleaner-preview-health div:nth-child(2n) { border-right: 0; }
-    .data-cleaner-preview-health div:nth-last-child(-n + 2) { border-bottom: 0; }
-    .dashboard-builder-preview-main { grid-template-columns: 1fr; }
-    .dashboard-builder-preview-chart { border-right: 0; border-bottom: 1px solid var(--border); }
+    .preview-metrics.four { grid-template-columns: repeat(2,1fr); }
+    .dashboard-preview-main { grid-template-columns: 1fr; }
+    .dashboard-preview-chart { border-right: 0; border-bottom: 1px solid var(--border); }
+    .diagnosis-preview-saving p { grid-template-columns: 1fr auto; }
   }
 </style>
