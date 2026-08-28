@@ -1,5 +1,3 @@
-/// <reference lib="webworker" />
-
 import { aggregateWidgets } from '../lib/tools/dashboard-builder/aggregate';
 import { buildInitialDashboardWidgets } from '../lib/tools/dashboard-builder/auto-layout';
 import { buildFilterCandidates } from '../lib/tools/dashboard-builder/filters';
@@ -45,7 +43,15 @@ export type DashboardWorkerResponse =
     }
   | { type: 'error'; title: string; message: string };
 
-const worker = self as unknown as DedicatedWorkerGlobalScope;
+type WorkerScope = {
+  postMessage(message: DashboardWorkerResponse): void;
+  addEventListener(
+    type: 'message',
+    listener: (event: MessageEvent<DashboardWorkerRequest>) => void,
+  ): void;
+};
+
+const worker = self as unknown as WorkerScope;
 
 function send(message: DashboardWorkerResponse): void {
   worker.postMessage(message);
@@ -85,7 +91,7 @@ function aggregate(
   });
 }
 
-worker.addEventListener('message', (event: MessageEvent<DashboardWorkerRequest>) => {
+worker.addEventListener('message', (event) => {
   try {
     if (event.data.type === 'analyze') {
       analyze(event.data.dataset);
