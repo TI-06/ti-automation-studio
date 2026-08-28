@@ -7,6 +7,8 @@ const excelPage = readFileSync(new URL('../src/pages/tools/excel-diff.astro', im
 const excelClient = readFileSync(new URL('../src/scripts/tools/excel-diff.ts', import.meta.url), 'utf-8');
 const cleanerPage = readFileSync(new URL('../src/pages/tools/data-cleaner.astro', import.meta.url), 'utf-8');
 const cleanerClient = readFileSync(new URL('../src/scripts/tools/data-cleaner.ts', import.meta.url), 'utf-8');
+const dashboardPage = readFileSync(new URL('../src/pages/tools/dashboard-builder.astro', import.meta.url), 'utf-8');
+const dashboardClient = readFileSync(new URL('../src/scripts/tools/dashboard-builder/controller.ts', import.meta.url), 'utf-8');
 
 describe('結果後相談CTA', () => {
   it('初期非表示でsourceだけを問い合わせへ渡す', () => {
@@ -36,5 +38,13 @@ describe('結果後相談CTA', () => {
     expect(cleanerClient).toContain("bindToolResultCta('data-cleaner')");
     expect(cleanerClient).toContain('resultCta.show()');
     expect(cleanerClient).toContain('resultCta.hide()');
+  });
+
+  it('ダッシュボードは1ウィジェット以上の集計結果生成後にCTAを表示する', () => {
+    expect(dashboardPage).toContain('<ToolResultCTA source="dashboard-builder"');
+    expect(dashboardPage.indexOf('<ToolResultCTA source="dashboard-builder"')).toBeGreaterThan(dashboardPage.indexOf('data-dashboard-export-area'));
+    expect(dashboardClient).toContain("bindToolResultCta('dashboard-builder')");
+    expect(dashboardClient).toContain('resultCta.show()');
+    expect(dashboardClient).toContain('resultCta.hide()');
   });
 });
