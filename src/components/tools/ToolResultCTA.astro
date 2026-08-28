@@ -1,0 +1,84 @@
+---
+import { TOOL_CONVERSION_CONFIG, toolContactHref, type ToolSource } from '../../data/tool-conversion';
+
+interface Props {
+  source: ToolSource;
+  printIgnore?: boolean;
+}
+
+const { source, printIgnore = false } = Astro.props;
+const config = TOOL_CONVERSION_CONFIG[source];
+---
+
+<aside
+  class="tool-result-cta"
+  data-tool-result-cta={source}
+  data-print-ignore={printIgnore ? '' : undefined}
+  hidden
+>
+  <div class="tool-result-cta-copy">
+    <p class="tool-result-cta-eyebrow">NEXT STEP</p>
+    <h2>{config.resultTitle}</h2>
+    <p>{config.resultDescription}</p>
+  </div>
+  <div class="tool-result-cta-actions">
+    <a class="btn" href={config.serviceHref}>{config.serviceLabel}</a>
+    <a class="btn btn-primary" href={toolContactHref(source)}>{config.contactLabel}</a>
+  </div>
+</aside>
+
+<style>
+  .tool-result-cta {
+    margin-top: 22px;
+    padding: clamp(22px, 3vw, 34px);
+    border: 1px solid var(--border-strong);
+    background: linear-gradient(120deg, rgba(200, 169, 107, .08), rgba(255, 255, 255, .018) 45%, transparent);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .tool-result-cta[hidden] { display: none; }
+
+  .tool-result-cta-eyebrow {
+    margin: 0 0 8px;
+    color: var(--accent);
+    font-size: .69rem;
+    font-weight: 700;
+    letter-spacing: .16em;
+  }
+
+  .tool-result-cta h2 {
+    margin: 0;
+    font-size: clamp(1.15rem, 2vw, 1.6rem);
+    font-weight: 550;
+    letter-spacing: -.02em;
+    line-height: 1.35;
+  }
+
+  .tool-result-cta-copy > p:last-child {
+    margin: 10px 0 0;
+    max-width: 720px;
+    color: var(--muted);
+    font-size: .92rem;
+  }
+
+  .tool-result-cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  .tool-result-cta-actions .btn {
+    min-height: 44px;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 760px) {
+    .tool-result-cta { grid-template-columns: 1fr; }
+    .tool-result-cta-actions { justify-content: stretch; }
+    .tool-result-cta-actions .btn { flex: 1 1 100%; }
+  }
+</style>

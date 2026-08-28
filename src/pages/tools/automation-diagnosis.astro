@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ToolResultCTA from '../../components/tools/ToolResultCTA.astro';
 import ToolShell from '../../components/tools/ToolShell.astro';
 import '../../styles/tool-app.css';
 import '../../styles/automation-diagnosis.css';
@@ -264,6 +265,8 @@ const structuredData = [
                   <button class="tool-button tool-button-secondary" type="button" data-diagnosis-restart>入力内容を見直す</button>
                   <button class="tool-button tool-button-primary" type="button" data-diagnosis-print>診断結果をPDFで保存</button>
                 </div>
+
+                <ToolResultCTA source="automation-diagnosis" printIgnore />
               </section>
 
               <div class="diagnosis-footer-actions" data-print-ignore>
@@ -303,6 +306,16 @@ const structuredData = [
             <h3>この診断はAIを使っていますか？</h3><p>いいえ。AI APIは使用していません。入力した作業時間・頻度・定型度などを、あらかじめ定めた判定ルールで計算しています。</p>
             <h3>入力した内容は保存されますか？</h3><p>このツールでは診断内容を外部サーバーへ送信せず、ブラウザ内だけで扱います。ページを閉じると入力状態は保持されません。</p>
             <h3>表示された削減時間は保証されますか？</h3><p>保証値ではありません。実際の削減率は例外処理、確認工程、既存システム、運用方法などによって変わります。</p>
+          </section>
+          <section class="diagnosis-seo-card diagnosis-seo-wide">
+            <p class="eyebrow">RELATED TOOLS</p>
+            <h2>診断した業務に近い無料ツールを試せます。</h2>
+            <p>Excel比較、データ整理、集計・可視化は、そのままブラウザで試せる公開ツールがあります。自動化前の作業整理や要件確認にも利用できます。</p>
+            <div class="hero-actions">
+              <a class="btn" href="/tools/excel-diff">Excelの変更箇所を比較する</a>
+              <a class="btn" href="/tools/data-cleaner">CSV・Excelデータを整える</a>
+              <a class="btn" href="/tools/dashboard-builder">Excel・CSVを見える化する</a>
+            </div>
           </section>
           <section class="diagnosis-seo-card diagnosis-seo-wide">
             <p class="eyebrow">NEXT STEP</p>

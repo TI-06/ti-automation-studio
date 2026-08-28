@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ToolProgress from '../../components/tools/ToolProgress.astro';
+import ToolResultCTA from '../../components/tools/ToolResultCTA.astro';
 import ToolShell from '../../components/tools/ToolShell.astro';
 import '../../styles/tool-app.css';
 import '../../styles/dashboard-builder.css';
@@ -26,6 +27,32 @@ const structuredData = [
       { '@type': 'ListItem', position: 1, name: 'トップ', item: Astro.site ? new URL('/', Astro.site).toString() : '/' },
       { '@type': 'ListItem', position: 2, name: '公開ツール', item: Astro.site ? new URL('/tools', Astro.site).toString() : '/tools' },
       { '@type': 'ListItem', position: 3, name: 'ダッシュボード自動作成', item: canonical },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: '無料で使えますか？',
+        acceptedAnswer: { '@type': 'Answer', text: 'はい。登録不要で利用できます。' },
+      },
+      {
+        '@type': 'Question',
+        name: 'グラフは自分で変更できますか？',
+        acceptedAnswer: { '@type': 'Answer', text: 'はい。種類、集計方法、対象列、サイズ、順番を変更できます。最大12項目まで追加できます。' },
+      },
+      {
+        '@type': 'Question',
+        name: 'PDFはどう保存しますか？',
+        acceptedAnswer: { '@type': 'Answer', text: 'PDFで保存を押すと印刷画面を開きます。A4横向けに整えたレイアウトから、ブラウザの「PDFに保存」を利用できます。' },
+      },
+      {
+        '@type': 'Question',
+        name: '毎月同じExcelを自動で集計できますか？',
+        acceptedAnswer: { '@type': 'Answer', text: 'このツールでは設定JSONを再利用できます。さらにファイル取込から帳票作成まで完全自動化したい場合は、専用ツールとして構築できます。' },
+      },
     ],
   },
 ];
@@ -145,6 +172,8 @@ const structuredData = [
             </section>
           </div>
 
+          <ToolResultCTA source="dashboard-builder" />
+
           <section class="dashboard-data-view" data-dashboard-view="data" hidden>
             <div class="dashboard-data-toolbar">
               <div>
@@ -216,6 +245,16 @@ const structuredData = [
               <div class="tool-faq-item"><dt>PDFはどう保存しますか？</dt><dd>PDFで保存を押すと印刷画面を開きます。A4横向けに整えたレイアウトから、ブラウザの「PDFに保存」を利用できます。</dd></div>
               <div class="tool-faq-item"><dt>毎月同じExcelを自動で集計できますか？</dt><dd>このツールでは設定JSONを再利用できます。さらにファイル取込から帳票作成まで完全自動化したい場合は、専用ツールとして構築できます。</dd></div>
             </dl>
+          </section>
+
+          <section class="tool-seo-section">
+            <p class="eyebrow">関連ツール</p>
+            <h2>集計前のデータ整理と、自動化の診断</h2>
+            <p>元データに重複・空白・表記の違いがある場合はデータ整理ツールで確認できます。毎月の集計自体をなくせるか検討する場合は業務自動化診断を利用できます。</p>
+            <div class="hero-actions">
+              <a class="btn" href="/tools/data-cleaner">CSV・Excelデータを整える</a>
+              <a class="btn" href="/tools/automation-diagnosis">集計業務を自動化できるか診断する</a>
+            </div>
           </section>
 
           <section class="tool-seo-section">

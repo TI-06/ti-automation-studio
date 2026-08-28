@@ -9,10 +9,12 @@ import type {
   WorkbookInspection,
 } from '../../lib/tools/excel-diff/types';
 import { validateExcelFile } from '../../lib/tools/excel-diff/workbook';
+import { bindToolResultCta } from './result-cta';
 
 const root = document.querySelector<HTMLElement>('[data-excel-diff-app]');
 
 if (root) {
+  const resultCta = bindToolResultCta('excel-diff');
   type FileTarget = 'before' | 'after';
   type KindFilter = DiffKind | 'all' | 'structural';
 
@@ -468,6 +470,7 @@ if (root) {
     resultStatus.textContent = `比較完了。${count.toLocaleString('ja-JP')}件の差分を確認できます。`;
     exportXlsxButton.disabled = false;
     exportCsvButton.disabled = false;
+    resultCta.show();
   }
 
   function clearResults(): void {
@@ -485,6 +488,7 @@ if (root) {
     resultStatus.textContent = 'ファイルと比較条件を選択してください。';
     exportXlsxButton.disabled = true;
     exportCsvButton.disabled = true;
+    resultCta.hide();
   }
 
   async function runComparison(): Promise<void> {

@@ -42,6 +42,11 @@ describe('業務自動化診断ページ', () => {
     expect(source).toContain('data-print-ignore');
   });
 
+  it('結果後の相談CTAを印刷対象外として配置する', () => {
+    const source = existsSync(pageUrl) ? readFileSync(pageUrl, 'utf-8') : '';
+    expect(source).toContain('<ToolResultCTA source="automation-diagnosis" printIgnore');
+  });
+
   it('SEO説明、FAQ、関連サービス導線を持つ', () => {
     const source = existsSync(pageUrl) ? readFileSync(pageUrl, 'utf-8') : '';
     expect(source).toContain("'@type': 'WebApplication'");

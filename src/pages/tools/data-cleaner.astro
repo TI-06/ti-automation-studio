@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ToolProgress from '../../components/tools/ToolProgress.astro';
+import ToolResultCTA from '../../components/tools/ToolResultCTA.astro';
 import ToolShell from '../../components/tools/ToolShell.astro';
 import '../../styles/tool-app.css';
 import '../../styles/data-cleaner.css';
@@ -26,6 +27,32 @@ const structuredData = [
       { '@type': 'ListItem', position: 1, name: 'トップ', item: Astro.site ? new URL('/', Astro.site).toString() : '/' },
       { '@type': 'ListItem', position: 2, name: '公開ツール', item: Astro.site ? new URL('/tools', Astro.site).toString() : '/tools' },
       { '@type': 'ListItem', position: 3, name: 'CSV・Excel データ整理', item: canonical },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: '無料で使えますか？',
+        acceptedAnswer: { '@type': 'Answer', text: 'はい。登録不要で、そのまま利用できます。' },
+      },
+      {
+        '@type': 'Question',
+        name: '読み込んだだけでデータが書き換わりますか？',
+        acceptedAnswer: { '@type': 'Answer', text: 'いいえ。診断では変更しません。変更内容を確認し、「この変更を適用する」を押した処理だけ反映します。' },
+      },
+      {
+        '@type': 'Question',
+        name: '間違えて修正した場合は戻せますか？',
+        acceptedAnswer: { '@type': 'Answer', text: 'このページを開いている間は変更履歴を保持し、操作前の状態へ戻せます。' },
+      },
+      {
+        '@type': 'Question',
+        name: '大量ファイルを毎回同じルールで整理できますか？',
+        acceptedAnswer: { '@type': 'Answer', text: 'この無料ツールは1ファイルずつの確認向けです。毎回同じ処理を行う場合は、一括処理や専用業務ツールとして自動化できます。' },
+      },
     ],
   },
 ];
@@ -265,6 +292,8 @@ const structuredData = [
           </aside>
         </div>
 
+        <ToolResultCTA source="data-cleaner" />
+
         <dialog class="cleaner-dialog" data-sheet-change-dialog aria-labelledby="cleaner-sheet-dialog-title">
           <div class="cleaner-dialog-inner">
             <p class="tool-app-kicker">シート切替</p>
@@ -334,6 +363,17 @@ const structuredData = [
               <div class="tool-faq-item"><dt>間違えて修正した場合は戻せますか？</dt><dd>このページを開いている間は変更履歴を保持し、操作前の状態へ戻せます。</dd></div>
               <div class="tool-faq-item"><dt>大量ファイルを毎回同じルールで整理できますか？</dt><dd>この無料ツールは1ファイルずつの確認向けです。毎回同じ処理を行う場合は、一括処理や専用業務ツールとして自動化できます。</dd></div>
             </dl>
+          </section>
+
+          <section class="tool-seo-section">
+            <p class="eyebrow">関連ツール</p>
+            <h2>整理したデータを比較・可視化する</h2>
+            <p>データを整えた後はExcel差分比較で更新内容を確認したり、ダッシュボードでKPI・グラフを作成できます。定型整理の自動化適性も診断できます。</p>
+            <div class="hero-actions">
+              <a class="btn" href="/tools/excel-diff">Excelの変更箇所を比較する</a>
+              <a class="btn" href="/tools/dashboard-builder">Excel・CSVを見える化する</a>
+              <a class="btn" href="/tools/automation-diagnosis">業務を自動化できるか診断する</a>
+            </div>
           </section>
 
           <section class="tool-seo-section">

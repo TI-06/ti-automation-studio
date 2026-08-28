@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ToolProgress from '../../components/tools/ToolProgress.astro';
+import ToolResultCTA from '../../components/tools/ToolResultCTA.astro';
 import ToolShell from '../../components/tools/ToolShell.astro';
 import '../../styles/tool-app.css';
 
@@ -25,6 +26,32 @@ const structuredData = [
       { '@type': 'ListItem', position: 1, name: 'トップ', item: Astro.site ? new URL('/', Astro.site).toString() : '/' },
       { '@type': 'ListItem', position: 2, name: '公開ツール', item: Astro.site ? new URL('/tools', Astro.site).toString() : '/tools' },
       { '@type': 'ListItem', position: 3, name: 'Excel差分比較', item: canonical },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: '無料で使えますか？',
+        acceptedAnswer: { '@type': 'Answer', text: 'はい。登録不要で、そのまま利用できます。' },
+      },
+      {
+        '@type': 'Question',
+        name: 'CSV同士の比較はできますか？',
+        acceptedAnswer: { '@type': 'Answer', text: '現在はExcel（.xlsx / .xls）の比較に限定しています。CSVは差分結果の保存形式として利用できます。' },
+      },
+      {
+        '@type': 'Question',
+        name: '書式や色の変更も比較できますか？',
+        acceptedAnswer: { '@type': 'Answer', text: '初期版では値・行・列・シート・数式を対象とし、セル色や罫線など書式の全面比較は対象外です。' },
+      },
+      {
+        '@type': 'Question',
+        name: '業務に合わせた比較ルールを追加できますか？',
+        acceptedAnswer: { '@type': 'Answer', text: '個別開発では、複数ファイル一括比較、独自キー、帳票専用ルール、結果レポート自動化などにも対応できます。' },
+      },
     ],
   },
 ];
@@ -225,6 +252,8 @@ const structuredData = [
             </div>
           </aside>
         </div>
+
+        <ToolResultCTA source="excel-diff" />
       </ToolShell>
 
       <div class="tool-seo-content">
@@ -293,6 +322,16 @@ const structuredData = [
                 <dd>個別開発では、複数ファイル一括比較、独自キー、帳票専用ルール、結果レポート自動化などにも対応できます。</dd>
               </div>
             </dl>
+          </section>
+
+          <section class="tool-seo-section">
+            <p class="eyebrow">関連ツール</p>
+            <h2>比較の前後で使える無料ツール</h2>
+            <p>比較前の表記整理や重複確認にはデータ整理ツール、比較作業そのものを自動化できるか判断したい場合は業務自動化診断を利用できます。</p>
+            <div class="hero-actions">
+              <a class="btn" href="/tools/data-cleaner">CSV・Excelデータを整える</a>
+              <a class="btn" href="/tools/automation-diagnosis">業務を自動化できるか診断する</a>
+            </div>
           </section>
 
           <section class="tool-seo-section">

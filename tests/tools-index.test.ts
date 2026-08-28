@@ -49,4 +49,17 @@ describe('公開ツール一覧', () => {
     expect(source).toContain('automation-diagnosis-preview');
     expect(source).toContain('表示イメージ');
   });
+
+  it('目的から4ツールを選べるコンパクトな入口を持つ', () => {
+    expect(source).toContain('目的から選ぶ');
+    expect(source).toContain('比較する');
+    expect(source).toContain('整える');
+    expect(source).toContain('見える化する');
+    expect(source).toContain('自動化できるか調べる');
+    expect(source).toContain('href="/tools/excel-diff"');
+    expect(source).toContain('href="/tools/data-cleaner"');
+    expect(source).toContain('href="/tools/dashboard-builder"');
+    expect(source).toContain('href="/tools/automation-diagnosis"');
+    expect(source).toContain('tools-purpose-nav');
+  });
 });

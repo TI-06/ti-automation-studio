@@ -28,11 +28,13 @@ import type {
   DiagnosticIssue,
   DiagnosticResult,
 } from '../../lib/tools/data-cleaner/types';
+import { bindToolResultCta } from './result-cta';
 
 const root = document.querySelector<HTMLElement>('[data-cleaner-app]');
 
 if (root) {
   const appRoot = root;
+  const resultCta = bindToolResultCta('data-cleaner');
 
   type WorkerResponse =
     | { type: 'progress'; stage: number; label: string }
@@ -768,6 +770,7 @@ if (root) {
 
   function diagnoseCurrent(status = 'データを診断しています。'): void {
     if (!state.dataset) return;
+    resultCta.hide();
     clearError();
     state.diagnostics = null;
     state.categoryFilter = 'all';
@@ -779,6 +782,7 @@ if (root) {
   }
 
   function adoptDataset(dataset: CleanerDataset): void {
+    resultCta.hide();
     state.dataset = cloneDataset(dataset);
     state.originalRows = dataset.rows.length;
     state.diagnostics = null;
@@ -910,6 +914,7 @@ if (root) {
   }
 
   function resetAll(): void {
+    resultCta.hide();
     state.file = null;
     state.fileBuffer = null;
     state.fileFormat = null;
@@ -984,6 +989,7 @@ if (root) {
     }
     state.busy = false;
     if (message.type === 'error') {
+      resultCta.hide();
       hideProgress();
       setBusy(false);
       statusText.textContent = '診断を完了できませんでした。';
@@ -998,6 +1004,7 @@ if (root) {
     showProgress('診断結果をまとめています', 4);
     window.setTimeout(hideProgress, 250);
     renderAll();
+    resultCta.show();
   });
 
   fileInput.addEventListener('change', () => {

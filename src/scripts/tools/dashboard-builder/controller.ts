@@ -30,6 +30,7 @@ import type {
   DashboardWidgetResult,
 } from '../../../lib/tools/dashboard-builder/types';
 import type { DashboardWorkerResponse } from '../../../workers/dashboard-builder.worker';
+import { bindToolResultCta } from '../result-cta';
 import {
   destroyAllDashboardCharts,
   renderDashboardChart,
@@ -144,6 +145,7 @@ export function initDashboardBuilder(appRoot: HTMLElement): void {
     draggedWidgetId: '',
     pendingSheetName: '',
   };
+  const resultCta = bindToolResultCta('dashboard-builder');
 
   const query = <T extends Element>(selector: string): T => {
     const element = appRoot.querySelector(selector);
@@ -484,6 +486,7 @@ export function initDashboardBuilder(appRoot: HTMLElement): void {
     grid.replaceChildren();
     widgetCount.textContent = `${state.widgets.length.toLocaleString('ja-JP')}項目`;
     if (!state.dataset || state.widgets.length === 0) {
+      resultCta.hide();
       empty.hidden = false;
       grid.append(empty);
       setBusy(state.busy);
@@ -621,12 +624,15 @@ export function initDashboardBuilder(appRoot: HTMLElement): void {
     renderSummary();
     renderWidgets();
     renderDataTable();
+    if (state.dataset && state.widgets.length > 0) resultCta.show();
+    else resultCta.hide();
     setBusy(false);
     hideProgress();
   }
 
   function requestAnalysis(): void {
     if (!state.dataset) return;
+    resultCta.hide();
     clearError();
     setBusy(true);
     showProgress('列の種類を確認しています', 1);
@@ -774,6 +780,7 @@ export function initDashboardBuilder(appRoot: HTMLElement): void {
   }
 
   function resetDashboard(): void {
+    resultCta.hide();
     state.file = null;
     state.buffer = null;
     state.format = null;
