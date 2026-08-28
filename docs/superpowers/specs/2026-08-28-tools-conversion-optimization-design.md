@@ -45,11 +45,11 @@
 
 ### 4.1 共通コンポーネント
 
-新規共通コンポーネント例:
+新規共通コンポーネント:
 
 `src/components/tools/ToolResultCTA.astro`
 
-想定Props:
+Props:
 
 - `source`: ツール識別子
 - `eyebrow`: 小見出し
@@ -58,9 +58,13 @@
 - `serviceHref`: 関連サービスURL
 - `serviceLabel`: 関連サービス文言
 - `contactLabel`: 相談ボタン文言
-- `hiddenByDefault`: 初期非表示かどうか
+- `printIgnore`: 印刷対象外属性を付けるか
+
+結果CTAは常に初期 `hidden` で描画し、各ツールのクライアントコントローラーが正常な結果生成後だけ表示する。`hiddenByDefault` のような可変設定は持たせず、4ツールで挙動を統一する。
 
 共通UIはサイト既存の黒・濃紺、アイボリー、シャンパンゴールドのデザイン体系に合わせる。カード広告風にはせず、結果レポートの続きとして見えるようにする。
+
+CTA文言とリンク定義は `src/data/tool-conversion.ts` に集約し、ページごとの重複文字列を減らす。
 
 ### 4.2 表示タイミング
 
@@ -98,7 +102,7 @@
 
 - 見出し: `毎月この集計・グラフ更新をしていますか？`
 - 説明: `ファイルを置くだけで更新する仕組みや、複数人で共有する常設ダッシュボードへ発展できます。`
-- 関連サービス: `/services/excel-automation` または `/services/python-data-processing`
+- 関連サービス: `/services/excel-automation`
 - 問い合わせ: `/contact?source=dashboard-builder`
 
 #### 業務自動化診断
@@ -118,7 +122,9 @@
 - 各ツールの既存コントローラーから、結果生成成功時だけ表示
 - リセット時は再び非表示
 - エラー時は表示しない
-- 入力値変更だけでは表示条件を解除しない。ただし結果自体をクリアする既存操作ではCTAも隠す
+- 入力値変更だけでは表示条件を解除しない
+- 結果自体をクリアする既存操作ではCTAも隠す
+- CTA表示時に自動スクロールや強制フォーカスは行わない
 
 新たなサーバー状態、Cookie、localStorage、sessionStorageは使わない。
 
@@ -136,6 +142,8 @@
 URL例:
 
 `/contact?source=excel-diff`
+
+source定義も `src/data/tool-conversion.ts` に集約し、表示名・初期カテゴリ・問い合わせURLの対応を1か所で管理する。
 
 ### 5.2 引き継ぐ情報
 
@@ -156,7 +164,7 @@ URL例:
 
 ### 5.3 問い合わせページ表示
 
-有効なsourceがある場合、フォーム上部に小さなコンテキストバーを表示する。
+`Astro.url.searchParams.get('source')` をサーバー描画時に読み、ホワイトリストと一致した場合だけコンテキストバーをフォーム上部に表示する。
 
 例:
 
@@ -165,6 +173,8 @@ URL例:
 補足:
 
 `ツールに読み込んだファイルや結果は、この問い合わせ画面には引き継がれていません。必要な範囲だけご記入ください。`
+
+任意のquery文字列を `set:html` 等で出力しない。表示文字列は固定定義から取得する。
 
 ### 5.4 初期カテゴリ
 
@@ -181,7 +191,7 @@ sourceごとの初期選択:
 
 ### 5.5 問い合わせAPI
 
-既存 `/api/contact` のpayload仕様は変更しない。sourceを問い合わせ本文へ自動挿入する必要もない。
+既存 `/api/contact` のpayload仕様は変更しない。sourceを問い合わせ本文へ自動挿入しない。
 
 今回の目的はフォーム到達時のコンテキスト改善であり、バックエンド契約を増やさない。
 
@@ -196,33 +206,38 @@ sourceごとの初期選択:
 - `見える化する` → `/tools/dashboard-builder`
 - `自動化できるか調べる` → `/tools/automation-diagnosis`
 
+各項目の説明:
+
+- 比較する: `更新前後のExcelで、変更・追加・削除を確認`
+- 整える: `CSV・Excelの重複や表記ゆれを診断・修正`
+- 見える化する: `表データからKPI・グラフ・ランキングを作成`
+- 自動化できるか調べる: `作業時間と特徴から、自動化適性と削減工数を試算`
+
 ### UI方針
 
 - 大きな別カード群を追加して縦長にしない
-- 横並びのショートカット、または2×2のコンパクトグリッド
-- 各項目に1行説明を付ける
+- デスクトップは4列のコンパクトショートカット
+- タブレットは2列、狭いモバイルは1列
 - 既存ツールカードのプレビューを主役として残す
-- モバイルでは2列または1列へ自然に折り返す
+- 通常の `<a>` 要素で実装し、キーボード操作を維持する
 
 ## 7. SEO統一
 
 ### 7.1 構造化データ
 
-4ツールすべてで以下を確認・統一する。
+4ツールすべてで以下を揃える。
 
 - `WebApplication`
 - `BreadcrumbList`
-- FAQ本文が存在するページは `FAQPage`
+- `FAQPage`
 
-既にFAQ本文があるExcel差分、データ整理、ダッシュボードについて、FAQPageを追加する。
+自動化診断には既にFAQPageがあるため維持する。Excel差分、データ整理、ダッシュボードには、現在画面上に存在するFAQ本文と同じ意味のFAQPageを追加する。
 
 構造化データの回答文は画面本文と意味を一致させ、検索向けだけの別内容を作らない。
 
 ### 7.2 内部リンク
 
-各ツール下部に関連ツール導線を追加する。ただし全4本を機械的に並べず、利用文脈で2〜3本に絞る。
-
-想定:
+各ツール下部に関連ツール導線を追加する。全4本を機械的に並べず、以下で固定する。
 
 - Excel差分 → データ整理 / 自動化診断
 - データ整理 → Excel差分 / ダッシュボード / 自動化診断
@@ -230,6 +245,8 @@ sourceごとの初期選択:
 - 自動化診断 → Excel差分 / データ整理 / ダッシュボード
 
 アンカーテキストはツール名または目的が伝わる日本語にする。
+
+関連ツールUIは共通コンポーネント化してよいが、結果CTAとは別コンポーネントにする。結果CTAはコンバージョン導線、関連ツールは回遊導線として責務を分離する。
 
 ### 7.3 検索意図の分離
 
@@ -255,7 +272,7 @@ CTAは保存物へ混入させない。
 
 - 結果CTAの表示時に強制フォーカスしない
 - `hidden` の切替でスクリーンリーダーに自然に反映
-- CTAリンクは意味が分かる文言にする
+- CTAリンクは `相談する` だけでなく対象が分かる文言にする
 - 色だけで状態を区別しない
 - `/tools` の目的別入口はキーボード操作可能な通常リンク
 - 問い合わせコンテキストバーは通常テキストとして読み上げ可能にする
@@ -281,27 +298,35 @@ CTAは保存物へ混入させない。
 - sourceありでもフォーム送信APIが失敗した場合: 現在の既存エラーハンドリングを維持
 - 関連サービスURLは既存実在ルートのみ使用
 
-## 12. 想定ファイル構成
+## 12. ファイル構成
 
-新規候補:
+新規:
 
 - `src/components/tools/ToolResultCTA.astro`
+- `src/components/tools/RelatedTools.astro`
 - `src/data/tool-conversion.ts`
-- `src/styles/tool-conversion.css` または既存 `tool-app.css` への最小追加
+- `src/styles/tool-conversion.css`
 - `tests/tool-result-cta.test.ts`
 - `tests/contact-source.test.ts`
 - `tests/tools-conversion.test.ts`
 
-変更候補:
+変更:
 
 - `src/pages/tools/index.astro`
 - `src/pages/tools/excel-diff.astro`
 - `src/pages/tools/data-cleaner.astro`
 - `src/pages/tools/dashboard-builder.astro`
 - `src/pages/tools/automation-diagnosis.astro`
-- 4ツールの各クライアントコントローラー
+- `src/scripts/tools/excel-diff.ts`
+- `src/scripts/tools/data-cleaner.ts` または実際に状態を管理している同ツールcontroller
+- `src/scripts/tools/dashboard-builder.ts` または実際に状態を管理している同ツールcontroller
+- `src/scripts/tools/automation-diagnosis.ts` または実際に状態を管理している同ツールcontroller
 - `src/pages/contact.astro`
-- SEO構造化データ関連テスト
+- 既存ページ/構造化データ契約テスト
+
+実装開始時に現在のcontrollerファイル構成を確認し、状態管理本体が別ファイルにある場合はその本体だけを変更する。ラッパーファイルへ状態ロジックを重複実装しない。
+
+既存共通スタイル `tool-app.css` には今回固有のCTA/回遊UIを追加せず、`tool-conversion.css` に閉じ込める。
 
 不要な共通化で既存ツールロジックを大きく組み替えない。
 
@@ -323,18 +348,19 @@ TDDで以下を固定する。
 - sourceごとに表示名と初期カテゴリが一致
 - 不正sourceは無視
 - source以外のツールデータを受け取る契約を持たない
+- 既存 `/api/contact` payloadにsourceを追加しない
 
 ### `/tools`
 
 - 目的別4入口が存在
-- 各hrefが正しい
+- 各hrefと説明文が正しい
 - 既存4ツールカードが維持される
 
 ### SEO
 
-- 4ツールにWebApplication / BreadcrumbList
-- FAQ本文がある4ツールにFAQPage
-- 関連ツール内部リンクが存在
+- 4ツールにWebApplication / BreadcrumbList / FAQPage
+- 関連ツール内部リンクが指定どおり存在
+- FAQPageの質問が画面FAQ本文と対応する
 
 ### 回帰
 
@@ -350,12 +376,12 @@ Playwright等のE2Eがないため、実施していない場合はE2E確認済�
 
 以下をすべて満たした時だけ完成扱いとする。
 
-1. 4ツールとも結果前には営業CTAを強調表示しない
+1. 4ツールとも結果前には営業CTAを表示しない
 2. 正常な結果生成後だけ専用CTAが出る
 3. 問い合わせへ渡るのはsource識別子だけ
 4. `/tools` に目的別入口がある
-5. 4ツールの構造化データが統一される
-6. 関連ツール内部リンクが追加される
+5. 4ツールの構造化データがWebApplication / BreadcrumbList / FAQPageで揃う
+6. 関連ツール内部リンクが指定どおり追加される
 7. 保存PDF/画像/Excel/CSVにCTA情報が混入しない
 8. 既存問い合わせpayloadを壊さない
 9. 全テストが成功する
