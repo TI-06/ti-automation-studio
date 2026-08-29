@@ -6,10 +6,26 @@ const personStructuredData = {
   '@type': 'Person',
   name: 'TI AUTOMATION STUDIO 制作者',
   jobTitle: 'システムエンジニア',
-  description: '現役SEとして約10年、Excel・Google Apps Script・Python・Web・APIを活用した業務改善・自動化開発に取り組んでいます。',
-  knowsAbout: ['業務自動化', 'Excel', 'Google Apps Script', 'Python', 'Webシステム', 'API連携', 'AI活用'],
+  description: '現役SEとして約10年、本業で業務システム開発・改修に携わりながら、Excel・GAS・Python・Web・APIを活用した個別開発と業務改善にも取り組んでいます。',
+  knowsAbout: ['業務自動化', 'Excel', 'VBA', 'Google Apps Script', 'Python', 'Webシステム', 'API連携', 'AI活用'],
   url: Astro.site ? new URL('/about', Astro.site).toString() : Astro.url.toString(),
 };
+
+const experienceSteps = [
+  ['01', 'Excel・VBA', '日々の集計、転記、帳票作成、入力支援など、現場に近い業務改善から経験を重ねてきました。'],
+  ['02', 'GAS・Google Workspace', 'スプレッドシートだけで完結しない業務に対して、DriveやGmailなどをつなぎ、複数人で使える仕組みへ広げてきました。'],
+  ['03', 'Python・Web・API', '大量データ処理、専用の管理画面、外部サービス連携など、ExcelやGASだけでは扱いにくい要件にも対応範囲を広げています。'],
+  ['04', 'AIを含む業務設計', 'AIありきではなく、分類・要約・入力補助など、実務の中で効果が出る部分だけに組み込む形で活用しています。'],
+];
+
+const painPoints = [
+  ['転記・集計', '複数ファイルやシートへの転記、月次集計、定型計算など、繰り返し発生する手作業。'],
+  ['帳票・PDF', 'Excelや入力データから、決まった形式の帳票・PDFを作成、保存、印刷する作業。'],
+  ['複数人運用', '誰がどこまで作業したか分からない、同じファイルを触って競合する、担当者ごとに運用が違うといった課題。'],
+  ['既存Excelの改修', '長く使っているExcelやVBAを捨てずに、入力・処理・画面を少しずつ改善したいケース。'],
+  ['管理画面・Web化', 'Excelでは見づらくなった情報を、ブラウザで検索・確認・更新できる専用画面にまとめたいケース。'],
+  ['API・サービス連携', '外部サービス間のデータ取得・登録・認証など、人が行っている受け渡しを自動化したいケース。'],
+];
 
 const capabilities = [
   ['01', 'Excel・VBA・スプレッドシート', '集計、転記、帳票作成、入力支援など、日々繰り返している作業を減らします。'],
@@ -20,23 +36,37 @@ const capabilities = [
   ['06', 'AIを使った業務効率化', 'AIを使うこと自体を目的にせず、分類・要約・入力支援など実務で使える形に落とし込みます。'],
 ];
 
+const consultationFits = [
+  ['Excelが限界', 'シートや関数が増えすぎた、ファイルが重い、複数人運用が難しくなってきた。'],
+  ['毎月同じ作業', '毎週・毎月、同じ転記や集計、ファイル作成を繰り返していて時間がかかっている。'],
+  ['既存ツールを捨てたくない', '現在のExcelやGoogle Workspaceを活かしながら、必要な部分だけ改善したい。'],
+  ['仕様が固まっていない', 'やりたいことはあるが、Excel・GAS・Webのどれで作るべきか分からない段階から相談したい。'],
+];
+
 const principles = [
   ['01', '現場で迷わないこと', '機能を増やすより、利用する人が次に何をすればいいか分かる画面と動線を優先します。'],
-  ['02', '処理中かどうかが分かること', '時間のかかる処理でも、動いているのか止まっているのか分からない状態をできるだけ作りません。'],
+  ['02', '処理状態が分かること', '時間のかかる処理でも、動いているのか止まっているのか分からない状態をできるだけ作りません。'],
   ['03', '既存環境を活かすこと', 'ExcelやGoogle Workspaceなど、すでに使っている環境を捨てずに改善できるなら、その方法を優先します。'],
-  ['04', '使い続けられること', 'その場で動くだけではなく、修正しやすさ、運用しやすさ、例外時の扱いまで考えて設計します。'],
+  ['04', '保守性まで考えること', 'その場で動くだけではなく、修正しやすさ、運用しやすさ、例外時の扱いまで考えて設計します。'],
+];
+
+const workflow = [
+  ['01', '業務を整理する', 'いきなり作り始めず、現在の手順・利用者・入力データ・困っている箇所を整理します。'],
+  ['02', '自動化する範囲を決める', '全部を自動化するのではなく、どこを自動化し、どこを人に残すかを決めます。'],
+  ['03', '小さく確認しながら作る', '画面や主要処理を確認できる単位で実装し、完成後に大きな認識違いが出ないように進めます。'],
+  ['04', '運用まで確認する', 'エラー時の動き、処理状態の表示、保守性、データの扱いまで含め、実際の利用を想定して仕上げます。'],
 ];
 ---
 <BaseLayout
   title="制作者について"
-  description="TI AUTOMATION STUDIOの制作者プロフィール。現役SEとして約10年、Excel・GAS・Python・Web・APIを使った業務改善・自動化開発を行っています。"
+  description="TI AUTOMATION STUDIOの制作者プロフィール。現役SEとして約10年、本業の業務システム開発と約100件の個別開発・業務改善経験をもとに、Excel・GAS・Python・Web・APIを使った自動化を行っています。"
   structuredData={personStructuredData}
 >
   <section class="page-hero about-page-hero">
     <div class="container reveal">
       <p class="eyebrow">制作者について</p>
       <h1>現場で使われ続ける、<br />業務の仕組みを作る。</h1>
-      <p>現役SEとして約10年、業務システムの開発・改修と、Excel・Google Apps Script・Python・Web・APIを使った業務改善に取り組んでいます。新しい技術を使うことより、毎日の仕事が実際に軽くなることを重視しています。</p>
+      <p>現役SEとして約10年、本業では業務システムの開発・改修に携わりながら、個別の業務改善・自動化開発にも取り組んでいます。Excel・GAS・Python・Web・APIなど技術を固定せず、「毎日の仕事が本当に軽くなるか」を基準に設計しています。</p>
     </div>
   </section>
 
@@ -44,21 +74,66 @@ const principles = [
     <div class="container about-profile-grid">
       <aside class="about-profile-summary" aria-label="プロフィール概要">
         <div><span>経験</span><strong>システム開発 約10年</strong></div>
-        <div><span>対応実績</span><strong>開発・業務改善 約100件</strong></div>
+        <div><span>個別対応</span><strong>開発・業務改善 約100件</strong></div>
         <div><span>主な領域</span><strong>Excel / GAS / Python / Web / API</strong></div>
         <div><span>対応範囲</span><strong>小規模改善〜個別システム開発</strong></div>
       </aside>
 
       <div class="about-story">
         <p class="eyebrow">これまで</p>
-        <h2 class="section-title">「便利そう」ではなく、<br />実際の業務で使えるものを。</h2>
-        <p>業務システムの開発・改修を続ける中で、Excelへの手入力や転記、毎月同じ形で行う集計、複数サービス間のデータ移動など、システム化するほどではないと思われている手作業を多く見てきました。</p>
-        <p>TI AUTOMATION STUDIOでは、そうした作業を一つずつ整理し、Excel・VBA、Google Apps Script、Python、Webアプリ、API連携などから、その業務に合う方法を選んで仕組みに変えています。</p>
-        <p>大きなシステムを最初から導入するのではなく、いま使っているファイルや運用を活かしながら、小さく改善していく開発も得意としています。</p>
+        <h2 class="section-title">作ることより、<br />業務が良くなることを優先。</h2>
+        <p>本業のシステム開発では、要件を整理して実装し、テストして運用につなげるという一連の工程を経験してきました。一方で個別開発では、「Excelへの転記だけ減らしたい」「今ある仕組みを少し使いやすくしたい」といった、もっと現場に近い改善にも数多く対応しています。</p>
+        <p>そのため、最初から大きなシステムを提案するのではなく、既存のExcelやGoogle Workspaceで十分ならそれを活かし、必要になった段階でPython・Web・APIへ広げる考え方を取っています。</p>
+        <p>技術選定より先に現在の業務を理解し、手作業として残した方がよい部分と、仕組みに任せた方がよい部分を切り分けることを大切にしています。</p>
         <div class="hero-actions">
           <a class="btn" href="/works">開発実績を見る <span aria-hidden="true">→</span></a>
           <a class="btn" href="/contact">相談する <span aria-hidden="true">↗</span></a>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section about-section-bordered">
+    <div class="container">
+      <p class="eyebrow">経験の広がり</p>
+      <h2 class="section-title">現場の小さな改善から、<br />Web・API連携まで。</h2>
+      <p class="section-lead">最初から技術領域を広げることを目的にしたのではなく、扱う業務の課題に応じて必要な手段を増やしてきました。</p>
+      <div class="about-timeline">
+        {experienceSteps.map(([no, title, copy]) => (
+          <article class="about-timeline-item">
+            <span class="about-timeline-no">{no}</span>
+            <div><h3>{title}</h3><p>{copy}</p></div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">よく扱う業務課題</p>
+      <h2 class="section-title">「これを毎回やるのが面倒」から、<br />改善の入口を探します。</h2>
+      <div class="about-problem-grid">
+        {painPoints.map(([title, copy]) => (
+          <article class="about-problem-card">
+            <h3>{title}</h3>
+            <p>{copy}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section about-strength-section">
+    <div class="container about-strength-grid">
+      <div>
+        <p class="eyebrow">強み</p>
+        <h2 class="section-title">自動化する前に、<br />業務の境界を整理する。</h2>
+      </div>
+      <div class="about-strength-copy">
+        <p>強みは、単にコードを書くことではなく、現在の運用を見ながら<strong>「どこを自動化し、どこを人に残すか」</strong>を整理できることです。</p>
+        <p>すべてを自動化すると、例外対応や修正がかえって難しくなる場合があります。逆に、人が判断する必要のない転記・集計・ファイル生成は、仕組みに任せた方が安定します。</p>
+        <p>技術と業務の両方を見ながら、作りすぎず、足りなすぎない構成を目指します。</p>
       </div>
     </div>
   </section>
@@ -70,6 +145,37 @@ const principles = [
       <div class="about-capability-grid">
         {capabilities.map(([no, title, copy]) => (
           <article class="about-capability">
+            <span>{no}</span>
+            <h3>{title}</h3>
+            <p>{copy}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section about-section-bordered">
+    <div class="container">
+      <p class="eyebrow">こういう相談に向いています</p>
+      <h2 class="section-title">まだ「依頼内容」になっていなくても、<br />困りごとから整理できます。</h2>
+      <div class="about-fit-grid">
+        {consultationFits.map(([title, copy]) => (
+          <article class="about-fit-card">
+            <span aria-hidden="true">→</span>
+            <div><h3>{title}</h3><p>{copy}</p></div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">仕事の進め方</p>
+      <h2 class="section-title">仕様を決め切ってからではなく、<br />小さく確認しながら進める。</h2>
+      <div class="about-workflow">
+        {workflow.map(([no, title, copy]) => (
+          <article class="about-workflow-item">
             <span>{no}</span>
             <h3>{title}</h3>
             <p>{copy}</p>
