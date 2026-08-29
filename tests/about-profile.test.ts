@@ -15,6 +15,11 @@ describe('制作者プロフィール導線', () => {
     expect(homeSource).toContain('約100件');
   });
 
+  it('トップで本業経験と個別開発の両方が伝わる', () => {
+    expect(homeSource).toContain('本業');
+    expect(homeSource).toContain('個別開発');
+  });
+
   it('メインナビから制作者ページへ移動できる', () => {
     expect(baseLayoutSource).toContain('<a href="/about">制作者</a>');
   });
@@ -31,6 +36,40 @@ describe('制作者についてページ', () => {
     expect(aboutSource).toContain('API連携');
     expect(aboutSource).toContain('開発で大切にしていること');
     expect(aboutSource).toContain('対応できること');
+  });
+
+  it('経歴の流れを説明する', () => {
+    expect(aboutSource).toContain('経験の広がり');
+    expect(aboutSource).toContain('Excel・VBA');
+    expect(aboutSource).toContain('GAS');
+    expect(aboutSource).toContain('Python・Web・API');
+  });
+
+  it('よく扱う業務課題を具体化する', () => {
+    expect(aboutSource).toContain('よく扱う業務課題');
+    expect(aboutSource).toContain('転記・集計');
+    expect(aboutSource).toContain('帳票');
+    expect(aboutSource).toContain('複数人運用');
+    expect(aboutSource).toContain('既存Excelの改修');
+  });
+
+  it('制作者の強みを説明する', () => {
+    expect(aboutSource).toContain('強み');
+    expect(aboutSource).toContain('どこを自動化し、どこを人に残すか');
+  });
+
+  it('向いている相談を具体例で示す', () => {
+    expect(aboutSource).toContain('こういう相談に向いています');
+    expect(aboutSource).toContain('Excelが限界');
+    expect(aboutSource).toContain('毎月同じ作業');
+    expect(aboutSource).toContain('仕様が固まっていない');
+  });
+
+  it('仕事の進め方を説明する', () => {
+    expect(aboutSource).toContain('仕事の進め方');
+    expect(aboutSource).toContain('小さく確認');
+    expect(aboutSource).toContain('保守性');
+    expect(aboutSource).toContain('処理状態');
   });
 
   it('匿名性を維持しつつPerson構造化データを持つ', () => {
