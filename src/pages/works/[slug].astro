@@ -1,12 +1,14 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { works } from '../../data/works';
+import { solutions } from '../../data/solutions';
 
 const { slug } = Astro.params;
 const workIndex = works.findIndex((item) => item.slug === slug);
 const work = works[workIndex];
 if (!work) return Astro.redirect('/works');
 const caseNumber = String(workIndex + 1).padStart(2, '0');
+const relatedGuides = solutions.filter((item) => item.relatedWorkSlugs.includes(work.slug)).slice(0, 4);
 const workUrl = Astro.site ? new URL(`/works/${work.slug}`, Astro.site).toString() : `/works/${work.slug}`;
 const breadcrumbData = {
   '@context': 'https://schema.org',
@@ -18,7 +20,7 @@ const breadcrumbData = {
   ],
 };
 ---
-<BaseLayout title={work.title} description={work.summary} structuredData={breadcrumbData}>
+<BaseLayout title={work.seoTitle} description={work.seoDescription} structuredData={breadcrumbData}>
   <section class="page-hero case-hero">
     <div class="container reveal">
       <p class="eyebrow">CASE {caseNumber} / {work.category}</p>
@@ -31,22 +33,10 @@ const breadcrumbData = {
   <section class="case-summary-section">
     <div class="container">
       <div class="case-overview-grid">
-        <div class="case-overview-item">
-          <span>対象領域</span>
-          <strong>{work.category}</strong>
-        </div>
-        <div class="case-overview-item">
-          <span>主な課題</span>
-          <p>{work.problem}</p>
-        </div>
-        <div class="case-overview-item">
-          <span>主な対応</span>
-          <p>{work.solution[0]}</p>
-        </div>
-        <div class="case-overview-item">
-          <span>改善ポイント</span>
-          <p>{work.impact[0]}</p>
-        </div>
+        <div class="case-overview-item"><span>対象領域</span><strong>{work.category}</strong></div>
+        <div class="case-overview-item"><span>主な課題</span><p>{work.problem}</p></div>
+        <div class="case-overview-item"><span>主な対応</span><p>{work.solution[0]}</p></div>
+        <div class="case-overview-item"><span>改善ポイント</span><p>{work.impact[0]}</p></div>
       </div>
     </div>
   </section>
@@ -56,14 +46,8 @@ const breadcrumbData = {
       <aside class="detail-aside">
         <p class="eyebrow">CASE DETAIL</p>
         <div class="detail-aside-card">
-          <div>
-            <span>領域</span>
-            <strong>{work.category}</strong>
-          </div>
-          <div>
-            <span>主な技術</span>
-            <strong>{work.technologies.slice(0, 3).join(' / ')}</strong>
-          </div>
+          <div><span>領域</span><strong>{work.category}</strong></div>
+          <div><span>主な技術</span><strong>{work.technologies.slice(0, 3).join(' / ')}</strong></div>
         </div>
         <div class="detail-aside-actions">
           <a class="btn" href="/works">← 実績一覧へ戻る</a>
@@ -78,45 +62,52 @@ const breadcrumbData = {
           <p class="detail-lead">{work.overview}</p>
         </section>
 
-        <section class="detail-section">
-          <p class="detail-section-label">PROBLEM</p>
-          <h2>課題</h2>
-          <p>{work.problem}</p>
-        </section>
+        <section class="detail-section"><p class="detail-section-label">PROBLEM</p><h2>課題</h2><p>{work.problem}</p></section>
 
         <section class="detail-section">
-          <p class="detail-section-label">SOLUTION</p>
-          <h2>対応内容</h2>
+          <p class="detail-section-label">SOLUTION</p><h2>対応内容</h2>
           <ul class="detail-list">{work.solution.map((item) => <li>{item}</li>)}</ul>
         </section>
 
         <section class="detail-section">
-          <p class="detail-section-label">FEATURES</p>
-          <h2>主な機能</h2>
+          <p class="detail-section-label">FEATURES</p><h2>主な機能</h2>
           <ul class="detail-list feature-list">{work.features.map((item) => <li>{item}</li>)}</ul>
         </section>
 
         <section class="detail-section">
-          <p class="detail-section-label">IMPACT</p>
-          <h2>改善できたこと</h2>
+          <p class="detail-section-label">IMPACT</p><h2>改善できたこと</h2>
           <ul class="detail-list impact-list">{work.impact.map((item) => <li>{item}</li>)}</ul>
         </section>
 
         <section class="detail-section suitable-section">
-          <p class="detail-section-label">GOOD FIT</p>
-          <h2>こんな相談に向いています</h2>
+          <p class="detail-section-label">GOOD FIT</p><h2>こんな相談に向いています</h2>
           <ul class="detail-list suitable-list">{work.suitableFor.map((item) => <li>{item}</li>)}</ul>
         </section>
 
+        {relatedGuides.length > 0 && (
+          <section class="detail-section related-work-guides">
+            <p class="detail-section-label">RELATED GUIDES</p>
+            <h2>関連する業務自動化ガイド</h2>
+            <p>この開発事例に近い課題について、方法・技術選定・費用の考え方を個別に解説しています。</p>
+            <div class="work-guide-list">
+              {relatedGuides.map((guide) => (
+                <a href={`/solutions/${guide.slug}`}>
+                  <span>{guide.searchIntent === 'commercial' ? '依頼・費用' : '方法・解説'}</span>
+                  <strong>{guide.title}</strong>
+                  <small>詳しく読む →</small>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+
         <section class="detail-section">
-          <p class="detail-section-label">TECHNOLOGY</p>
-          <h2>使用技術</h2>
+          <p class="detail-section-label">TECHNOLOGY</p><h2>使用技術</h2>
           <div class="tags detail-tags">{work.technologies.map((tech) => <span class="tag">{tech}</span>)}</div>
         </section>
 
         <section class="detail-section confidentiality-note">
-          <p class="detail-section-label">CONFIDENTIALITY</p>
-          <h2>機密保持について</h2>
+          <p class="detail-section-label">CONFIDENTIALITY</p><h2>機密保持について</h2>
           <p>掲載内容は業務課題と技術要素を一般化したものです。顧客名、担当者名、住所、実データ、顧客固有の画面、契約内容などは公開していません。</p>
         </section>
       </div>
@@ -130,3 +121,11 @@ const breadcrumbData = {
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .work-guide-list { display: grid; gap: 10px; margin-top: 20px; }
+  .work-guide-list a { display: grid; grid-template-columns: 90px 1fr auto; gap: 14px; align-items: center; padding: 15px 16px; border: 1px solid var(--line); border-radius: 12px; text-decoration: none; }
+  .work-guide-list span, .work-guide-list small { color: var(--accent); font-size: .75rem; }
+  .work-guide-list strong { color: var(--text); font-size: .94rem; }
+  @media (max-width: 640px) { .work-guide-list a { grid-template-columns: 1fr; gap: 5px; } }
+</style>
