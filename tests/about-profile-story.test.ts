@@ -38,6 +38,11 @@ describe('制作者ページの人物像と仕事観', () => {
     expect(aboutSource).toContain('お酒');
   });
 
+  it('不要な個人情報・案件情報の注意書きを表示しない', () => {
+    expect(aboutSource).not.toContain('依頼者や案件を特定できる顧客名・固有データ・秘密情報');
+    expect(aboutSource).not.toContain('about-privacy-note');
+  });
+
   it('最後にサイトとココナラの2つの相談導線を用意する', () => {
     expect(aboutSource).toContain('サイトから相談する');
     expect(aboutSource).toContain('ココナラから相談する');
