@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="520" viewBox="0 0 1440 520" role="img" aria-labelledby="title desc">
+  <title id="title">相談から納品・改善までの開発フロー</title>
+  <desc id="desc">01相談、02現在の業務を確認、03改善案・仕様整理、04開発、05テスト、06納品・改善の順に進む開発フロー。</desc>
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect x="1" y="1" width="1438" height="518" rx="18" fill="#0a0d0f" stroke="#b98a2f" stroke-width="2"/>
+  <path d="M170 170H1270" stroke="#d3a441" stroke-width="3" opacity=".65"/>
+  <g fill="#d3a441" filter="url(#glow)">
+    <path d="M271 160l16 10-16 10v-7h-28v-6h28z"/><path d="M501 160l16 10-16 10v-7h-28v-6h28z"/><path d="M731 160l16 10-16 10v-7h-28v-6h28z"/><path d="M961 160l16 10-16 10v-7h-28v-6h28z"/><path d="M1191 160l16 10-16 10v-7h-28v-6h28z"/>
+  </g>
+
+  <!-- 01 -->
+  <g transform="translate(130 170)">
+    <circle r="66" fill="#0d1114" stroke="#d3a441" stroke-width="3"/>
+    <circle cy="-92" r="22" fill="#e1b64f"/><text y="-85" text-anchor="middle" fill="#141414" font-family="system-ui,sans-serif" font-size="16" font-weight="800">01</text>
+    <path d="M-31-10h45a20 20 0 0120 20v7a20 20 0 01-20 20h-8l-15 13 3-13h-25a20 20 0 01-20-20v-7a20 20 0 0120-20z" fill="none" stroke="#f4f4f0" stroke-width="4" stroke-linejoin="round"/>
+    <circle cx="-20" cy="13" r="3.5" fill="#d3a441"/><circle cx="-8" cy="13" r="3.5" fill="#d3a441"/><circle cx="4" cy="13" r="3.5" fill="#d3a441"/>
+  </g>
+  <!-- 02 -->
+  <g transform="translate(360 170)">
+    <circle r="66" fill="#0d1114" stroke="#d3a441" stroke-width="3"/>
+    <circle cy="-92" r="22" fill="#e1b64f"/><text y="-85" text-anchor="middle" fill="#141414" font-family="system-ui,sans-serif" font-size="16" font-weight="800">02</text>
+    <rect x="-29" y="-35" width="48" height="68" rx="5" fill="none" stroke="#f4f4f0" stroke-width="4"/><path d="M-16-20h21M-16-5h16M-16 10h13" stroke="#d3a441" stroke-width="4" stroke-linecap="round"/><circle cx="24" cy="24" r="17" fill="#0d1114" stroke="#e1b64f" stroke-width="5"/><path d="M36 36l13 13" stroke="#e1b64f" stroke-width="5" stroke-linecap="round"/>
+  </g>
+  <!-- 03 -->
+  <g transform="translate(590 170)">
+    <circle r="66" fill="#0d1114" stroke="#d3a441" stroke-width="3"/>
+    <circle cy="-92" r="22" fill="#e1b64f"/><text y="-85" text-anchor="middle" fill="#141414" font-family="system-ui,sans-serif" font-size="16" font-weight="800">03</text>
+    <path d="M-35-27h25v14c7-2 14 3 14 11S-3 11-10 9v17h-25V5c-13 5-21-15-8-20 3-1 5-1 8 0zM10-27h25v21c13-5 21 15 8 20-3 1-5 1-8 0v12H10V9c-7 2-14-3-14-11s7-13 14-11z" fill="none" stroke="#e1b64f" stroke-width="4" stroke-linejoin="round"/>
+  </g>
+  <!-- 04 -->
+  <g transform="translate(820 170)">
+    <circle r="66" fill="#0d1114" stroke="#d3a441" stroke-width="3"/>
+    <circle cy="-92" r="22" fill="#e1b64f"/><text y="-85" text-anchor="middle" fill="#141414" font-family="system-ui,sans-serif" font-size="16" font-weight="800">04</text>
+    <rect x="-38" y="-28" width="76" height="52" rx="6" fill="none" stroke="#f4f4f0" stroke-width="4"/><path d="M-18-2l-10 10 10 10M18-2l10 10-10 10M8-14L-8 30" stroke="#e1b64f" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M-18 34h36" stroke="#f4f4f0" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <!-- 05 -->
+  <g transform="translate(1050 170)">
+    <circle r="66" fill="#0d1114" stroke="#d3a441" stroke-width="3"/>
+    <circle cy="-92" r="22" fill="#e1b64f"/><text y="-85" text-anchor="middle" fill="#141414" font-family="system-ui,sans-serif" font-size="16" font-weight="800">05</text>
+    <rect x="-38" y="-30" width="68" height="52" rx="5" fill="none" stroke="#f4f4f0" stroke-width="4"/><path d="M-27-17h47M-27-4h34" stroke="#d3a441" stroke-width="4" stroke-linecap="round"/><circle cx="24" cy="23" r="18" fill="#0d1114" stroke="#e1b64f" stroke-width="5"/><path d="M36 35l13 13" stroke="#e1b64f" stroke-width="5" stroke-linecap="round"/>
+  </g>
+  <!-- 06 -->
+  <g transform="translate(1280 170)">
+    <circle r="66" fill="#0d1114" stroke="#d3a441" stroke-width="3"/>
+    <circle cy="-92" r="22" fill="#e1b64f"/><text y="-85" text-anchor="middle" fill="#141414" font-family="system-ui,sans-serif" font-size="16" font-weight="800">06</text>
+    <path d="M-34-20L0-38l34 18L0-1zM-34-20v39L0 38V-1M34-20v39L0 38" fill="none" stroke="#e1b64f" stroke-width="4" stroke-linejoin="round"/>
+    <circle cx="35" cy="30" r="17" fill="#0d1114" stroke="#f4f4f0" stroke-width="4"/><path d="M27 30l6 6 11-14" fill="none" stroke="#e1b64f" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <g font-family="'Noto Sans JP',system-ui,sans-serif" text-anchor="middle">
+    <g fill="#f4f4f0" font-size="20" font-weight="800"><text x="130" y="278">相談</text><text x="360" y="278">現在の業務を確認</text><text x="590" y="278">改善案・仕様整理</text><text x="820" y="278">開発</text><text x="1050" y="278">テスト</text><text x="1280" y="278">納品・改善</text></g>
+    <g fill="#c8c9c7" font-size="14">
+      <text x="130" y="312"><tspan x="130" dy="0">いま困っていることを整理。</tspan><tspan x="130" dy="22">仕様未確定でも問題ありません。</tspan></text>
+      <text x="360" y="312"><tspan x="360" dy="0">作業手順・入力データ・利用者・</tspan><tspan x="360" dy="22">例外ケースを確認します。</tspan></text>
+      <text x="590" y="312"><tspan x="590" dy="0">作る機能と作らない部分を整理し、</tspan><tspan x="590" dy="22">無理のない構成にします。</tspan></text>
+      <text x="820" y="312"><tspan x="820" dy="0">操作性と保守性を意識しながら、</tspan><tspan x="820" dy="22">小さく確認できる単位で実装。</tspan></text>
+      <text x="1050" y="312"><tspan x="1050" dy="0">実際の業務パターンを想定し、</tspan><tspan x="1050" dy="22">入力・処理・エラー時まで確認。</tspan></text>
+      <text x="1280" y="312"><tspan x="1280" dy="0">運用開始後も必要に応じて調整し、</tspan><tspan x="1280" dy="22">使い続けられる状態へ整えます。</tspan></text>
+    </g>
+  </g>
+  <g transform="translate(46 402)">
+    <rect width="1348" height="76" rx="14" fill="#101519" stroke="#32383c"/>
+    <circle cx="38" cy="38" r="20" fill="none" stroke="#d3a441" stroke-width="2"/><path d="M38 24v19M29 36l9 9 9-9" stroke="#d3a441" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="74" y="34" fill="#e1b64f" font-family="'Noto Sans JP',system-ui,sans-serif" font-size="18" font-weight="800">要件が曖昧でも大丈夫です。</text>
+    <text x="74" y="57" fill="#c8c9c7" font-family="'Noto Sans JP',system-ui,sans-serif" font-size="14">ヒアリングを通して一緒に整理し、最適な形をご提案します。</text>
+  </g>
+</svg>
