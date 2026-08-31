@@ -1,6 +1,14 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { solutions } from '../../data/solutions';
+import { solutions, type SolutionCluster } from '../../data/solutions';
+
+const solutionClusters: { key: SolutionCluster; label: string; description: string }[] = [
+  { key: 'excel', label: 'Excel・VBA・スプレッドシート', description: '転記、月次集計、PDF、マクロ修正・高速化など、表計算を中心とした業務改善。' },
+  { key: 'gas', label: 'GAS・Google Workspace', description: 'スプレッドシート、Gmail、Drive、WebアプリをつないだGoogle環境の自動化。' },
+  { key: 'python', label: 'Python・CSV・大量データ', description: '大量のExcel・CSV、複数ファイル、複雑な変換・検証をまとめて処理する方法。' },
+  { key: 'api', label: 'API・外部サービス連携', description: '外部サービスへの登録、取得、同期をAPIでつなぎ、二重入力を減らす方法。' },
+  { key: 'automation', label: '業務自動化・外注', description: '何から自動化するか、どの技術を選ぶか、外注時の費用・依頼方法を整理。' },
+];
 
 const structuredData = {
   '@context': 'https://schema.org',
@@ -15,8 +23,8 @@ const structuredData = {
 };
 ---
 <BaseLayout
-  title="業務自動化のヒント｜Excel・VBA・GASの実務解説"
-  description="Excel・VBA・GAS・Pythonを使った業務自動化について、転記、集計、修正依頼、PDF生成など実務でよくある課題ごとに方法と判断基準を解説します。"
+  title="業務自動化のヒント｜Excel・VBA・GAS・Python・APIの実務解説"
+  description="Excel・VBA・GAS・Python・APIを使った業務自動化を、転記、集計、PDF、メール、大量データ、外注費用など検索目的ごとに20本の実務ガイドで解説します。"
   structuredData={structuredData}
 >
   <section class="service-hero">
@@ -24,22 +32,39 @@ const structuredData = {
       <nav class="breadcrumb" aria-label="パンくずリスト"><a href="/">トップ</a><span>／</span><span>業務自動化のヒント</span></nav>
       <p class="eyebrow">SOLUTIONS</p>
       <h1 class="section-title">業務自動化のヒント</h1>
-      <p class="section-lead">「この作業はどう自動化する？」「どの方法を選べばいい？」を、Excel・VBA・GAS・Pythonなどの実務目線で整理します。方法だけでなく、向いているケース、費用の考え方、失敗しやすいポイントまでまとめています。</p>
+      <p class="section-lead">「この作業はどう自動化する？」「どの方法を選べばいい？」を、Excel・VBA・GAS・Python・APIなどの実務目線で整理します。20本のガイドを5つのテーマに分け、方法だけでなく、向いているケース、費用の考え方、失敗しやすいポイントまでまとめています。</p>
+      <nav class="cluster-nav" aria-label="ガイドのテーマ">
+        {solutionClusters.map((cluster) => <a href={`#cluster-${cluster.key}`}>{cluster.label}</a>)}
+      </nav>
     </div>
   </section>
 
-  <section class="section">
-    <div class="container solution-grid">
-      {solutions.map((solution) => (
-        <a class="solution-card" href={`/solutions/${solution.slug}`}>
-          <span class="eyebrow">{solution.eyebrow}</span>
-          <h2>{solution.title}</h2>
-          <p>{solution.description}</p>
-          <span class="solution-link">詳しく読む →</span>
-        </a>
-      ))}
-    </div>
-  </section>
+  {solutionClusters.map((cluster) => {
+    const clusterSolutions = solutions.filter((solution) => solution.cluster === cluster.key);
+    return (
+      <section id={`cluster-${cluster.key}`} class="section solution-cluster">
+        <div class="container">
+          <div class="cluster-heading">
+            <div><p class="eyebrow">TOPIC CLUSTER</p><h2 class="section-title">{cluster.label}</h2></div>
+            <p>{cluster.description}</p>
+          </div>
+          <div class="solution-grid">
+            {clusterSolutions.map((solution) => (
+              <a class="solution-card" href={`/solutions/${solution.slug}`}>
+                <div class="solution-card-meta">
+                  <span class="eyebrow">{solution.eyebrow}</span>
+                  <span>{solution.searchIntent === 'commercial' ? '依頼・費用' : '方法・解説'}</span>
+                </div>
+                <h3>{solution.title}</h3>
+                <p>{solution.description}</p>
+                <span class="solution-link">詳しく読む →</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  })}
 
   <section class="section">
     <div class="container solution-guide">
@@ -59,14 +84,24 @@ const structuredData = {
 </BaseLayout>
 
 <style>
+  .cluster-nav { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 28px; }
+  .cluster-nav a { padding: 9px 13px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); text-decoration: none; font-size: .84rem; }
+  .cluster-nav a:hover { color: var(--text); border-color: rgba(200,169,107,.45); }
+  .solution-cluster { scroll-margin-top: 90px; }
+  .solution-cluster + .solution-cluster { padding-top: 12px; }
+  .cluster-heading { display: grid; grid-template-columns: 1fr 1fr; gap: 46px; align-items: end; margin-bottom: 28px; }
+  .cluster-heading p { margin: 0; color: var(--muted); line-height: 1.85; }
   .solution-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
   .solution-card { display: block; padding: 30px; border: 1px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.025); text-decoration: none; transition: transform .2s ease, border-color .2s ease; }
   .solution-card:hover { transform: translateY(-3px); border-color: rgba(200,169,107,.45); }
-  .solution-card h2 { margin: 10px 0 12px; font-size: clamp(1.2rem, 2.2vw, 1.55rem); color: var(--text); }
+  .solution-card-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .solution-card-meta > span:last-child { color: var(--muted); font-size: .72rem; }
+  .solution-card h3 { margin: 10px 0 12px; font-size: clamp(1.2rem, 2.2vw, 1.55rem); color: var(--text); }
   .solution-card p { margin: 0; color: var(--muted); line-height: 1.85; }
   .solution-link { display: inline-block; margin-top: 20px; color: var(--accent); font-size: .88rem; }
   .solution-guide { display: grid; grid-template-columns: .8fr 1.2fr; gap: 50px; padding: 34px; border: 1px solid var(--line); border-radius: 20px; }
   .solution-guide h2 { margin: 8px 0 0; }
   .solution-guide p { margin: 0; color: var(--muted); line-height: 1.9; }
-  @media (max-width: 820px) { .solution-grid, .solution-guide { grid-template-columns: 1fr; } .solution-guide { gap: 20px; padding: 24px; } }
+  @media (max-width: 820px) { .solution-grid, .solution-guide, .cluster-heading { grid-template-columns: 1fr; } .cluster-heading { gap: 12px; } .solution-guide { gap: 20px; padding: 24px; } }
+  @media (max-width: 560px) { .solution-card { padding: 24px; } .solution-card-meta { align-items: flex-start; flex-direction: column; gap: 4px; } }
 </style>

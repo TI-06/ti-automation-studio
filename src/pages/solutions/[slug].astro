@@ -14,6 +14,9 @@ const { slug } = Astro.params;
 const solution = getSolutionBySlug(slug ?? '');
 if (!solution) return Astro.redirect('/solutions');
 
+const relatedSolutions = solution.relatedSolutionSlugs
+  .map((relatedSlug) => solutions.find((item) => item.slug === relatedSlug))
+  .filter((item): item is NonNullable<typeof item> => Boolean(item));
 const relatedWorks = solution.relatedWorkSlugs
   .map((workSlug) => works.find((work) => work.slug === workSlug))
   .filter((work): work is NonNullable<typeof work> => Boolean(work));
@@ -106,6 +109,26 @@ const structuredData = [
       </div>
     </section>
 
+    {relatedSolutions.length > 0 && (
+      <section class="section related-guides">
+        <div class="container">
+          <p class="eyebrow">RELATED GUIDES</p>
+          <h2 class="section-title">関連する業務自動化ガイド</h2>
+          <p class="section-lead">同じ課題の周辺にある方法・費用・技術選定も続けて確認できます。</p>
+          <div class="related-guide-grid">
+            {relatedSolutions.map((item) => (
+              <a class="related-guide-card" href={`/solutions/${item.slug}`}>
+                <span>{item.searchIntent === 'commercial' ? '依頼・費用' : '方法・解説'}</span>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+                <strong>詳しく読む →</strong>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
     {relatedWorks.length > 0 && (
       <section class="section">
         <div class="container">
@@ -191,8 +214,14 @@ const structuredData = [
   .solution-note { padding: 32px; border: 1px solid var(--line); border-radius: 20px; background: rgba(255,255,255,.025); }
   .solution-note h2 { margin: 8px 0 12px; }
   .solution-note p, .solution-service-cta p { color: var(--muted); line-height: 1.9; }
+  .related-guide-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 28px; }
+  .related-guide-card { display: block; padding: 24px; border: 1px solid var(--line); border-radius: 16px; text-decoration: none; background: rgba(255,255,255,.02); }
+  .related-guide-card > span { color: var(--accent); font-size: .76rem; }
+  .related-guide-card h3 { margin: 10px 0; color: var(--text); font-size: 1.08rem; }
+  .related-guide-card p { margin: 0; color: var(--muted); line-height: 1.75; font-size: .9rem; }
+  .related-guide-card strong { display: inline-block; margin-top: 16px; color: var(--accent); font-size: .82rem; }
   .solution-service-cta { padding: 34px; border: 1px solid rgba(200,169,107,.35); border-radius: 20px; background: rgba(200,169,107,.07); }
   .solution-service-cta h2 { margin: 8px 0 10px; }
-  @media (max-width: 900px) { .solution-body-grid, .approach-grid { grid-template-columns: 1fr; gap: 24px; } }
+  @media (max-width: 900px) { .solution-body-grid, .approach-grid, .related-guide-grid { grid-template-columns: 1fr; gap: 24px; } }
   @media (max-width: 640px) { .solution-hero { padding-top: 48px; } .solution-answer, .solution-note, .solution-service-cta { padding: 22px; } }
 </style>

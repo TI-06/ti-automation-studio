@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { solutions } from '../data/solutions';
 
 interface FaqItem {
   question: string;
@@ -20,6 +21,7 @@ interface Props {
   faq: FaqItem[];
   relatedServiceHref: string;
   relatedServiceLabel: string;
+  relatedGuideSlugs?: string[];
 }
 
 const {
@@ -36,8 +38,12 @@ const {
   faq,
   relatedServiceHref,
   relatedServiceLabel,
+  relatedGuideSlugs = [],
 } = Astro.props;
 
+const relatedGuides = relatedGuideSlugs
+  .map((slug) => solutions.find((solution) => solution.slug === slug))
+  .filter((solution): solution is NonNullable<typeof solution> => Boolean(solution));
 const pageUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : Astro.url.toString();
 const structuredData = [
   {
@@ -69,9 +75,7 @@ const structuredData = [
   <section class="service-hero">
     <div class="container service-hero-grid reveal">
       <div class="service-hero-copy">
-        <nav class="breadcrumb" aria-label="パンくずリスト">
-          <a href="/">トップ</a><span>／</span><a href="/services">できること</a><span>／</span><span>{title}</span>
-        </nav>
+        <nav class="breadcrumb" aria-label="パンくずリスト"><a href="/">トップ</a><span>／</span><a href="/services">できること</a><span>／</span><span>{title}</span></nav>
         <p class="eyebrow">{eyebrow}</p>
         <h1>{title}</h1>
         <p class="service-hero-lead">{hero}</p>
@@ -94,24 +98,15 @@ const structuredData = [
   <section class="section service-problems">
     <div class="container service-section-grid">
       <div><p class="eyebrow">COMMON PROBLEMS</p><h2 class="section-title">こんな状態から相談できます。</h2></div>
-      <div class="service-check-list">
-        {problems.map((problem) => <div class="service-check-item"><span aria-hidden="true">—</span><p>{problem}</p></div>)}
-      </div>
+      <div class="service-check-list">{problems.map((problem) => <div class="service-check-item"><span aria-hidden="true">—</span><p>{problem}</p></div>)}</div>
     </div>
   </section>
 
   <section class="section">
     <div class="container">
-      <p class="eyebrow">WHAT WE REPAIR</p>
-      <h2 class="section-title">修正・改修できること</h2>
+      <p class="eyebrow">WHAT WE REPAIR</p><h2 class="section-title">修正・改修できること</h2>
       <div class="service-capability-grid">
-        {scopes.map((scope, index) => (
-          <article class="service-capability-card">
-            <span>{String(index + 1).padStart(2, '0')}</span>
-            <h3>{scope.title}</h3>
-            <p>{scope.description}</p>
-          </article>
-        ))}
+        {scopes.map((scope, index) => <article class="service-capability-card"><span>{String(index + 1).padStart(2, '0')}</span><h3>{scope.title}</h3><p>{scope.description}</p></article>)}
       </div>
     </div>
   </section>
@@ -119,41 +114,49 @@ const structuredData = [
   <section class="section">
     <div class="container service-section-grid">
       <div><p class="eyebrow">FIRST CHECK</p><h2 class="section-title">最初に確認するポイント</h2><p class="section-lead">不具合だけを直して別の箇所が壊れないよう、影響範囲を先に確認します。</p></div>
-      <ol class="service-example-list">
-        {checks.map((check, index) => <li><span>{String(index + 1).padStart(2, '0')}</span><p>{check}</p></li>)}
-      </ol>
+      <ol class="service-example-list">{checks.map((check, index) => <li><span>{String(index + 1).padStart(2, '0')}</span><p>{check}</p></li>)}</ol>
     </div>
   </section>
 
   <section class="section">
     <div class="container service-section-grid">
       <div><p class="eyebrow">EXAMPLES</p><h2 class="section-title">よくある修正例</h2></div>
-      <ol class="service-example-list">
-        {examples.map((example, index) => <li><span>{String(index + 1).padStart(2, '0')}</span><p>{example}</p></li>)}
-      </ol>
+      <ol class="service-example-list">{examples.map((example, index) => <li><span>{String(index + 1).padStart(2, '0')}</span><p>{example}</p></li>)}</ol>
     </div>
   </section>
+
+  {relatedGuides.length > 0 && (
+    <section class="section">
+      <div class="container">
+        <p class="eyebrow">PRACTICAL GUIDES</p>
+        <h2 class="section-title">関連する業務自動化ガイド</h2>
+        <p class="section-lead">修正依頼の準備、費用、速度改善など、相談前に確認したいポイントを個別に解説しています。</p>
+        <div class="card-grid">
+          {relatedGuides.map((guide) => (
+            <a class="work-card" href={`/solutions/${guide.slug}`}>
+              <span class="card-arrow" aria-hidden="true">↗</span>
+              <div><span class="card-kicker">GUIDE</span><h3 class="card-title">{guide.title}</h3><p class="card-copy">{guide.description}</p></div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 
   <section class="section">
     <div class="container service-section-grid">
       <div>
-        <p class="eyebrow">TECHNOLOGY</p>
-        <h2 class="section-title">既存環境をできるだけ活かします。</h2>
+        <p class="eyebrow">TECHNOLOGY</p><h2 class="section-title">既存環境をできるだけ活かします。</h2>
         <div class="tags service-tech-tags">{technologies.map((tech) => <span class="tag">{tech}</span>)}</div>
       </div>
-      <div>
-        <p class="eyebrow">RELATED</p>
-        <div class="service-related-links"><a href={relatedServiceHref}><span>{relatedServiceLabel}</span><span aria-hidden="true">→</span></a></div>
-      </div>
+      <div><p class="eyebrow">RELATED</p><div class="service-related-links"><a href={relatedServiceHref}><span>{relatedServiceLabel}</span><span aria-hidden="true">→</span></a></div></div>
     </div>
   </section>
 
   <section class="section">
     <div class="container service-faq">
       <div><p class="eyebrow">FAQ</p><h2 class="section-title">よくある質問</h2></div>
-      <div class="service-faq-list">
-        {faq.map((item) => <details><summary>{item.question}<span aria-hidden="true">＋</span></summary><p>{item.answer}</p></details>)}
-      </div>
+      <div class="service-faq-list">{faq.map((item) => <details><summary>{item.question}<span aria-hidden="true">＋</span></summary><p>{item.answer}</p></details>)}</div>
     </div>
   </section>
 
@@ -166,17 +169,7 @@ const structuredData = [
 </BaseLayout>
 
 <style>
-  .repair-visual-card {
-    min-height: 320px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    gap: 14px;
-    padding: 32px;
-    border: 1px solid var(--line);
-    border-radius: 20px;
-    background: linear-gradient(145deg, rgba(200, 169, 107, .12), rgba(255, 255, 255, .02));
-  }
+  .repair-visual-card { min-height: 320px; display: flex; flex-direction: column; justify-content: flex-end; gap: 14px; padding: 32px; border: 1px solid var(--line); border-radius: 20px; background: linear-gradient(145deg, rgba(200, 169, 107, .12), rgba(255, 255, 255, .02)); }
   .repair-visual-card span { color: var(--accent); font-size: .78rem; letter-spacing: .16em; }
   .repair-visual-card strong { font-size: clamp(1.25rem, 2.3vw, 1.8rem); line-height: 1.5; }
   .repair-visual-card p { margin: 0; color: var(--muted); line-height: 1.9; }
