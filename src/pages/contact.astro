@@ -29,6 +29,12 @@ const sourceConfig = toolSource ? TOOL_CONVERSION_CONFIG[toolSource] : null;
           <div><span>AI活用</span><strong>業務への組み込み</strong></div>
         </div>
         <p class="section-lead">本名・住所・電話番号の公開はしていません。入力いただいた内容は相談対応のためにのみ利用します。</p>
+
+        <div class="coconala-choice">
+          <span>ココナラでの取引を希望する方</span>
+          <p>ココナラ上でのメッセージ・決済を希望する場合は、プロフィールからそのままご相談いただけます。</p>
+          <a class="btn" href="https://coconala.com/users/5379632" target="_blank" rel="noopener noreferrer">ココナラから依頼する <span aria-hidden="true">↗</span></a>
+        </div>
       </aside>
 
       <div>
@@ -140,6 +146,29 @@ const sourceConfig = toolSource ? TOOL_CONVERSION_CONFIG[toolSource] : null;
     font-size: .86rem;
     line-height: 1.75;
   }
+
+  .coconala-choice {
+    margin-top: 28px;
+    padding: 22px;
+    border: 1px solid var(--border-strong);
+    background: rgba(200, 169, 107, .035);
+  }
+
+  .coconala-choice > span {
+    display: block;
+    color: var(--text);
+    font-size: .92rem;
+    font-weight: 600;
+  }
+
+  .coconala-choice > p {
+    margin: 9px 0 16px;
+    color: var(--muted);
+    font-size: .84rem;
+    line-height: 1.75;
+  }
+
+  .coconala-choice .btn { width: 100%; }
 </style>
 
 <script>
