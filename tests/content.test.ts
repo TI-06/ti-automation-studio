@@ -125,9 +125,9 @@ describe('検索意図別サービスページ', () => {
 
 describe('トップページのヒーローレイアウト', () => {
   it('見出しを意図した3行に固定する', () => {
-    expect(homeSource).toContain('<span class="hero-line">面倒な業務を、</span>');
-    expect(homeSource).toContain('<span class="hero-line accent">使える仕組み</span>');
-    expect(homeSource).toContain('<span class="hero-line">に変える。</span>');
+    expect(homeSource).toContain('<span class="hero-line">Excel・GAS・Pythonで</span>');
+    expect(homeSource).toContain('<span class="hero-line accent">業務自動化。</span>');
+    expect(homeSource).toContain('<span class="hero-line">面倒な手作業を減らす。</span>');
   });
 
   it('PCとスマホで見出しサイズを抑え、中間幅では1カラムにする', () => {

@@ -1,0 +1,125 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const priceRanges = [
+  { label: '小規模な修正', price: '1〜5万円程度', copy: 'VBA・GASのエラー修正、既存処理の小さな仕様変更、単機能の改修など。' },
+  { label: '単機能の自動化', price: '3〜10万円程度', copy: '転記、集計、PDF出力、CSV変換、通知など、ひとつの業務をまとめて自動化するケース。' },
+  { label: '業務ツール開発', price: '10〜30万円程度', copy: '入力画面、一覧、検索、権限、帳票、複数処理を組み合わせた社内向けツール。' },
+  { label: 'Webシステム・複数連携', price: '個別見積', copy: '複数ユーザー、外部API、データベース、認証などを含む構成。' },
+];
+
+const factors = [
+  ['既存資産の有無', '新規開発か、既存Excel・VBA・GASを調査して改修するかで必要な確認量が変わります。'],
+  ['データ量と処理回数', '数十件の単発処理と、数万件を毎日処理する仕組みでは設計・テスト範囲が変わります。'],
+  ['利用人数・権限', '一人で使うツールか、複数担当者が同時に使うシステムかで構成が変わります。'],
+  ['外部サービス連携', 'API認証、OAuth、外部サービス側の制限や検証環境が必要な場合は追加工数が発生します。'],
+  ['帳票・画面の作り込み', '既存様式をそのまま再現する場合や、管理画面を細かく作り込む場合は確認・調整時間が増えます。'],
+];
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'トップ', item: Astro.site?.toString() ?? '/' },
+    { '@type': 'ListItem', position: 2, name: '料金・費用の目安', item: Astro.site ? new URL('/price', Astro.site).toString() : '/price' },
+  ],
+};
+---
+<BaseLayout
+  title="業務自動化・システム開発の料金・費用目安"
+  description="Excel・VBA・GAS・Python・Web・APIを使った業務自動化やシステム開発の料金目安。小規模修正から業務ツール、Webシステムまで、見積金額が変わるポイントも説明します。"
+  structuredData={structuredData}
+>
+  <section class="service-hero">
+    <div class="container reveal">
+      <nav class="breadcrumb" aria-label="パンくずリスト"><a href="/">トップ</a><span>／</span><span>料金・費用の目安</span></nav>
+      <p class="eyebrow">PRICE GUIDE</p>
+      <h1 class="section-title">料金・費用の目安</h1>
+      <p class="section-lead">同じ「自動化」でも、既存ファイルの状態、データ量、利用人数、外部連携の有無で工数が大きく変わります。固定料金に当てはめるのではなく、まず必要な範囲を整理してから見積します。</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">ROUGH COST</p>
+      <h2 class="section-title">開発規模ごとの目安</h2>
+      <p class="section-lead">以下は初期検討のための目安です。実際の金額は対象ファイル・作業手順・必要機能を確認して決定します。</p>
+      <div class="price-grid">
+        {priceRanges.map((item) => (
+          <article class="price-card">
+            <span>{item.label}</span>
+            <strong>{item.price}</strong>
+            <p>{item.copy}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container service-section-grid">
+      <div>
+        <p class="eyebrow">PRICE FACTORS</p>
+        <h2 class="section-title">見積金額が変わる主なポイント</h2>
+        <p class="section-lead">「画面数」だけではなく、現在の業務ルールや例外処理まで確認して見積する方が、開発後の追加修正を減らせます。</p>
+      </div>
+      <div class="price-factor-list">
+        {factors.map(([title, copy], index) => (
+          <article><span>{String(index + 1).padStart(2, '0')}</span><div><h3>{title}</h3><p>{copy}</p></div></article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container service-section-grid">
+      <div>
+        <p class="eyebrow">HOW TO ESTIMATE</p>
+        <h2 class="section-title">相談時に分かると見積しやすいもの</h2>
+      </div>
+      <ul class="price-check-list">
+        <li>現在使っているExcel・スプレッドシート・ツール</li>
+        <li>いま手作業で行っている手順</li>
+        <li>最終的に作りたい出力や画面のイメージ</li>
+        <li>利用人数と、おおよそのデータ件数</li>
+        <li>必須機能と「できれば欲しい」機能の区分</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container price-note">
+      <p class="eyebrow">NOTE</p>
+      <h2>「修正で済むか、作り直すべきか」も含めて確認します。</h2>
+      <p>既存のExcel・VBA・GASがある場合、最初から新規開発にする必要はありません。現在の構成を確認し、修正・部分改修・作り直しのどれが妥当かを整理します。</p>
+      <div class="hero-actions">
+        <a class="btn" href="/services/vba-repair">VBA修正を見る →</a>
+        <a class="btn" href="/services/gas-repair">GAS修正を見る →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container cta-band-inner">
+      <div><p class="eyebrow">CONTACT</p><h2>概算を知りたい段階でも、<br />作業内容から整理できます。</h2></div>
+      <a class="btn btn-primary" href="/contact">相談内容を送る →</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .price-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 34px; }
+  .price-card { padding: 28px; border: 1px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.025); }
+  .price-card span { display: block; color: var(--muted); font-size: .85rem; }
+  .price-card strong { display: block; margin: 12px 0; color: var(--accent); font-size: clamp(1.5rem, 3vw, 2.2rem); }
+  .price-card p, .price-factor-list p, .price-note p { margin: 0; color: var(--muted); line-height: 1.9; }
+  .price-factor-list { display: grid; gap: 14px; }
+  .price-factor-list article { display: grid; grid-template-columns: 42px 1fr; gap: 14px; padding: 20px 0; border-bottom: 1px solid var(--line); }
+  .price-factor-list article > span { color: var(--accent); font-size: .78rem; }
+  .price-factor-list h3 { margin: 0 0 8px; font-size: 1.05rem; }
+  .price-check-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+  .price-check-list li { padding: 16px 18px; border: 1px solid var(--line); border-radius: 12px; }
+  .price-note { padding: 34px; border: 1px solid var(--line); border-radius: 20px; background: rgba(200,169,107,.07); }
+  .price-note h2 { margin: 8px 0 14px; }
+  @media (max-width: 760px) { .price-grid { grid-template-columns: 1fr; } .price-note { padding: 24px; } }
+</style>

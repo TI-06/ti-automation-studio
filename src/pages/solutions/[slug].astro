@@ -1,0 +1,198 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { solutions, getSolutionBySlug } from '../../data/solutions';
+import { works } from '../../data/works';
+import { tools } from '../../data/tools';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return solutions.map((solution) => ({ params: { slug: solution.slug } }));
+}
+
+const { slug } = Astro.params;
+const solution = getSolutionBySlug(slug ?? '');
+if (!solution) return Astro.redirect('/solutions');
+
+const relatedWorks = solution.relatedWorkSlugs
+  .map((workSlug) => works.find((work) => work.slug === workSlug))
+  .filter((work): work is NonNullable<typeof work> => Boolean(work));
+const relatedTools = solution.relatedToolSlugs
+  .map((toolSlug) => tools.find((tool) => tool.slug === toolSlug && tool.published))
+  .filter((tool): tool is NonNullable<typeof tool> => Boolean(tool));
+const pageUrl = Astro.site ? new URL(`/solutions/${solution.slug}`, Astro.site).toString() : `/solutions/${solution.slug}`;
+
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: solution.title,
+    description: solution.description,
+    datePublished: solution.publishedAt,
+    dateModified: solution.publishedAt,
+    inLanguage: 'ja-JP',
+    mainEntityOfPage: pageUrl,
+    author: { '@type': 'Organization', name: 'TI AUTOMATION STUDIO', url: Astro.site?.toString() ?? '/' },
+    publisher: { '@type': 'Organization', name: 'TI AUTOMATION STUDIO', url: Astro.site?.toString() ?? '/' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'トップ', item: Astro.site?.toString() ?? '/' },
+      { '@type': 'ListItem', position: 2, name: '業務自動化のヒント', item: Astro.site ? new URL('/solutions', Astro.site).toString() : '/solutions' },
+      { '@type': 'ListItem', position: 3, name: solution.title, item: pageUrl },
+    ],
+  },
+];
+---
+<BaseLayout title={solution.seoTitle} description={solution.description} structuredData={structuredData}>
+  <article>
+    <header class="solution-hero">
+      <div class="container solution-hero-inner reveal">
+        <nav class="breadcrumb" aria-label="パンくずリスト"><a href="/">トップ</a><span>／</span><a href="/solutions">業務自動化のヒント</a><span>／</span><span>{solution.title}</span></nav>
+        <p class="eyebrow">{solution.eyebrow}</p>
+        <h1>{solution.title}</h1>
+        <p class="solution-lead">{solution.lead}</p>
+        <div class="solution-answer"><span>結論</span><p>{solution.answer}</p></div>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="container solution-body-grid">
+        <div><p class="eyebrow">AUTOMATION CHECK</p><h2 class="section-title">自動化しやすい作業の特徴</h2></div>
+        <ul class="solution-list">{solution.reasons.map((reason) => <li>{reason}</li>)}</ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <p class="eyebrow">OPTIONS</p>
+        <h2 class="section-title">方法を比較して選ぶ</h2>
+        <div class="approach-grid">
+          {solution.approaches.map((approach) => (
+            <article class="approach-card">
+              <span>{approach.fit}</span>
+              <h3>{approach.title}</h3>
+              <p>{approach.description}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container solution-body-grid">
+        <div><p class="eyebrow">STEPS</p><h2 class="section-title">実装前に整理する順番</h2></div>
+        <ol class="solution-steps">
+          {solution.steps.map((step, index) => <li><span>{String(index + 1).padStart(2, '0')}</span><p>{step}</p></li>)}
+        </ol>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container solution-note">
+        <p class="eyebrow">COST GUIDE</p>
+        <h2>費用を考えるときのポイント</h2>
+        <p>{solution.costGuide}</p>
+        <div class="hero-actions"><a class="btn" href="/price">料金・費用の目安を見る →</a></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container solution-body-grid">
+        <div><p class="eyebrow">PITFALLS</p><h2 class="section-title">失敗しやすい設計</h2></div>
+        <ul class="solution-list warning">{solution.pitfalls.map((pitfall) => <li>{pitfall}</li>)}</ul>
+      </div>
+    </section>
+
+    {relatedWorks.length > 0 && (
+      <section class="section">
+        <div class="container">
+          <p class="eyebrow">RELATED CASES</p>
+          <h2 class="section-title">関連する開発実績</h2>
+          <div class="card-grid">
+            {relatedWorks.map((work) => (
+              <a class="work-card" href={`/works/${work.slug}`}>
+                <span class="card-arrow" aria-hidden="true">↗</span>
+                <div><span class="card-kicker">CASE</span><h3 class="card-title">{work.title}</h3><p class="card-copy">{work.summary}</p></div>
+                <div class="tags">{work.technologies.slice(0, 4).map((tech) => <span class="tag">{tech}</span>)}</div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    {relatedTools.length > 0 && (
+      <section class="section">
+        <div class="container">
+          <p class="eyebrow">FREE TOOLS</p>
+          <h2 class="section-title">関連する無料ツール</h2>
+          <div class="card-grid">
+            {relatedTools.map((tool) => (
+              <a class="tool-card" href={tool.href}>
+                <span class="card-arrow" aria-hidden="true">↗</span>
+                <div><span class="card-kicker">TOOL</span><h3 class="card-title">{tool.title}</h3><p class="card-copy">{tool.description}</p></div>
+                <div class="tags">{tool.technologies.slice(0, 4).map((tech) => <span class="tag">{tech}</span>)}</div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <section class="section">
+      <div class="container service-faq">
+        <div><p class="eyebrow">FAQ</p><h2 class="section-title">よくある質問</h2></div>
+        <div class="service-faq-list">
+          {solution.faq.map((item) => <details><summary>{item.question}<span aria-hidden="true">＋</span></summary><p>{item.answer}</p></details>)}
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container solution-service-cta">
+        <div>
+          <p class="eyebrow">RELATED SERVICE</p>
+          <h2>自分の業務に合わせて実装したい場合</h2>
+          <p>サンプルどおりに作るのではなく、現在のファイル・データ量・利用者・例外ケースに合わせて設計します。</p>
+        </div>
+        <div class="hero-actions">
+          <a class="btn" href={`/services/${solution.relatedServiceSlug}`}>関連サービスを見る →</a>
+          <a class="btn btn-primary" href="/contact">開発について相談する →</a>
+        </div>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .solution-hero { padding: 76px 0 34px; }
+  .solution-hero-inner { max-width: 980px; }
+  .solution-hero h1 { max-width: 900px; margin: 14px 0 22px; font-size: clamp(2.25rem, 5.4vw, 4.6rem); line-height: 1.16; letter-spacing: -.03em; }
+  .solution-lead { max-width: 840px; margin: 0; color: var(--muted); font-size: 1.05rem; line-height: 2; }
+  .solution-answer { margin-top: 30px; padding: 24px 26px; border-left: 3px solid var(--accent); background: rgba(200,169,107,.07); }
+  .solution-answer span { color: var(--accent); font-size: .78rem; letter-spacing: .12em; }
+  .solution-answer p { margin: 8px 0 0; line-height: 1.9; }
+  .solution-body-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 64px; align-items: start; }
+  .solution-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+  .solution-list li { padding: 17px 18px; border: 1px solid var(--line); border-radius: 12px; line-height: 1.75; }
+  .solution-list.warning li::before { content: '注意  '; color: var(--accent); font-size: .78rem; }
+  .approach-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 30px; }
+  .approach-card { padding: 24px; border: 1px solid var(--line); border-radius: 16px; }
+  .approach-card > span { color: var(--accent); font-size: .78rem; }
+  .approach-card h3 { margin: 10px 0; }
+  .approach-card p { margin: 0; color: var(--muted); line-height: 1.8; }
+  .solution-steps { margin: 0; padding: 0; list-style: none; }
+  .solution-steps li { display: grid; grid-template-columns: 44px 1fr; gap: 14px; padding: 18px 0; border-bottom: 1px solid var(--line); }
+  .solution-steps span { color: var(--accent); font-size: .78rem; }
+  .solution-steps p { margin: 0; line-height: 1.8; }
+  .solution-note { padding: 32px; border: 1px solid var(--line); border-radius: 20px; background: rgba(255,255,255,.025); }
+  .solution-note h2 { margin: 8px 0 12px; }
+  .solution-note p, .solution-service-cta p { color: var(--muted); line-height: 1.9; }
+  .solution-service-cta { padding: 34px; border: 1px solid rgba(200,169,107,.35); border-radius: 20px; background: rgba(200,169,107,.07); }
+  .solution-service-cta h2 { margin: 8px 0 10px; }
+  @media (max-width: 900px) { .solution-body-grid, .approach-grid { grid-template-columns: 1fr; gap: 24px; } }
+  @media (max-width: 640px) { .solution-hero { padding-top: 48px; } .solution-answer, .solution-note, .solution-service-cta { padding: 22px; } }
+</style>

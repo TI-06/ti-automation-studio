@@ -1,0 +1,42 @@
+---
+import RepairServicePage from '../../components/RepairServicePage.astro';
+---
+<RepairServicePage
+  title="GAS修正・Google Apps Script改修"
+  seoTitle="GAS修正・改修｜エラー・処理速度・既存ツールを改善"
+  description="既存のGoogle Apps Script（GAS）を調査し、エラー修正、処理速度改善、権限・API変更への対応、機能追加まで行います。スプレッドシートやDriveなど現在のGoogle Workspace運用を確認してから修正範囲を整理します。"
+  eyebrow="GAS REPAIR"
+  hero="止まったGASを、日々の業務でまた安心して使える状態へ。"
+  problems={[
+    '突然GASがエラーになり、定期処理や通知が止まっている',
+    '実行時間制限にかかり、データ件数が増えると最後まで終わらない',
+    '担当者が変わり、トリガーや権限設定を含めて構成が分からない',
+    '既存のスプレッドシート運用は残したまま機能を追加したい',
+  ]}
+  scopes={[
+    { title: '実行エラー・権限エラーの修正', description: '例外ログ、権限、トリガー、API仕様変更などを確認し、停止原因を切り分けます。' },
+    { title: '実行時間・処理速度の改善', description: 'Spreadsheetへの細かな読み書きや重複取得を減らし、バッチ処理・キャッシュなどで負荷を整理します。' },
+    { title: '既存GASへの機能追加', description: 'メール通知、PDF生成、Drive保存、Webアプリ画面、外部API連携などを既存運用へ追加します。' },
+    { title: '運用・保守設定の整理', description: 'トリガー、Script Properties、権限、ログ確認方法など、運用担当者が追える状態へ整えます。' },
+  ]}
+  checks={[
+    '実行ログとエラーが発生する関数・操作を確認する',
+    '対象スプレッドシート、Drive、Gmail、外部APIとの依存関係を確認する',
+    '時間主導・編集時などのトリガーと実行ユーザーを確認する',
+    'GASの制限内で直すか、処理分割や別技術への切り分けが必要か判断する',
+  ]}
+  examples={[
+    'トリガー実行だけ失敗する定期処理の修正',
+    'スプレッドシート大量書き込みで時間超過する処理の高速化',
+    'Gmail・Drive・PDF生成を含む既存業務フローの改修',
+    '外部APIの認証・レスポンス変更に伴う既存GASの修正',
+  ]}
+  technologies={['Google Apps Script', 'Spreadsheet', 'Drive', 'Gmail', 'REST API', 'HTML/CSS']}
+  faq={[
+    { question: 'エラーログの見方が分からなくても相談できますか？', answer: '可能です。どの操作で止まるかと対象スクリプトを確認し、必要なログの取り方から整理します。' },
+    { question: '他の開発者が作ったGASでも対応できますか？', answer: 'コード、利用しているシートやサービス、必要な権限を確認できれば調査できます。' },
+    { question: 'GASの制限で難しい場合はどうなりますか？', answer: '処理分割やキャッシュで改善できるかを確認し、それでも難しい場合はPythonやWebシステムへの切り分けを提案します。' },
+  ]}
+  relatedServiceHref="/services/gas-automation"
+  relatedServiceLabel="GAS・Google Workspace業務自動化を見る"
+/>
