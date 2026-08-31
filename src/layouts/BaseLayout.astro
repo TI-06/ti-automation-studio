@@ -78,7 +78,23 @@ const structuredDataItems = [...sharedStructuredData, ...pageStructuredData];
           <a href="/tools">公開ツール</a>
           <a href="/about">制作者</a>
           <a href="/#process">開発の流れ</a>
-          <a class="nav-cta" href="/contact">問い合わせ</a>
+          <span class="nav-actions">
+            <a class="nav-cta nav-site-cta" href="/contact" aria-label="サイトから相談する">
+              <span class="nav-label-desktop">サイトから相談</span>
+              <span class="nav-label-mobile">相談</span>
+            </a>
+            <a
+              class="nav-cta nav-coconala-cta"
+              href="https://coconala.com/users/5379632"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="ココナラから問い合わせる"
+            >
+              <span class="nav-label-desktop">ココナラから問い合わせ</span>
+              <span class="nav-label-mobile">ココナラ</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          </span>
         </nav>
       </div>
     </header>
@@ -97,6 +113,64 @@ const structuredDataItems = [...sharedStructuredData, ...pageStructuredData];
         </div>
       </div>
     </footer>
+    <style>
+      .nav-actions {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .nav-coconala-cta {
+        border-color: var(--accent);
+        background: rgba(200, 169, 107, .1);
+      }
+
+      .nav-coconala-cta:hover {
+        background: rgba(200, 169, 107, .18);
+      }
+
+      .nav-label-mobile {
+        display: none;
+      }
+
+      @media (max-width: 1120px) {
+        .nav-links {
+          gap: 18px;
+        }
+
+        .nav-actions {
+          gap: 6px;
+        }
+
+        .nav-actions .nav-cta {
+          padding-inline: 11px;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .nav {
+          gap: 10px;
+        }
+
+        .nav-actions {
+          gap: 5px;
+        }
+
+        .nav-actions .nav-cta {
+          padding: 7px 8px;
+          font-size: .7rem;
+          white-space: nowrap;
+        }
+
+        .nav-label-desktop {
+          display: none;
+        }
+
+        .nav-label-mobile {
+          display: inline;
+        }
+      }
+    </style>
     <script>
       if (document.querySelector('[data-dashboard-app]')) {
         void import('../scripts/tools/dashboard-builder');
