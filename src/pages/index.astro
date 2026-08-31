@@ -145,15 +145,27 @@ const process = [
     </div>
   </section>
 
-  <section id="process" class="section">
+  <section id="process" class="section process-section">
     <div class="container">
       <p class="eyebrow">開発の流れ</p>
       <h2 class="section-title">仕様が固まっていなくても、<br />相談から整理できます。</h2>
-      <div class="process">
+      <p class="process-lead">ご相談から納品・改善まで、業務を確認しながら一つずつ形にしていきます。</p>
+      <picture class="process-visual">
+        <source srcset="/images/process-flow-mobile.svg" media="(max-width: 640px)" />
+        <img
+          src="/images/process-flow-desktop.svg"
+          alt="相談から納品・改善までの開発フロー"
+          loading="lazy"
+          decoding="async"
+          width="1440"
+          height="520"
+        />
+      </picture>
+      <ol class="process-accessible">
         {process.map(([no, title, copy]) => (
-          <article class="process-item"><span class="process-no">{no}</span><h3>{title}</h3><p>{copy}</p></article>
+          <li><strong>{no} {title}</strong><span>{copy}</span></li>
         ))}
-      </div>
+      </ol>
     </div>
   </section>
 
@@ -169,6 +181,48 @@ const process = [
 </BaseLayout>
 
 <style>
+  .process-lead {
+    max-width: 760px;
+    margin: -6px 0 32px;
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.9;
+  }
+
+  .process-visual {
+    display: block;
+    width: 100%;
+    margin-top: 30px;
+  }
+
+  .process-visual img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 18px;
+    box-shadow: 0 22px 70px rgb(0 0 0 / 28%);
+  }
+
+  .process-accessible {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .process-accessible li {
+    display: block;
+  }
+
+  .process-accessible span {
+    display: block;
+  }
+
   .cta-actions {
     display: flex;
     flex-wrap: wrap;
@@ -178,6 +232,21 @@ const process = [
 
   @media (max-width: 860px) {
     .cta-actions { justify-content: flex-start; }
+  }
+
+  @media (max-width: 640px) {
+    .process-lead {
+      margin-bottom: 22px;
+      font-size: .94rem;
+    }
+
+    .process-visual {
+      margin-top: 20px;
+    }
+
+    .process-visual img {
+      border-radius: 14px;
+    }
   }
 
   @media (max-width: 560px) {
