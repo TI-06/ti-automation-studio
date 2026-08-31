@@ -2,8 +2,10 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { works } from '../data/works';
 import { publishedTools } from '../data/tools';
+import { solutions } from '../data/solutions';
 
 const featuredWorks = works.filter((work) => work.featured).slice(0, 4);
+const featuredSolutions = solutions.slice(0, 3);
 const services = [
   ['01', 'Excel・スプレッドシート業務の自動化', '手入力、転記、集計、ファイル作成など、毎日繰り返している作業を減らします。', '/services/excel-automation'],
   ['02', '社内Webツール・管理画面の開発', '業務に必要な機能だけを整理し、ブラウザから使える専用画面を構築します。', ''],
@@ -12,7 +14,8 @@ const services = [
   ['05', 'CSV・Excel・大量データ処理', 'データの検証、変換、集計、一括処理をPythonやExcelで効率化します。', '/services/python-data-processing'],
   ['06', 'PDF・帳票・印刷物の自動生成', '入力データをもとに、定型帳票やPDFを自動で作成・保存します。', '/services/pdf-document-automation'],
   ['07', 'AIを組み込んだ業務効率化', 'AIを使うこと自体を目的にせず、実務で使える入力支援や分類・要約へ落とし込みます。', ''],
-  ['08', '既存システム・既存ツールの改修', 'いま使っているExcel、VBA、GAS、Webツールを活かしながら改善します。', ''],
+  ['08', '既存Excel・VBAの修正・改修', '動かないマクロ、遅い処理、担当者不在のVBAを調査し、必要な範囲から改善します。', '/services/vba-repair'],
+  ['09', '既存GASの修正・改修', '実行エラー、時間超過、権限やAPI変更など、現在のGoogle Workspace運用を確認して修正します。', '/services/gas-repair'],
 ];
 const process = [
   ['01', '相談', 'いま困っていることを整理します。仕様が決まっていなくても問題ありません。'],
@@ -24,19 +27,19 @@ const process = [
 ];
 ---
 <BaseLayout
-  title="TI AUTOMATION STUDIO"
-  description="Excel・GAS・Python・Web・API・AIを活用した業務改善・自動化開発。手作業を、現場で使える仕組みに変えます。"
+  title="業務自動化・Excel/GAS/Python開発"
+  description="Excel・GAS・Python・Web・APIを活用した業務自動化・システム開発。転記、集計、帳票、データ処理、既存VBA・GASの修正まで、手作業を現場で使える仕組みに変えます。"
 >
   <section class="hero">
     <div class="container hero-grid reveal">
       <div>
         <p class="eyebrow">業務改善・自動化開発</p>
         <h1>
-          <span class="hero-line">面倒な業務を、</span>
-          <span class="hero-line accent">使える仕組み</span>
-          <span class="hero-line">に変える。</span>
+          <span class="hero-line">Excel・GAS・Pythonで</span>
+          <span class="hero-line accent">業務自動化。</span>
+          <span class="hero-line">面倒な手作業を減らす。</span>
         </h1>
-        <p class="hero-copy">Excel・Google Apps Script・Python・Web・API・AIを組み合わせ、手作業で続いている業務を、現場で実際に使える小さなシステムへ変えていきます。</p>
+        <p class="hero-copy">Excel・Google Apps Script・Python・Web・APIを組み合わせ、繰り返している手作業を、現場で使える仕組みに変える開発を行っています。既存ツールの修正から新規の業務システムまで対応します。</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="/works">実績を見る <span aria-hidden="true">→</span></a>
           <a class="btn" href="/contact">開発について相談する <span aria-hidden="true">↗</span></a>
@@ -97,7 +100,27 @@ const process = [
           )
         ))}
       </div>
-      <div class="hero-actions"><a class="btn" href="/services">対応サービスを詳しく見る <span aria-hidden="true">→</span></a></div>
+      <div class="hero-actions">
+        <a class="btn" href="/services">対応サービスを詳しく見る <span aria-hidden="true">→</span></a>
+        <a class="btn" href="/price">料金・費用の目安 <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">業務自動化のヒント</p>
+      <h2 class="section-title">検索される「困りごと」から、<br />解決方法を整理する。</h2>
+      <p class="section-lead">転記、複数Excelの集計、VBA修正など、実務でよくある課題ごとに方法・費用・失敗しやすいポイントをまとめています。</p>
+      <div class="card-grid">
+        {featuredSolutions.map((solution) => (
+          <a class="work-card" href={`/solutions/${solution.slug}`}>
+            <span class="card-arrow" aria-hidden="true">↗</span>
+            <div><span class="card-kicker">GUIDE</span><h3 class="card-title">{solution.title}</h3><p class="card-copy">{solution.description}</p></div>
+          </a>
+        ))}
+      </div>
+      <div class="hero-actions"><a class="btn" href="/solutions">業務自動化のヒントをすべて見る <span aria-hidden="true">→</span></a></div>
     </div>
   </section>
 
