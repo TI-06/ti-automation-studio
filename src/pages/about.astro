@@ -27,6 +27,12 @@ const painPoints = [
   ['API・サービス連携', '外部サービス間のデータ取得・登録・認証など、人が行っている受け渡しを自動化したいケース。'],
 ];
 
+const specialties = [
+  ['01', 'Pythonを使った業務自動化', 'CSV・Excelの整形や集計、大量データ処理、定型処理の自動実行など、繰り返し作業を安定して減らす開発。'],
+  ['02', 'Google Apps Scriptを使った業務自動化', 'スプレッドシート、Drive、Gmail、フォームなど、今使っているGoogle Workspaceをつないで仕組みにする開発。'],
+  ['03', '小規模なWebシステム', '大規模な基幹システムではなく、現場で必要な機能に絞った管理画面や業務用Webアプリの開発。'],
+];
+
 const capabilities = [
   ['01', 'Excel・VBA・スプレッドシート', '集計、転記、帳票作成、入力支援など、日々繰り返している作業を減らします。'],
   ['02', 'Google Apps Script', 'スプレッドシート、Drive、Gmailなどをつなぎ、Google Workspace上の業務を仕組み化します。'],
@@ -59,14 +65,19 @@ const workflow = [
 ---
 <BaseLayout
   title="制作者について"
-  description="TI AUTOMATION STUDIOの制作者プロフィール。現役SEとして約10年、本業の業務システム開発と約100件の個別開発・業務改善経験をもとに、Excel・GAS・Python・Web・APIを使った自動化を行っています。"
+  description="TI AUTOMATION STUDIOの制作者プロフィール。現役SEとして約10年、Excel・GAS・Python・Web・APIを使った業務改善と、使い続けられる小さなシステム開発に取り組んでいます。"
   structuredData={personStructuredData}
 >
   <section class="page-hero about-page-hero">
     <div class="container reveal">
       <p class="eyebrow">制作者について</p>
-      <h1>現場で使われ続ける、<br />業務の仕組みを作る。</h1>
-      <p>現役SEとして約10年、本業では業務システムの開発・改修に携わりながら、個別の業務改善・自動化開発にも取り組んでいます。Excel・GAS・Python・Web・APIなど技術を固定せず、「毎日の仕事が本当に軽くなるか」を基準に設計しています。</p>
+      <h1>機能を増やすより、<br />仕事がちゃんと軽くなる仕組みを。</h1>
+      <p>30代の現役SEとして、本業では業務システムの開発・改修に携わりながら、個人でも業務改善・自動化の開発を続けています。何を作るかより先に、「今の仕事のどこを変えると一番楽になるか」を考えることを大切にしています。</p>
+      <div class="about-hero-meta" aria-label="制作者概要">
+        <span>現役SE / 約10年</span>
+        <span>個別開発・業務改善 約100件</span>
+        <span>Python / GAS / Web</span>
+      </div>
     </div>
   </section>
 
@@ -76,18 +87,18 @@ const workflow = [
         <div><span>経験</span><strong>システム開発 約10年</strong></div>
         <div><span>個別対応</span><strong>開発・業務改善 約100件</strong></div>
         <div><span>主な領域</span><strong>Excel / GAS / Python / Web / API</strong></div>
-        <div><span>対応範囲</span><strong>小規模改善〜個別システム開発</strong></div>
+        <div><span>これから</span><strong>小規模Web・長期保守</strong></div>
       </aside>
 
       <div class="about-story">
-        <p class="eyebrow">これまで</p>
-        <h2 class="section-title">作ることより、<br />業務が良くなることを優先。</h2>
-        <p>本業のシステム開発では、要件を整理して実装し、テストして運用につなげるという一連の工程を経験してきました。一方で個別開発では、「Excelへの転記だけ減らしたい」「今ある仕組みを少し使いやすくしたい」といった、もっと現場に近い改善にも数多く対応しています。</p>
-        <p>そのため、最初から大きなシステムを提案するのではなく、既存のExcelやGoogle Workspaceで十分ならそれを活かし、必要になった段階でPython・Web・APIへ広げる考え方を取っています。</p>
-        <p>技術選定より先に現在の業務を理解し、手作業として残した方がよい部分と、仕組みに任せた方がよい部分を切り分けることを大切にしています。</p>
-        <div class="hero-actions">
-          <a class="btn" href="/works">開発実績を見る <span aria-hidden="true">→</span></a>
-          <a class="btn" href="/contact">相談する <span aria-hidden="true">↗</span></a>
+        <p class="eyebrow">原点</p>
+        <h2 class="section-title">システムで、<br />人の手作業が消える瞬間が好きです。</h2>
+        <p>システム開発そのものに興味を持ったことが、この仕事に入ったきっかけです。最初から「業務自動化を専門にしよう」と決めていたわけではありません。</p>
+        <p>仕事を続ける中で特に面白いと感じるようになったのが、毎日・毎月人が繰り返していた作業が、仕組みを作ることで一気に楽になる瞬間でした。<strong>手作業だったものが仕組みで自動化</strong>され、今までそこに使っていた時間を別の仕事へ回せるようになる。そういう変化を見るのが、今も開発を続ける大きな理由です。</p>
+        <p>だから、技術的に難しいものを作ること自体よりも、実際の仕事がどう変わるかを重視しています。</p>
+        <div class="about-origin-note">
+          <span>まず確認すること</span>
+          <strong>「何を一番改善したいか」から聞きます。</strong>
         </div>
       </div>
     </div>
@@ -97,7 +108,7 @@ const workflow = [
     <div class="container">
       <p class="eyebrow">経験の広がり</p>
       <h2 class="section-title">現場の小さな改善から、<br />Web・API連携まで。</h2>
-      <p class="section-lead">最初から技術領域を広げることを目的にしたのではなく、扱う業務の課題に応じて必要な手段を増やしてきました。</p>
+      <p class="section-lead">使う技術を先に決めるのではなく、扱う業務の課題に合わせて必要な手段を増やしてきました。</p>
       <div class="about-timeline">
         {experienceSteps.map(([no, title, copy]) => (
           <article class="about-timeline-item">
@@ -105,6 +116,20 @@ const workflow = [
             <div><h3>{title}</h3><p>{copy}</p></div>
           </article>
         ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section about-belief-section">
+    <div class="container about-belief-grid">
+      <div>
+        <p class="eyebrow">開発で一番避けたいこと</p>
+        <h2 class="section-title">機能が多いことより、ちゃんと使えること。</h2>
+      </div>
+      <div class="about-belief-copy">
+        <p>あまり好きではないのが、機能だけたくさん入っていて、実際には使いづらいツールです。</p>
+        <p>できることが増えても、「どこを押せばいいか分からない」「処理が終わったのか分からない」「結局、元のExcelの方が早い」となってしまえば、現場にとっては改善になりません。</p>
+        <p>そのため、相談を受けたときは機能一覧から考えるのではなく、<strong>何を一番改善したいか</strong>を先に確認します。最初は小さくても、迷わず使えて、効果が分かるものから作る方が長く残ると考えています。</p>
       </div>
     </div>
   </section>
@@ -128,12 +153,35 @@ const workflow = [
     <div class="container about-strength-grid">
       <div>
         <p class="eyebrow">強み</p>
-        <h2 class="section-title">自動化する前に、<br />業務の境界を整理する。</h2>
+        <h2 class="section-title">仕様が決まっていなくても大丈夫です。</h2>
       </div>
       <div class="about-strength-copy">
+        <p>「こういうことができたら便利」「今の管理方法を何とかしたい」くらいの段階でも問題ありません。現在の運用を見ながら、何を作るべきかを<strong>一緒に整理</strong>していきます。</p>
         <p>強みは、単にコードを書くことではなく、現在の運用を見ながら<strong>「どこを自動化し、どこを人に残すか」</strong>を整理できることです。</p>
-        <p>すべてを自動化すると、例外対応や修正がかえって難しくなる場合があります。逆に、人が判断する必要のない転記・集計・ファイル生成は、仕組みに任せた方が安定します。</p>
-        <p>技術と業務の両方を見ながら、作りすぎず、足りなすぎない構成を目指します。</p>
+        <p>Excelで十分ならExcelを残す。Google Workspace中心ならGASを使う。大量処理ならPython、複数人で使うならWebを検討する。技術ありきではなく、無理のない方法を柔軟に選びます。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section about-section-bordered">
+    <div class="container">
+      <p class="eyebrow">得意な開発</p>
+      <h2 class="section-title">小さく始めて、<br />実際の仕事に定着させる。</h2>
+      <div class="about-specialty-grid">
+        {specialties.map(([no, title, copy]) => (
+          <article class="about-specialty-card">
+            <span>{no}</span>
+            <h3>{title}</h3>
+            <p>{copy}</p>
+          </article>
+        ))}
+      </div>
+      <div class="about-not-fit">
+        <span>向いていないご相談</span>
+        <div>
+          <strong>デザインだけを目的とした案件</strong>
+          <p>画面の見やすさや操作性は大切にしますが、見た目だけを作る仕事より、データ処理や業務フローまで含めて「仕事がどう変わるか」を考える開発の方が得意です。</p>
+        </div>
       </div>
     </div>
   </section>
@@ -185,6 +233,20 @@ const workflow = [
     </div>
   </section>
 
+  <section class="section about-longterm-section">
+    <div class="container about-longterm-grid">
+      <div>
+        <p class="eyebrow">これから増やしたい仕事</p>
+        <h2 class="section-title">納品して終わりではなく、<br />使いながら良くしていく。</h2>
+      </div>
+      <div class="about-longterm-copy">
+        <p>今後特に増やしたいのは、小規模なWebシステムを作り、その後の<strong>保守・改善</strong>まで長く関わる仕事です。</p>
+        <p>システムは使い始めてから分かることが多くあります。「ここをもう少し変えたい」「人数が増えた」「この作業もつなげたい」といった変化に合わせ、必要なところを少しずつ直していく方が、最初から全部を盛り込むより現実的だと思っています。</p>
+        <p>依頼する側と作る側というだけではなく、相談しながら良い形を探し、依頼者の仕事が楽になり、自分も継続して改善に関われる。そんな<strong>お互いにメリットのある関係</strong>を作れたら理想です。</p>
+      </div>
+    </div>
+  </section>
+
   <section class="section">
     <div class="container">
       <p class="eyebrow">開発で大切にしていること</p>
@@ -198,19 +260,42 @@ const workflow = [
           </article>
         ))}
       </div>
+    </div>
+  </section>
+
+  <section class="section about-personal-section">
+    <div class="container about-personal-grid">
+      <div>
+        <p class="eyebrow">少しだけ個人的なこと</p>
+        <h2 class="section-title">パソコン以外の時間も、<br />ちゃんとあります。</h2>
+      </div>
+      <div class="about-personal-card">
+        <p><strong>30代の現役SE</strong>です。本業とは別に、個人でもシステム開発や業務改善の仕事をしています。</p>
+        <p>仕事以外では<strong>スポーツ観戦</strong>が好きです。あとは<strong>お酒</strong>も好きなので、休みの日は試合を見ながらゆっくり飲んでいることもあります。</p>
+        <p>本名や勤務先までは公開していませんが、技術だけではなく「どんな考え方で作っている人なのか」は、このサイトでなるべく伝わるようにしたいと思っています。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
       <div class="about-privacy-note">
         本名・勤務先などの個人情報は公開していません。また、依頼者や案件を特定できる顧客名・固有データ・秘密情報も公開せず、実績は公開可能な範囲に一般化して掲載しています。
       </div>
     </div>
   </section>
 
-  <section class="cta-band">
+  <section class="cta-band about-cta-band">
     <div class="container cta-band-inner">
-      <div>
+      <div class="about-cta-copy">
         <p class="eyebrow">問い合わせ</p>
-        <h2>「これ、自動化できる？」から<br />相談できます。</h2>
+        <h2>まだ何を作るか<br />決まっていなくても大丈夫です。</h2>
+        <p>「こういうことをできるようにしたい」「この手作業を何とかしたい」くらいの段階からでも相談できます。</p>
       </div>
-      <a class="btn btn-primary" href="/contact">開発について相談する <span aria-hidden="true">→</span></a>
+      <div class="about-cta-actions">
+        <a class="btn btn-primary" href="/contact">サイトから相談する <span aria-hidden="true">→</span></a>
+        <a class="btn" href="https://coconala.com/users/5379632" target="_blank" rel="noopener noreferrer">ココナラから相談する <span aria-hidden="true">↗</span></a>
+      </div>
     </div>
   </section>
 </BaseLayout>
