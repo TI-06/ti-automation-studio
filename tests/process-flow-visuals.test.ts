@@ -6,9 +6,9 @@ const homeSource = readFileSync(new URL('../src/pages/index.astro', import.meta.
 describe('開発フローのビジュアル表示', () => {
   it('PCとスマホで専用のフロー画像を出し分ける', () => {
     expect(homeSource).toContain('<picture class="process-visual"');
-    expect(homeSource).toContain('srcset="/images/process-flow-mobile.png"');
+    expect(homeSource).toContain('srcset="/images/process-flow-mobile.svg"');
     expect(homeSource).toContain('media="(max-width: 640px)"');
-    expect(homeSource).toContain('src="/images/process-flow-desktop.png"');
+    expect(homeSource).toContain('src="/images/process-flow-desktop.svg"');
   });
 
   it('フロー画像に代替テキストと遅延読み込みを設定する', () => {
