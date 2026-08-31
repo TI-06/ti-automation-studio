@@ -1,0 +1,273 @@
+.about-page-hero {
+  border-bottom: 1px solid rgba(255,255,255,.055);
+}
+
+.about-hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.about-hero-meta span {
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  color: #d7d4ca;
+  font-size: .74rem;
+  letter-spacing: .055em;
+}
+
+.about-origin-note {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 22px;
+  margin-top: 34px;
+  padding: 23px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.about-origin-note span {
+  color: var(--accent);
+  font-size: .72rem;
+  letter-spacing: .1em;
+}
+
+.about-origin-note strong {
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  font-weight: 600;
+  line-height: 1.7;
+}
+
+.about-belief-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.about-belief-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: max(24px, calc((100vw - 1180px) / 2));
+  width: 56px;
+  height: 2px;
+  background: var(--accent);
+}
+
+.about-belief-grid,
+.about-longterm-grid,
+.about-personal-grid {
+  display: grid;
+  grid-template-columns: minmax(240px, .74fr) minmax(0, 1.26fr);
+  gap: clamp(42px, 8vw, 112px);
+  align-items: start;
+}
+
+.about-belief-copy,
+.about-longterm-copy {
+  max-width: 790px;
+}
+
+.about-belief-copy p,
+.about-longterm-copy p {
+  margin: 0 0 20px;
+  color: #c8c7c0;
+  font-size: 1rem;
+  line-height: 1.98;
+}
+
+.about-belief-copy strong,
+.about-longterm-copy strong {
+  color: #fff;
+  font-weight: 650;
+}
+
+.about-specialty-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 48px;
+  border-top: 1px solid var(--border);
+  border-left: 1px solid var(--border);
+}
+
+.about-specialty-card {
+  min-height: 264px;
+  padding: 28px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,.007);
+}
+
+.about-specialty-card > span {
+  color: var(--accent);
+  font-size: .72rem;
+  letter-spacing: .12em;
+}
+
+.about-specialty-card h3 {
+  margin: 58px 0 14px;
+  font-size: clamp(1.02rem, 1.4vw, 1.17rem);
+  font-weight: 620;
+  line-height: 1.55;
+}
+
+.about-specialty-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: .89rem;
+  line-height: 1.85;
+}
+
+.about-not-fit {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  gap: 34px;
+  margin-top: 28px;
+  padding: 26px 0;
+  border-top: 1px solid rgba(211,164,65,.42);
+  border-bottom: 1px solid var(--border);
+}
+
+.about-not-fit > span {
+  color: var(--accent);
+  font-size: .72rem;
+  letter-spacing: .09em;
+}
+
+.about-not-fit strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 1rem;
+  font-weight: 620;
+}
+
+.about-not-fit p {
+  margin: 0;
+  max-width: 760px;
+  color: var(--muted);
+  font-size: .9rem;
+  line-height: 1.85;
+}
+
+.about-longterm-section {
+  border-top: 1px solid rgba(211,164,65,.24);
+  border-bottom: 1px solid rgba(211,164,65,.24);
+  background: rgba(211,164,65,.025);
+}
+
+.about-longterm-copy {
+  padding-left: 32px;
+  border-left: 1px solid rgba(211,164,65,.62);
+}
+
+.about-personal-section {
+  border-top: 1px solid rgba(255,255,255,.045);
+  background: rgba(255,255,255,.01);
+}
+
+.about-personal-card {
+  max-width: 780px;
+  padding: 30px 32px;
+  border: 1px solid var(--border);
+  background: #0c0f11;
+}
+
+.about-personal-card::before {
+  content: 'OFF THE CLOCK';
+  display: block;
+  margin-bottom: 30px;
+  color: var(--accent);
+  font-size: .66rem;
+  letter-spacing: .16em;
+}
+
+.about-personal-card p {
+  margin: 0 0 18px;
+  color: #c8c7c0;
+  font-size: .96rem;
+  line-height: 1.95;
+}
+
+.about-personal-card p:last-child {
+  margin-bottom: 0;
+}
+
+.about-personal-card strong {
+  color: #fff;
+  font-weight: 620;
+}
+
+.about-cta-copy {
+  max-width: 660px;
+}
+
+.about-cta-copy > p:last-child {
+  max-width: 590px;
+  margin: 18px 0 0;
+  color: #bdbbb4;
+  font-size: .94rem;
+  line-height: 1.85;
+}
+
+.about-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+@media (max-width: 980px) {
+  .about-specialty-grid {
+    grid-template-columns: 1fr;
+    border-left: 0;
+  }
+
+  .about-specialty-card {
+    min-height: auto;
+    padding: 26px 0;
+    border-right: 0;
+  }
+
+  .about-specialty-card h3 {
+    margin-top: 26px;
+  }
+}
+
+@media (max-width: 860px) {
+  .about-belief-grid,
+  .about-longterm-grid,
+  .about-personal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-longterm-copy {
+    padding: 24px 0 0;
+    border-left: 0;
+    border-top: 1px solid rgba(211,164,65,.62);
+  }
+
+  .about-cta-actions {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .about-hero-meta {
+    display: grid;
+  }
+
+  .about-origin-note,
+  .about-not-fit {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .about-personal-card {
+    padding: 24px 20px;
+  }
+
+  .about-cta-actions {
+    display: grid;
+    width: 100%;
+  }
+}
