@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="1320" viewBox="0 0 720 1320" role="img" aria-labelledby="title desc">
+  <title id="title">相談から納品・改善までの開発フロー</title>
+  <desc id="desc">01相談、02現在の業務を確認、03改善案・仕様整理、04開発、05テスト、06納品・改善の順に縦へ進む開発フロー。</desc>
+  <rect x="1" y="1" width="718" height="1318" rx="20" fill="#0a0d0f" stroke="#b98a2f" stroke-width="2"/>
+  <path d="M88 108V1124" stroke="#d3a441" stroke-width="3" stroke-dasharray="8 9" opacity=".8"/>
+
+  <!-- step rows -->
+  <g font-family="'Noto Sans JP',system-ui,sans-serif">
+    <!-- 01 -->
+    <g transform="translate(0 0)">
+      <circle cx="88" cy="116" r="25" fill="#e1b64f"/><text x="88" y="123" text-anchor="middle" fill="#141414" font-size="17" font-weight="800">01</text>
+      <path d="M115 116h26" stroke="#d3a441" stroke-width="3"/><path d="M139 110l10 6-10 6z" fill="#d3a441"/>
+      <circle cx="202" cy="116" r="53" fill="#0d1114" stroke="#d3a441" stroke-width="3"/>
+      <path d="M174 102h39a17 17 0 0117 17v5a17 17 0 01-17 17h-7l-13 11 3-11h-22a17 17 0 01-17-17v-5a17 17 0 0117-17z" fill="none" stroke="#f4f4f0" stroke-width="4"/>
+      <circle cx="183" cy="121" r="3" fill="#d3a441"/><circle cx="194" cy="121" r="3" fill="#d3a441"/><circle cx="205" cy="121" r="3" fill="#d3a441"/>
+      <text x="286" y="102" fill="#f4f4f0" font-size="25" font-weight="800">相談</text>
+      <text x="286" y="136" fill="#c8c9c7" font-size="16"><tspan x="286">いま困っていることを整理します。</tspan><tspan x="286" dy="25">仕様が決まっていなくても問題ありません。</tspan></text>
+    </g>
+
+    <!-- 02 -->
+    <g transform="translate(0 198)">
+      <circle cx="88" cy="116" r="25" fill="#e1b64f"/><text x="88" y="123" text-anchor="middle" fill="#141414" font-size="17" font-weight="800">02</text>
+      <path d="M115 116h26" stroke="#d3a441" stroke-width="3"/><path d="M139 110l10 6-10 6z" fill="#d3a441"/>
+      <circle cx="202" cy="116" r="53" fill="#0d1114" stroke="#d3a441" stroke-width="3"/>
+      <rect x="181" y="84" width="40" height="57" rx="4" fill="none" stroke="#f4f4f0" stroke-width="4"/><path d="M190 98h20M190 111h15M190 124h12" stroke="#d3a441" stroke-width="3" stroke-linecap="round"/><circle cx="224" cy="136" r="14" fill="#0d1114" stroke="#e1b64f" stroke-width="4"/><path d="M234 146l10 10" stroke="#e1b64f" stroke-width="4" stroke-linecap="round"/>
+      <text x="286" y="102" fill="#f4f4f0" font-size="25" font-weight="800">現在の業務を確認</text>
+      <text x="286" y="136" fill="#c8c9c7" font-size="16"><tspan x="286">実際の作業手順、入力データ、利用者、</tspan><tspan x="286" dy="25">例外ケースを確認します。</tspan></text>
+    </g>
+
+    <!-- 03 -->
+    <g transform="translate(0 396)">
+      <circle cx="88" cy="116" r="25" fill="#e1b64f"/><text x="88" y="123" text-anchor="middle" fill="#141414" font-size="17" font-weight="800">03</text>
+      <path d="M115 116h26" stroke="#d3a441" stroke-width="3"/><path d="M139 110l10 6-10 6z" fill="#d3a441"/>
+      <circle cx="202" cy="116" r="53" fill="#0d1114" stroke="#d3a441" stroke-width="3"/>
+      <path d="M168 92h24v13c7-2 13 3 13 10s-6 12-13 10v18h-24v-18c-7 2-13-3-13-10s6-12 13-10zM212 92h24v18c7-2 13 3 13 10s-6 12-13 10v13h-24v-18c-7 2-13-3-13-10s6-12 13-10z" fill="none" stroke="#e1b64f" stroke-width="3.5" stroke-linejoin="round"/>
+      <text x="286" y="102" fill="#f4f4f0" font-size="25" font-weight="800">改善案・仕様整理</text>
+      <text x="286" y="136" fill="#c8c9c7" font-size="16"><tspan x="286">作る機能と、あえて作らない部分を整理し、</tspan><tspan x="286" dy="25">無理のない構成にします。</tspan></text>
+    </g>
+
+    <!-- 04 -->
+    <g transform="translate(0 594)">
+      <circle cx="88" cy="116" r="25" fill="#e1b64f"/><text x="88" y="123" text-anchor="middle" fill="#141414" font-size="17" font-weight="800">04</text>
+      <path d="M115 116h26" stroke="#d3a441" stroke-width="3"/><path d="M139 110l10 6-10 6z" fill="#d3a441"/>
+      <circle cx="202" cy="116" r="53" fill="#0d1114" stroke="#d3a441" stroke-width="3"/>
+      <rect x="168" y="91" width="68" height="45" rx="5" fill="none" stroke="#f4f4f0" stroke-width="4"/><path d="M187 106l-9 9 9 9M217 106l9 9-9 9M207 99l-11 33" stroke="#e1b64f" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M187 145h30" stroke="#f4f4f0" stroke-width="4" stroke-linecap="round"/>
+      <text x="286" y="102" fill="#f4f4f0" font-size="25" font-weight="800">開発</text>
+      <text x="286" y="136" fill="#c8c9c7" font-size="16"><tspan x="286">操作性と保守性を意識しながら、</tspan><tspan x="286" dy="25">小さく確認できる単位で実装します。</tspan></text>
+    </g>
+
+    <!-- 05 -->
+    <g transform="translate(0 792)">
+      <circle cx="88" cy="116" r="25" fill="#e1b64f"/><text x="88" y="123" text-anchor="middle" fill="#141414" font-size="17" font-weight="800">05</text>
+      <path d="M115 116h26" stroke="#d3a441" stroke-width="3"/><path d="M139 110l10 6-10 6z" fill="#d3a441"/>
+      <circle cx="202" cy="116" r="53" fill="#0d1114" stroke="#d3a441" stroke-width="3"/>
+      <rect x="169" y="92" width="59" height="43" rx="4" fill="none" stroke="#f4f4f0" stroke-width="4"/><path d="M178 104h40M178 115h27" stroke="#d3a441" stroke-width="3"/><circle cx="227" cy="138" r="14" fill="#0d1114" stroke="#e1b64f" stroke-width="4"/><path d="M237 148l10 10" stroke="#e1b64f" stroke-width="4" stroke-linecap="round"/>
+      <text x="286" y="102" fill="#f4f4f0" font-size="25" font-weight="800">テスト</text>
+      <text x="286" y="136" fill="#c8c9c7" font-size="16"><tspan x="286">実際の業務パターンを想定し、入力・処理・</tspan><tspan x="286" dy="25">エラー時の動作を確認します。</tspan></text>
+    </g>
+
+    <!-- 06 -->
+    <g transform="translate(0 990)">
+      <circle cx="88" cy="116" r="25" fill="#e1b64f"/><text x="88" y="123" text-anchor="middle" fill="#141414" font-size="17" font-weight="800">06</text>
+      <path d="M115 116h26" stroke="#d3a441" stroke-width="3"/><path d="M139 110l10 6-10 6z" fill="#d3a441"/>
+      <circle cx="202" cy="116" r="53" fill="#0d1114" stroke="#d3a441" stroke-width="3"/>
+      <path d="M174 101l28-14 28 14-28 15zM174 101v32l28 15v-32M230 101v32l-28 15" fill="none" stroke="#e1b64f" stroke-width="3.5"/><circle cx="232" cy="143" r="14" fill="#0d1114" stroke="#f4f4f0" stroke-width="3"/><path d="M225 143l5 5 9-12" fill="none" stroke="#e1b64f" stroke-width="3" stroke-linecap="round"/>
+      <text x="286" y="102" fill="#f4f4f0" font-size="25" font-weight="800">納品・改善</text>
+      <text x="286" y="136" fill="#c8c9c7" font-size="16"><tspan x="286">運用開始後も必要に応じて調整し、</tspan><tspan x="286" dy="25">使い続けられる状態へ整えます。</tspan></text>
+    </g>
+  </g>
+  <g transform="translate(42 1207)">
+    <rect width="636" height="78" rx="14" fill="#101519" stroke="#32383c"/>
+    <text x="24" y="33" fill="#e1b64f" font-family="'Noto Sans JP',system-ui,sans-serif" font-size="18" font-weight="800">要件が曖昧でも大丈夫です。</text>
+    <text x="24" y="57" fill="#c8c9c7" font-family="'Noto Sans JP',system-ui,sans-serif" font-size="14">相談段階から一緒に整理し、無理のない形へ落とし込みます。</text>
+  </g>
+</svg>
