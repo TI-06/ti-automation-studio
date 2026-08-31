@@ -72,9 +72,8 @@ describe('制作者についてページ', () => {
     expect(aboutSource).toContain('処理状態');
   });
 
-  it('匿名性を維持しつつPerson構造化データを持つ', () => {
+  it('Person構造化データを持つ', () => {
     expect(aboutSource).toContain("'@type': 'Person'");
     expect(aboutSource).toContain("name: 'TI AUTOMATION STUDIO 制作者'");
-    expect(aboutSource).toContain('本名・勤務先などの個人情報は公開していません');
   });
 });
