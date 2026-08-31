@@ -160,7 +160,27 @@ const process = [
   <section class="cta-band">
     <div class="container cta-band-inner">
       <div><p class="eyebrow">問い合わせ</p><h2>その手作業、<br />仕組みにできるかもしれません。</h2></div>
-      <a class="btn btn-primary" href="/contact">相談内容を送る <span aria-hidden="true">→</span></a>
+      <div class="cta-actions">
+        <a class="btn btn-primary" href="/contact">サイトから相談する <span aria-hidden="true">→</span></a>
+        <a class="btn" href="https://coconala.com/users/5379632" target="_blank" rel="noopener noreferrer">ココナラから依頼する <span aria-hidden="true">↗</span></a>
+      </div>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+
+  @media (max-width: 860px) {
+    .cta-actions { justify-content: flex-start; }
+  }
+
+  @media (max-width: 560px) {
+    .cta-actions { display: grid; width: 100%; }
+  }
+</style>
