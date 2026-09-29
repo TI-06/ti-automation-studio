@@ -18,7 +18,7 @@
 
 .diagnosis-layout {
   display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
+  grid-template-columns: 200px minmax(0, 1fr);
   min-height: 720px;
 }
 .diagnosis-side {
@@ -49,12 +49,12 @@
 .diagnosis-side-actions { display: grid; gap: 8px; margin-top: 26px; }
 .diagnosis-side-note { margin: 18px 0 0; color: var(--muted); font-size: .68rem; line-height: 1.75; }
 
-.diagnosis-workspace { min-width: 0; padding: clamp(24px, 4vw, 48px); }
+.diagnosis-workspace { min-width: 0; overflow: hidden; padding: clamp(24px, 3.5vw, 42px); }
 .diagnosis-step { max-width: 980px; margin: 0 auto; }
 .diagnosis-step[hidden] { display: none; }
 .diagnosis-step-head { margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
 .diagnosis-step-number { margin: 0 0 8px; color: var(--accent); font-size: .65rem; font-weight: 700; letter-spacing: .18em; }
-.diagnosis-step-head h2 { margin: 0; font-size: clamp(1.35rem, 2.4vw, 2.1rem); font-weight: 500; letter-spacing: -.025em; }
+.diagnosis-step-head h2 { margin: 0; font-size: clamp(1.35rem, 2.2vw, 2rem); font-weight: 500; letter-spacing: -.025em; line-height: 1.35; overflow-wrap: anywhere; }
 .diagnosis-step-head p { max-width: 720px; margin: 10px 0 0; color: var(--muted); font-size: .82rem; line-height: 1.8; }
 
 .diagnosis-question-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; }
@@ -81,15 +81,16 @@
 .diagnosis-input-row span { color: var(--muted); font-size: .72rem; }
 .diagnosis-custom-frequency { display: grid; grid-template-columns: minmax(0,1fr) 130px; gap: 8px; margin-top: 10px; }
 
-.diagnosis-choice-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 9px; }
+.diagnosis-choice-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; }
 .diagnosis-choice-grid.two { grid-template-columns: repeat(2, minmax(0,1fr)); }
 .diagnosis-choice {
   position: relative;
-  min-height: 72px;
+  min-width: 0;
+  min-height: 56px;
   display: flex;
   align-items: flex-start;
-  gap: 9px;
-  padding: 13px;
+  gap: 8px;
+  padding: 10px 11px;
   border: 1px solid var(--border);
   background: rgba(255,255,255,.008);
   color: #d2d0c9;
@@ -100,8 +101,16 @@
 }
 .diagnosis-choice:hover { border-color: var(--border-strong); background: rgba(255,255,255,.02); }
 .diagnosis-choice:has(input:checked) { border-color: rgba(200,169,107,.72); background: rgba(200,169,107,.045); }
-.diagnosis-choice input { margin-top: .2em; accent-color: var(--accent); }
-.diagnosis-choice strong { display: block; color: var(--text); font-size: .75rem; font-weight: 600; }
+.diagnosis-choice input[type="checkbox"],
+.diagnosis-choice input[type="radio"] {
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+  margin: 2px 0 0;
+  accent-color: var(--accent);
+}
+.diagnosis-choice > span { min-width: 0; overflow-wrap: anywhere; }
+.diagnosis-choice strong { display: block; color: var(--text); font-size: .75rem; font-weight: 600; line-height: 1.4; }
 
 .diagnosis-inline-note { margin-top: 14px; padding: 13px 15px; border-left: 2px solid rgba(200,169,107,.62); background: rgba(200,169,107,.035); color: var(--muted); font-size: .7rem; line-height: 1.7; }
 .diagnosis-error,
@@ -163,6 +172,11 @@
 .diagnosis-seo-card ul { padding-left: 1.1rem; }
 .diagnosis-seo-wide { grid-column: 1 / -1; }
 
+@media (max-width: 1180px) {
+  .diagnosis-choice-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .diagnosis-choice-grid.two { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+
 @media (max-width: 960px) {
   .diagnosis-layout { grid-template-columns: 1fr; }
   .diagnosis-side { border-right: 0; border-bottom: 1px solid var(--border); }
@@ -198,6 +212,9 @@
   .diagnosis-saving-metrics div:last-child { border-bottom: 0; }
   .diagnosis-result-actions { flex-direction: column; }
   .diagnosis-result-actions .tool-button { width: 100%; }
+  .diagnosis-question input[type="number"],
+  .diagnosis-question input[type="text"],
+  .diagnosis-question select { font-size: 16px; }
 }
 
 @page { size: A4 portrait; margin: 12mm; }

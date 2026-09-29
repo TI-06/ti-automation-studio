@@ -50,7 +50,15 @@
 .dashboard-filter-card select,
 .dashboard-filter-card input { width: 100%; min-height: 38px; padding: 7px 9px; border: 1px solid var(--border); background: var(--surface); color: var(--text); }
 .dashboard-filter-checks { max-height: 130px; overflow: auto; display: grid; gap: 5px; padding: 9px; border: 1px solid var(--border); }
-.dashboard-filter-checks label { display: flex; align-items: center; gap: 7px; color: #d0cec7; font-size: .69rem; }
+.dashboard-filter-checks label { min-width: 0; display: flex; align-items: flex-start; gap: 7px; color: #d0cec7; font-size: .69rem; line-height: 1.45; }
+.dashboard-filter-checks label > span { min-width: 0; overflow-wrap: anywhere; }
+.dashboard-filter-checks input[type="checkbox"] {
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+  margin: 1px 0 0;
+  accent-color: var(--accent);
+}
 .dashboard-muted { margin: 0; color: var(--muted); font-size: .73rem; line-height: 1.7; grid-column: 1 / -1; }
 
 .dashboard-board { padding: 18px; border: 1px solid var(--border); background: #0b0d10; }
@@ -65,7 +73,7 @@
 .dashboard-widget[data-size="large"] { grid-column: span 12; min-height: 300px; }
 .dashboard-widget[data-dragging="true"] { opacity: .5; }
 .dashboard-widget-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
-.dashboard-widget-title { margin: 0; font-size: .8rem; font-weight: 600; line-height: 1.5; }
+.dashboard-widget-title { min-width: 0; margin: 0; font-size: .8rem; font-weight: 600; line-height: 1.5; overflow-wrap: anywhere; }
 .dashboard-widget-tools { display: flex; gap: 4px; }
 .dashboard-widget-tools button { width: 28px; height: 28px; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; }
 .dashboard-widget-tools button:hover { color: var(--text); border-color: var(--border-strong); }
@@ -79,9 +87,9 @@
 .dashboard-ranking-row { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 12px; padding-bottom: 7px; border-bottom: 1px solid var(--border); font-size: .72rem; }
 .dashboard-ranking-row span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .dashboard-ranking-row strong { font-weight: 600; }
-.dashboard-aggregate-table { width: 100%; border-collapse: collapse; font-size: .72rem; }
+.dashboard-aggregate-table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: .72rem; }
 .dashboard-aggregate-table th,
-.dashboard-aggregate-table td { padding: 8px 7px; border-bottom: 1px solid var(--border); text-align: left; }
+.dashboard-aggregate-table td { padding: 8px 7px; border-bottom: 1px solid var(--border); text-align: left; overflow-wrap: anywhere; }
 .dashboard-aggregate-table td:last-child { text-align: right; }
 .dashboard-board-empty { grid-column: 1 / -1; min-height: 320px; }
 
@@ -107,7 +115,9 @@
 .dashboard-dialog-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
 .dashboard-confirm-card p { color: var(--muted); line-height: 1.75; }
 
-@media (max-width: 1100px) {
+@media (max-width: 1180px) {
+  .dashboard-source-main { grid-template-columns: 1fr; }
+  .dashboard-source-actions { justify-content: flex-start; }
   .dashboard-columns-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
   .dashboard-filter-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .dashboard-widget[data-size="small"] { grid-column: span 4; }
@@ -115,7 +125,7 @@
   .dashboard-toolbar-actions { justify-content: flex-start; }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 820px) {
   .dashboard-source-main,
   .dashboard-data-toolbar { grid-template-columns: 1fr; }
   .dashboard-source-actions { justify-content: flex-start; }
@@ -130,6 +140,11 @@
   .dashboard-widget[data-size="medium"],
   .dashboard-widget[data-size="large"] { grid-column: span 12; }
   .dashboard-dialog-grid { grid-template-columns: 1fr; }
+  .dashboard-dialog-grid select,
+  .dashboard-dialog-grid input,
+  .dashboard-filter-card select,
+  .dashboard-filter-card input,
+  .dashboard-source-settings select { font-size: 16px; }
 }
 
 @page { size: A4 landscape; margin: 10mm; }

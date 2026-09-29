@@ -1,6 +1,9 @@
 .tool-page {
   padding: clamp(36px, 5vw, 72px) 0 clamp(72px, 9vw, 120px);
 }
+.tool-page > .container {
+  width: min(calc(100% - 32px), 1380px);
+}
 
 .tool-app-shell {
   overflow: hidden;
@@ -34,6 +37,7 @@
   font-weight: 500;
   letter-spacing: -.035em;
   line-height: 1.18;
+  overflow-wrap: anywhere;
 }
 .tool-app-subtitle {
   margin: 12px 0 0;
@@ -41,6 +45,7 @@
   color: var(--muted);
   font-size: .94rem;
   line-height: 1.8;
+  overflow-wrap: anywhere;
 }
 
 .tool-app-badges {
@@ -65,16 +70,18 @@
 
 .tool-app-grid {
   display: grid;
-  grid-template-columns: 280px minmax(0, 1fr) 320px;
+  grid-template-columns: 240px minmax(0, 1fr) 280px;
   min-height: 680px;
   border-top: 0;
 }
 
 .tool-panel {
   min-width: 0;
-  padding: 24px;
+  overflow: hidden;
+  padding: 22px;
   background: rgba(11,12,14,.5);
 }
+.tool-panel > * { min-width: 0; }
 .tool-panel + .tool-panel { border-left: 1px solid var(--border); }
 .tool-panel-title {
   margin: 0;
@@ -122,9 +129,14 @@
 }
 .tool-file-zone input[type="file"] {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   margin-top: 12px;
+  overflow: hidden;
   color: var(--muted);
   font-size: .72rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .tool-file-zone input[type="file"]::file-selector-button {
   margin-right: 10px;
@@ -162,9 +174,12 @@
 }
 .tool-field select,
 .tool-field input[type="text"],
-.tool-field input[type="search"] {
+.tool-field input[type="search"],
+.tool-field input[type="number"] {
   width: 100%;
-  min-height: 42px;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 40px;
   padding: 8px 10px;
   border: 1px solid var(--border);
   border-radius: 0;
@@ -174,14 +189,23 @@
 .tool-radio-stack,
 .tool-checkbox-stack { display: grid; gap: 8px; }
 .tool-choice {
+  min-width: 0;
   display: flex;
   align-items: flex-start;
-  gap: 9px;
+  gap: 8px;
   color: #d1cfc8;
   font-size: .77rem;
-  line-height: 1.55;
+  line-height: 1.5;
 }
-.tool-choice input { margin-top: .22em; accent-color: var(--accent); }
+.tool-choice > span { min-width: 0; overflow-wrap: anywhere; }
+.tool-choice input[type="checkbox"],
+.tool-choice input[type="radio"] {
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+  margin: 2px 0 0;
+  accent-color: var(--accent);
+}
 .tool-inline-actions {
   display: flex;
   flex-wrap: wrap;
@@ -189,7 +213,8 @@
   margin-top: 14px;
 }
 .tool-button {
-  min-height: 42px;
+  min-width: 0;
+  min-height: 40px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -198,6 +223,10 @@
   border: 1px solid var(--border);
   background: transparent;
   color: var(--text);
+  line-height: 1.35;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
   cursor: pointer;
   transition: border-color .2s ease, background .2s ease, color .2s ease;
 }
@@ -221,23 +250,23 @@
 
 .tool-summary-grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(110px, 1fr));
+  gap: 1px;
   border: 1px solid var(--border);
-  background: rgba(255,255,255,.01);
+  background: var(--border);
 }
 .tool-summary-item {
   min-width: 0;
   padding: 16px;
-  border-right: 1px solid var(--border);
-  background: transparent;
+  border: 0;
+  background: #0d0f12;
   color: var(--text);
   text-align: left;
 }
-.tool-summary-item:last-child { border-right: 0; }
 button.tool-summary-item { cursor: pointer; }
 button.tool-summary-item:hover { background: rgba(255,255,255,.025); }
-.tool-summary-label { display: block; color: var(--muted); font-size: .68rem; }
-.tool-summary-value { display: block; margin-top: 7px; font-size: 1.4rem; font-weight: 500; }
+.tool-summary-label { display: block; color: var(--muted); font-size: .68rem; line-height: 1.4; overflow-wrap: anywhere; }
+.tool-summary-value { display: block; margin-top: 7px; font-size: 1.4rem; font-weight: 500; overflow-wrap: anywhere; }
 
 .tool-filter-bar {
   display: grid;
@@ -248,6 +277,8 @@ button.tool-summary-item:hover { background: rgba(255,255,255,.025); }
 .tool-filter-bar select,
 .tool-filter-bar input {
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
   min-height: 40px;
   padding: 8px 10px;
   border: 1px solid var(--border);
@@ -256,8 +287,11 @@ button.tool-summary-item:hover { background: rgba(255,255,255,.025); }
 }
 
 .tool-table-wrap {
+  max-width: 100%;
   margin-top: 14px;
   overflow: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
   border: 1px solid var(--border);
   background: rgba(255,255,255,.008);
 }
@@ -269,10 +303,20 @@ button.tool-summary-item:hover { background: rgba(255,255,255,.025); }
 }
 .tool-table th,
 .tool-table td {
+  min-width: 0;
+  max-width: 320px;
   padding: 11px 12px;
   border-bottom: 1px solid var(--border);
   text-align: left;
   vertical-align: top;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+.tool-table td code,
+.tool-table td pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 .tool-table th {
   position: sticky;
@@ -421,7 +465,7 @@ button.tool-summary-item:hover { background: rgba(255,255,255,.025); }
 
 .tool-product-card {
   display: grid;
-  grid-template-columns: minmax(0,1.05fr) minmax(320px,.95fr);
+  grid-template-columns: minmax(0,1.1fr) minmax(380px,.9fr);
   min-height: 320px;
   border: 1px solid var(--border);
   background: var(--surface);
@@ -431,28 +475,28 @@ button.tool-summary-item:hover { background: rgba(255,255,255,.025); }
 .tool-product-copy { padding: clamp(24px,3vw,34px); }
 .tool-product-meta { display: flex; flex-wrap: wrap; gap: 7px; }
 .tool-product-meta span { padding: 4px 7px; border: 1px solid var(--border); color: var(--muted); font-size: .64rem; }
-.tool-product-copy h2 { margin: 18px 0 10px; font-size: clamp(1.25rem,2.4vw,2rem); font-weight: 500; }
+.tool-product-copy h2 { margin: 18px 0 10px; font-size: clamp(1.25rem,2.2vw,1.9rem); font-weight: 500; line-height: 1.35; overflow-wrap: anywhere; }
 .tool-product-copy p { margin: 0; color: var(--muted); }
 .tool-product-copy ul { margin: 22px 0 0; padding-left: 1.1em; color: #cac8c1; font-size: .82rem; }
 .tool-product-link { display: inline-block; margin-top: 24px; color: var(--accent); font-size: .78rem; font-weight: 600; }
 .tool-product-preview { min-height: 260px; padding: 26px; border-left: 1px solid var(--border); background: #0d0f12; }
 
-@media (max-width: 1100px) {
-  .tool-app-grid { grid-template-columns: 240px minmax(0, 1fr); }
+@media (max-width: 1240px) {
+  .tool-app-bar { display: grid; gap: 16px; }
+  .tool-app-badges { justify-content: flex-start; }
+  .tool-app-grid { grid-template-columns: 220px minmax(0, 1fr); }
   .tool-inspector { grid-column: 1 / -1; border-left: 0 !important; border-top: 1px solid var(--border); }
   .tool-inspector-card { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 0 24px; }
+  .tool-summary-grid { grid-template-columns: repeat(3, minmax(110px, 1fr)); }
 }
 
-@media (max-width: 860px) {
+@media (max-width: 960px) {
   .tool-page { padding-top: 24px; }
   .tool-app-bar { display: grid; gap: 20px; }
   .tool-app-badges { justify-content: flex-start; }
   .tool-app-grid { grid-template-columns: 1fr; min-height: 0; }
   .tool-panel + .tool-panel { border-left: 0; border-top: 1px solid var(--border); }
-  .tool-summary-grid { grid-template-columns: repeat(2, 1fr); }
-  .tool-summary-item { border-bottom: 1px solid var(--border); }
-  .tool-summary-item:nth-child(2n) { border-right: 0; }
-  .tool-summary-item:last-child { border-bottom: 0; }
+  .tool-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .tool-filter-bar { grid-template-columns: 1fr; }
   .tool-inspector { grid-column: auto; }
   .tool-inspector-card { grid-template-columns: 1fr; }
@@ -463,6 +507,7 @@ button.tool-summary-item:hover { background: rgba(255,255,255,.025); }
 }
 
 @media (max-width: 560px) {
+  .tool-page > .container { width: min(calc(100% - 28px), 1380px); }
   .tool-app-bar,
   .tool-panel,
   .tool-workspace-body { padding-left: 16px; padding-right: 16px; }
@@ -471,4 +516,9 @@ button.tool-summary-item:hover { background: rgba(255,255,255,.025); }
   .tool-summary-value { font-size: 1.16rem; }
   .tool-inline-actions { display: grid; grid-template-columns: 1fr; }
   .tool-button { width: 100%; }
+  .tool-field select,
+  .tool-field input[type="text"],
+  .tool-field input[type="search"],
+  .tool-field input[type="number"],
+  .tool-file-zone input[type="file"] { font-size: 16px; }
 }

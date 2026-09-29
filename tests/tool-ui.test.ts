@@ -6,13 +6,13 @@ const shellUrl = new URL('../src/components/tools/ToolShell.astro', import.meta.
 const progressUrl = new URL('../src/components/tools/ToolProgress.astro', import.meta.url);
 
 describe('公開ツール共通UI', () => {
-  it('業務アプリ向け3ペインとスマホ専用レイアウトを持つ', () => {
+  it('業務アプリ向け3ペインと中間幅・スマホ専用レイアウトを持つ', () => {
     expect(existsSync(cssUrl)).toBe(true);
     const css = existsSync(cssUrl) ? readFileSync(cssUrl, 'utf-8') : '';
     expect(css).toContain('.tool-app-grid');
     expect(css).toContain('.tool-summary-grid');
     expect(css).toContain('.tool-file-zone');
-    expect(css).toContain('@media (max-width: 860px)');
+    expect(css).toContain('@media (max-width: 960px)');
   });
 
   it('無料・登録不要・処理方式を日本語で表示する', () => {
