@@ -124,10 +124,10 @@ describe('検索意図別サービスページ', () => {
 });
 
 describe('トップページのヒーローレイアウト', () => {
-  it('見出しを意図した3行に固定する', () => {
-    expect(homeSource).toContain('<span class="hero-line">Excel・GAS・Pythonで</span>');
-    expect(homeSource).toContain('<span class="hero-line accent">業務自動化。</span>');
-    expect(homeSource).toContain('<span class="hero-line">面倒な手作業を減らす。</span>');
+  it('依頼内容が伝わる2行の見出しにする', () => {
+    expect(homeSource).toContain('<span class="hero-line">Excelやスプレッドシートの手作業を、</span>');
+    expect(homeSource).toContain('<span class="hero-line accent">業務に合う仕組みに変えます。</span>');
+    expect(homeSource).not.toContain('業務自動化。');
   });
 
   it('PCとスマホで見出しサイズを抑え、中間幅では1カラムにする', () => {
