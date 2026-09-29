@@ -1,6 +1,9 @@
 .tool-page {
   padding: clamp(36px, 5vw, 72px) 0 clamp(72px, 9vw, 120px);
 }
+.tool-page > .container {
+  width: min(calc(100% - 32px), 1380px);
+}
 
 .tool-app-shell {
   overflow: hidden;
@@ -246,18 +249,18 @@
 .tool-summary-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(110px, 1fr));
+  gap: 1px;
   border: 1px solid var(--border);
-  background: rgba(255,255,255,.01);
+  background: var(--border);
 }
 .tool-summary-item {
   min-width: 0;
   padding: 16px;
-  border-right: 1px solid var(--border);
-  background: transparent;
+  border: 0;
+  background: #0d0f12;
   color: var(--text);
   text-align: left;
 }
-.tool-summary-item:last-child { border-right: 0; }
 button.tool-summary-item { cursor: pointer; }
 button.tool-summary-item:hover { background: rgba(255,255,255,.025); }
 .tool-summary-label { display: block; color: var(--muted); font-size: .68rem; }
@@ -472,11 +475,12 @@ button.tool-summary-item:hover { background: rgba(255,255,255,.025); }
 .tool-product-preview { min-height: 260px; padding: 26px; border-left: 1px solid var(--border); background: #0d0f12; }
 
 @media (max-width: 1240px) {
+  .tool-app-bar { display: grid; gap: 16px; }
+  .tool-app-badges { justify-content: flex-start; }
   .tool-app-grid { grid-template-columns: 220px minmax(0, 1fr); }
   .tool-inspector { grid-column: 1 / -1; border-left: 0 !important; border-top: 1px solid var(--border); }
   .tool-inspector-card { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 0 24px; }
   .tool-summary-grid { grid-template-columns: repeat(3, minmax(110px, 1fr)); }
-  .tool-summary-item { border-bottom: 1px solid var(--border); }
 }
 
 @media (max-width: 960px) {
@@ -486,9 +490,6 @@ button.tool-summary-item:hover { background: rgba(255,255,255,.025); }
   .tool-app-grid { grid-template-columns: 1fr; min-height: 0; }
   .tool-panel + .tool-panel { border-left: 0; border-top: 1px solid var(--border); }
   .tool-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .tool-summary-item { border-bottom: 1px solid var(--border); }
-  .tool-summary-item:nth-child(2n) { border-right: 0; }
-  .tool-summary-item:last-child { border-bottom: 0; }
   .tool-filter-bar { grid-template-columns: 1fr; }
   .tool-inspector { grid-column: auto; }
   .tool-inspector-card { grid-template-columns: 1fr; }
@@ -499,6 +500,7 @@ button.tool-summary-item:hover { background: rgba(255,255,255,.025); }
 }
 
 @media (max-width: 560px) {
+  .tool-page > .container { width: min(calc(100% - 28px), 1380px); }
   .tool-app-bar,
   .tool-panel,
   .tool-workspace-body { padding-left: 16px; padding-right: 16px; }
