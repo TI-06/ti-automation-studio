@@ -10,6 +10,7 @@ const SITE = 'https://ti-automation-studio.utiltoools.workers.dev';
 const robots = readFileSync(new URL('../public/robots.txt', import.meta.url), 'utf-8');
 const layout = readFileSync(new URL('../src/layouts/BaseLayout.astro', import.meta.url), 'utf-8');
 const astroConfig = readFileSync(new URL('../astro.config.mjs', import.meta.url), 'utf-8');
+const sitemapSource = readFileSync(new URL('../src/pages/sitemap.xml.ts', import.meta.url), 'utf-8');
 
 const expectedPaths = [
   '/',
@@ -37,6 +38,9 @@ const getSitemap = async () => {
 };
 
 describe('Google Search Console向けサイトマップ', () => {
+  it('Worker動的処理ではなくビルド時に静的生成する', () => {
+    expect(sitemapSource).toContain('export const prerender = true');
+  });
   it('sitemap.xml 1本で主要なcanonical URLを返す', async () => {
     const { response, xml } = await getSitemap();
 
