@@ -17,9 +17,9 @@ const solutionDetailSource = readIfExists('../src/pages/solutions/[slug].astro')
 describe('SEO Phase 1', () => {
   it('トップページが業務自動化の検索意図をtitleとH1で明示する', () => {
     expect(homeSource).toContain('title="業務自動化・Excel/GAS/Python開発"');
-    expect(homeSource).toContain('Excel・GAS・Pythonで');
-    expect(homeSource).toContain('業務自動化。');
-    expect(homeSource).toContain('手作業を、現場で使える仕組みに変える');
+    expect(homeSource).toContain('Excelやスプレッドシートの手作業を、');
+    expect(homeSource).toContain('業務に合う仕組みに変えます。');
+    expect(homeSource).toContain('業務自動化・社内ツール開発');
   });
 
   it('既存ツールの修正ニーズ向けにVBAとGASの専用サービスを持つ', () => {
@@ -61,6 +61,6 @@ describe('SEO Phase 1', () => {
     expect(solutionDetailSource).toContain('relatedServiceSlug');
     expect(solutionDetailSource).toContain('href={`/services/${solution.relatedServiceSlug}`}');
     expect(solutionDetailSource).toContain('href="/contact"');
-    expect(solutionIndexSource).toContain('業務自動化のヒント');
+    expect(solutionIndexSource).toContain('業務自動化ガイド');
   });
 });
