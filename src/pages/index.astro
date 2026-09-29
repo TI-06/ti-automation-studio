@@ -109,7 +109,7 @@ const faqs = [
       <p class="section-lead">顧客名や実データは出していません。どんな作業に困っていて、どこまでシステム化したかを中心にまとめています。</p>
       <div class="card-grid">
         {featuredWorks.map((work) => (
-          <a class="work-card" href={\`/works/\${work.slug}\`}>
+          <a class="work-card" href={`/works/${work.slug}`}>
             <span class="card-arrow" aria-hidden="true">→</span>
             <div>
               <span class="card-kicker">{work.category}</span>
@@ -222,7 +222,7 @@ const faqs = [
       <h2 class="section-title">転記、集計、VBA修正など、作業別に方法や費用をまとめています。</h2>
       <div class="card-grid">
         {featuredSolutions.map((solution) => (
-          <a class="work-card" href={\`/solutions/\${solution.slug}\`}>
+          <a class="work-card" href={`/solutions/${solution.slug}`}>
             <span class="card-arrow" aria-hidden="true">→</span>
             <div><h3 class="card-title">{solution.title}</h3><p class="card-copy">{solution.description}</p></div>
           </a>
@@ -240,7 +240,7 @@ const faqs = [
       {featuredTools.length > 0 ? (
         <div class="card-grid">
           {featuredTools.map((tool) => (
-            <a class="tool-card" href={\`/tools/\${tool.slug}\`}>
+            <a class="tool-card" href={`/tools/${tool.slug}`}>
               <span class="card-arrow" aria-hidden="true">→</span>
               <div><h3 class="card-title">{tool.title}</h3><p class="card-copy">{tool.description}</p></div>
               <div class="tags">{tool.technologies.map((tech) => <span class="tag">{tech}</span>)}</div>
