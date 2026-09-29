@@ -87,9 +87,9 @@
 .dashboard-ranking-row { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 12px; padding-bottom: 7px; border-bottom: 1px solid var(--border); font-size: .72rem; }
 .dashboard-ranking-row span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .dashboard-ranking-row strong { font-weight: 600; }
-.dashboard-aggregate-table { width: 100%; border-collapse: collapse; font-size: .72rem; }
+.dashboard-aggregate-table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: .72rem; }
 .dashboard-aggregate-table th,
-.dashboard-aggregate-table td { padding: 8px 7px; border-bottom: 1px solid var(--border); text-align: left; }
+.dashboard-aggregate-table td { padding: 8px 7px; border-bottom: 1px solid var(--border); text-align: left; overflow-wrap: anywhere; }
 .dashboard-aggregate-table td:last-child { text-align: right; }
 .dashboard-board-empty { grid-column: 1 / -1; min-height: 320px; }
 
