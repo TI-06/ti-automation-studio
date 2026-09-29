@@ -62,8 +62,9 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 20px;
+  gap: 12px 20px;
   margin-bottom: 12px;
+  flex-wrap: wrap;
 }
 .cleaner-section-heading h3 {
   margin: 0;
