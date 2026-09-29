@@ -6,135 +6,113 @@ import { solutions } from '../data/solutions';
 
 const featuredWorks = works.filter((work) => work.featured).slice(0, 4);
 const featuredSolutions = solutions.slice(0, 3);
-const services = [
-  ['01', 'Excel・スプレッドシート業務の自動化', '手入力、転記、集計、ファイル作成など、毎日繰り返している作業を減らします。', '/services/excel-automation'],
-  ['02', '社内Webツール・管理画面の開発', '業務に必要な機能だけを整理し、ブラウザから使える専用画面を構築します。', ''],
-  ['03', 'GASによるGoogle Workspace活用', 'スプレッドシート、Drive、Gmailなどをつないで既存環境を業務システム化します。', '/services/gas-automation'],
-  ['04', 'API・ECサービス連携', '外部サービスとのデータ連携、認証、登録・取得処理を自動化します。', '/services/api-integration'],
-  ['05', 'CSV・Excel・大量データ処理', 'データの検証、変換、集計、一括処理をPythonやExcelで効率化します。', '/services/python-data-processing'],
-  ['06', 'PDF・帳票・印刷物の自動生成', '入力データをもとに、定型帳票やPDFを自動で作成・保存します。', '/services/pdf-document-automation'],
-  ['07', 'AIを組み込んだ業務効率化', 'AIを使うこと自体を目的にせず、実務で使える入力支援や分類・要約へ落とし込みます。', ''],
-  ['08', '既存Excel・VBAの修正・改修', '動かないマクロ、遅い処理、担当者不在のVBAを調査し、必要な範囲から改善します。', '/services/vba-repair'],
-  ['09', '既存GASの修正・改修', '実行エラー、時間超過、権限やAPI変更など、現在のGoogle Workspace運用を確認して修正します。', '/services/gas-repair'],
+const featuredTools = publishedTools.slice(0, 3);
+
+const commonRequests = [
+  ['毎月、同じ転記や集計をしている', '複数のExcel・スプレッドシート・CSVを開いて、同じ手順でまとめている作業。'],
+  ['Excelが重い、複雑で触れる人が限られている', '既存の関数やVBAを残しながら、入力や処理の流れを整理したいケース。'],
+  ['入力内容からPDFや帳票を作りたい', '見積書、報告書、申請書など、決まった様式への転記・出力を減らしたいケース。'],
+  ['複数人で使える管理画面がほしい', 'Excelだけでは管理しづらくなった情報を、ブラウザで検索・更新できるようにしたいケース。'],
+  ['外部サービスへの二重入力をなくしたい', 'APIを使って商品情報や各種データの登録・取得を自動化したいケース。'],
+  ['既存のGASやVBAを直したい', 'エラー、速度低下、担当者不在などで止まっている仕組みを調査・改修したいケース。'],
 ];
+
+const services = [
+  ['Excel・VBA・スプレッドシート', '転記、集計、入力、ファイル作成など、日常的に繰り返している作業を減らします。', '/services/excel-automation'],
+  ['GAS・Google Workspace', 'スプレッドシート、Drive、Gmailなどをつなぎ、今あるGoogle環境を業務に合わせて使いやすくします。', '/services/gas-automation'],
+  ['Python・データ処理', 'CSVやExcelの検証、変換、集計、大量処理を自動化します。', '/services/python-data-processing'],
+  ['社内Webツール', '入力、一覧、検索、承認など、複数人で使う業務画面を必要な機能に絞って作ります。', '/services'],
+  ['API・外部サービス連携', '外部サービスとの認証、データ取得、登録、更新処理をつなぎます。', '/services/api-integration'],
+  ['PDF・帳票作成', '入力済みデータから定型帳票やPDFを作成し、保存までまとめて自動化します。', '/services/pdf-document-automation'],
+];
+
+const priceRanges = [
+  ['小規模な修正', '1〜5万円程度', 'VBA・GASのエラー修正や小さな仕様変更など'],
+  ['単機能の自動化', '3〜10万円程度', '転記、集計、PDF出力、CSV変換など'],
+  ['業務ツール開発', '10〜30万円程度', '入力画面、一覧、検索、権限、帳票など'],
+  ['Webシステム・複数連携', '個別見積', '認証、データベース、外部APIなどを含む構成'],
+];
+
 const process = [
-  ['01', '相談', 'いま困っていることを整理します。仕様が決まっていなくても問題ありません。'],
-  ['02', '現在の業務を確認', '実際の作業手順、入力データ、利用者、例外ケースを確認します。'],
-  ['03', '改善案・仕様整理', '作る機能と、あえて作らない部分を整理し、無理のない構成にします。'],
-  ['04', '開発', '操作性と保守性を意識しながら、小さく確認できる単位で実装します。'],
-  ['05', 'テスト', '実際の業務パターンを想定し、入力・処理・エラー時の動作を確認します。'],
-  ['06', '納品・改善', '運用開始後も必要に応じて調整し、使い続けられる状態へ整えます。'],
+  ['01', '相談', '困っている作業と、どうなれば楽になるかを確認します。'],
+  ['02', '現状確認', '実際のファイル、入力項目、作業手順、利用人数などを確認します。'],
+  ['03', '仕様・見積', '必要な機能と不要な機能を分け、作る範囲と費用を整理します。'],
+  ['04', '開発', '確認できる単位で作り、途中で画面や動きを見てもらいながら進めます。'],
+  ['05', 'テスト', '通常の操作だけでなく、入力ミスや例外時の動きも確認します。'],
+  ['06', '納品・追加改修', '運用開始後に出てきた修正や追加要望にも対応します。'],
+];
+
+const faqs = [
+  ['仕様が決まっていなくても相談できますか？', '大丈夫です。現在使っているファイルや作業手順を見ながら、どこまで作るかを整理できます。'],
+  ['既存のExcelやGASの修正だけでも依頼できますか？', '対応しています。全面的に作り直す前に、今の構成を活かせるか確認します。'],
+  ['小さな修正でも依頼できますか？', '対応しています。エラー修正や単機能の追加など、小規模な依頼からでもご相談ください。'],
+  ['スマートフォンで使う画面も作れますか？', '業務内容に応じて、PCとスマートフォンの両方で使いやすい画面を設計できます。'],
+  ['納品後の修正や機能追加もお願いできますか？', '可能です。実際に使ってから出てきた改善点を見ながら、追加改修にも対応しています。'],
+  ['何を送れば見積できますか？', '現在のファイル、手作業の流れ、利用人数、作りたいもののイメージが分かると見積しやすくなります。'],
 ];
 ---
 <BaseLayout
   title="業務自動化・Excel/GAS/Python開発"
-  description="Excel・GAS・Python・Web・APIを活用した業務自動化・システム開発。転記、集計、帳票、データ処理、既存VBA・GASの修正まで、手作業を現場で使える仕組みに変えます。"
+  description="Excel・GAS・Python・Web・APIを使った業務自動化・社内ツール開発。転記、集計、帳票作成、データ処理、既存VBA・GASの修正まで対応します。"
 >
   <section class="hero">
     <div class="container hero-grid reveal">
       <div>
-        <p class="eyebrow">業務改善・自動化開発</p>
+        <p class="eyebrow">業務自動化・社内ツール開発</p>
         <h1>
-          <span class="hero-line">Excel・GAS・Pythonで</span>
-          <span class="hero-line accent">業務自動化。</span>
-          <span class="hero-line">面倒な手作業を減らす。</span>
+          <span class="hero-line">Excelやスプレッドシートの手作業を、</span>
+          <span class="hero-line accent">業務に合う仕組みに変えます。</span>
         </h1>
-        <p class="hero-copy">Excel・Google Apps Script・Python・Web・APIを組み合わせ、繰り返している手作業を、現場で使える仕組みに変える開発を行っています。既存ツールの修正から新規の業務システムまで対応します。</p>
+        <p class="hero-copy">転記・集計・帳票作成・データ加工・複数人での管理など、今の業務で時間がかかっている部分を確認し、Excel・GAS・Python・Webを使い分けて改善します。既存ファイルの修正から新しい業務ツールの開発まで対応しています。</p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="/works">実績を見る <span aria-hidden="true">→</span></a>
-          <a class="btn" href="/contact">開発について相談する <span aria-hidden="true">↗</span></a>
+          <a class="btn btn-primary" href="/works">開発実績を見る <span aria-hidden="true">→</span></a>
+          <a class="btn" href="/contact">相談する <span aria-hidden="true">→</span></a>
         </div>
       </div>
-      <aside class="hero-side" aria-label="対応方針">
-        <strong>現場に合わせて設計します。</strong>
-        <p>大きなシステムを最初から作るのではなく、既存のExcelやGoogle Workspaceも活かしながら、必要な部分から改善します。</p>
+      <aside class="hero-side" aria-label="相談できる内容">
+        <strong>こんな段階から相談できます</strong>
+        <p>「毎月この作業に時間がかかる」「今のExcelを直したい」「何で作ればいいか分からない」といった状態でも問題ありません。</p>
       </aside>
     </div>
   </section>
 
   <section class="section-tight">
     <div class="container metrics" aria-label="実績概要">
-      <div class="metric"><span class="metric-value">約10年</span><span class="metric-label">エンジニア経験</span></div>
-      <div class="metric"><span class="metric-value">約100件</span><span class="metric-label">開発・業務改善の対応実績</span></div>
-      <div class="metric"><span class="metric-value">5領域+</span><span class="metric-label">Excel / GAS / Python / Web / API ほか</span></div>
-    </div>
-  </section>
-
-  <section class="section creator-intro">
-    <div class="container creator-intro-grid">
-      <div>
-        <p class="eyebrow">制作者について</p>
-        <h2 class="section-title">現役SEとして約10年。<br />実務の中で使える仕組みを作っています。</h2>
-      </div>
-      <div class="creator-intro-copy">
-        <p>本業では業務システムの開発・改修に約10年携わりながら、個別開発ではExcel・Google Apps Script・Python・Web・APIを使った業務改善・自動化に約100件対応してきました。単にシステムを作るのではなく、現在の運用を見て、どこを仕組みに任せると仕事が軽くなるかを整理することを重視しています。</p>
-        <div class="creator-facts" aria-label="制作者概要">
-          <div class="creator-fact"><span>本業経験</span><strong>システム開発 約10年</strong></div>
-          <div class="creator-fact"><span>個別開発</span><strong>開発・業務改善 約100件</strong></div>
-          <div class="creator-fact"><span>主な領域</span><strong>Excel / GAS / Python / Web / API</strong></div>
-        </div>
-        <div class="hero-actions">
-          <a class="btn" href="/about">経歴・得意分野を詳しく見る <span aria-hidden="true">→</span></a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="services" class="section">
-    <div class="container">
-      <p class="eyebrow">できること</p>
-      <h2 class="section-title">技術ではなく、<br />解決したい業務から考えます。</h2>
-      <p class="section-lead">「何を使えばいいか分からない」という段階でも大丈夫です。現在の運用を確認し、必要な技術をこちらで組み合わせます。</p>
-      <div class="service-grid">
-        {services.map(([no, title, copy, href]) => (
-          href ? (
-            <a class="service service-linked" href={href}>
-              <span class="service-no">{no}</span>
-              <div><h3>{title}</h3><p>{copy}</p><span class="service-inline-link">詳しく見る →</span></div>
-            </a>
-          ) : (
-            <article class="service">
-              <span class="service-no">{no}</span>
-              <div><h3>{title}</h3><p>{copy}</p></div>
-            </article>
-          )
-        ))}
-      </div>
-      <div class="hero-actions">
-        <a class="btn" href="/services">対応サービスを詳しく見る <span aria-hidden="true">→</span></a>
-        <a class="btn" href="/price">料金・費用の目安 <span aria-hidden="true">→</span></a>
-      </div>
+      <div class="metric"><span class="metric-value">約10年</span><span class="metric-label">システム開発の実務経験</span></div>
+      <div class="metric"><span class="metric-value">約100件</span><span class="metric-label">個別開発・業務改善の対応実績</span></div>
+      <div class="metric"><span class="metric-value">Excel〜Web</span><span class="metric-label">業務に合わせて技術を選択</span></div>
     </div>
   </section>
 
   <section class="section">
     <div class="container">
-      <p class="eyebrow">業務自動化のヒント</p>
-      <h2 class="section-title">検索される「困りごと」から、<br />解決方法を整理する。</h2>
-      <p class="section-lead">転記、複数Excelの集計、VBA修正など、実務でよくある課題ごとに方法・費用・失敗しやすいポイントをまとめています。</p>
-      <div class="card-grid">
-        {featuredSolutions.map((solution) => (
-          <a class="work-card" href={`/solutions/${solution.slug}`}>
-            <span class="card-arrow" aria-hidden="true">↗</span>
-            <div><span class="card-kicker">GUIDE</span><h3 class="card-title">{solution.title}</h3><p class="card-copy">{solution.description}</p></div>
-          </a>
+      <p class="eyebrow">よくあるご相談</p>
+      <h2 class="section-title">今の作業に近いものがあれば、改善方法を一緒に整理できます。</h2>
+      <div class="request-grid">
+        {commonRequests.map(([title, copy]) => (
+          <article class="request-card">
+            <h3>{title}</h3>
+            <p>{copy}</p>
+          </article>
         ))}
       </div>
-      <div class="hero-actions"><a class="btn" href="/solutions">業務自動化のヒントをすべて見る <span aria-hidden="true">→</span></a></div>
+      <div class="hero-actions">
+        <a class="btn" href="/contact">今の作業について相談する <span aria-hidden="true">→</span></a>
+      </div>
     </div>
   </section>
 
   <section class="section">
     <div class="container">
       <p class="eyebrow">開発実績</p>
-      <h2 class="section-title">業務の流れそのものを、<br />少しずつ軽くする。</h2>
-      <p class="section-lead">顧客名や固有データは公開せず、どのような課題をどう整理・実装したかが分かる形で紹介しています。</p>
+      <h2 class="section-title">実際に対応した業務を、課題と対応内容が分かる形で紹介しています。</h2>
+      <p class="section-lead">顧客名や実データは出していません。どんな作業に困っていて、どこまでシステム化したかを中心にまとめています。</p>
       <div class="card-grid">
-        {featuredWorks.map((work, index) => (
-          <a class="work-card" href={`/works/${work.slug}`}>
-            <span class="card-arrow" aria-hidden="true">↗</span>
+        {featuredWorks.map((work) => (
+          <a class="work-card" href={\`/works/\${work.slug}\`}>
+            <span class="card-arrow" aria-hidden="true">→</span>
             <div>
-              <span class="card-kicker">CASE {String(index + 1).padStart(2, '0')}</span>
+              <span class="card-kicker">{work.category}</span>
               <h3 class="card-title">{work.title}</h3>
               <p class="card-copy">{work.summary}</p>
             </div>
@@ -142,37 +120,50 @@ const process = [
           </a>
         ))}
       </div>
-      <div class="hero-actions"><a class="btn" href="/works">すべての実績を見る <span aria-hidden="true">→</span></a></div>
+      <div class="hero-actions"><a class="btn" href="/works">実績一覧を見る <span aria-hidden="true">→</span></a></div>
+    </div>
+  </section>
+
+  <section id="services" class="section">
+    <div class="container">
+      <p class="eyebrow">対応サービス</p>
+      <h2 class="section-title">今の環境を確認して、無理のない方法で作ります。</h2>
+      <p class="section-lead">Excelで十分な業務はExcelを残し、複数人で使うならWeb化するなど、用途に合わせて構成を決めます。</p>
+      <div class="service-grid">
+        {services.map(([title, copy, href]) => (
+          <a class="service service-linked" href={href}>
+            <div><h3>{title}</h3><p>{copy}</p><span class="service-inline-link">詳しく見る →</span></div>
+          </a>
+        ))}
+      </div>
+      <div class="hero-actions">
+        <a class="btn" href="/services">対応サービスをすべて見る <span aria-hidden="true">→</span></a>
+      </div>
     </div>
   </section>
 
   <section class="section">
     <div class="container">
-      <p class="eyebrow">公開ツール</p>
-      <h2 class="section-title">作ったものを、<br />実際に触れる形へ。</h2>
-      <p class="section-lead">公開して問題ないことを確認したツールだけを掲載します。顧客データや秘密情報を含むものは公開しません。</p>
-      {publishedTools.length > 0 ? (
-        <div class="card-grid">
-          {publishedTools.map((tool) => (
-            <a class="tool-card" href={`/tools/${tool.slug}`}>
-              <span class="card-arrow" aria-hidden="true">↗</span>
-              <div><span class="card-kicker">TOOL</span><h3 class="card-title">{tool.title}</h3><p class="card-copy">{tool.description}</p></div>
-              <div class="tags">{tool.technologies.map((tech) => <span class="tag">{tech}</span>)}</div>
-            </a>
-          ))}
-        </div>
-      ) : (
-        <div class="empty-state">公開ツールは現在、安全確認と公開用調整を進めています。順次追加します。</div>
-      )}
-      <div class="hero-actions"><a class="btn" href="/tools">公開ツールを見る <span aria-hidden="true">→</span></a></div>
+      <p class="eyebrow">料金の目安</p>
+      <h2 class="section-title">作業量によって変わりますが、最初の検討材料として目安を公開しています。</h2>
+      <div class="home-price-grid">
+        {priceRanges.map(([label, price, copy]) => (
+          <article class="home-price-card">
+            <span>{label}</span>
+            <strong>{price}</strong>
+            <p>{copy}</p>
+          </article>
+        ))}
+      </div>
+      <div class="hero-actions"><a class="btn" href="/price">料金・見積の考え方を見る <span aria-hidden="true">→</span></a></div>
     </div>
   </section>
 
   <section id="process" class="section process-section">
     <div class="container">
-      <p class="eyebrow">開発の流れ</p>
-      <h2 class="section-title">仕様が固まっていなくても、<br />相談から整理できます。</h2>
-      <p class="process-lead">ご相談から納品・改善まで、業務を確認しながら一つずつ形にしていきます。</p>
+      <p class="eyebrow">ご相談から納品まで</p>
+      <h2 class="section-title">仕様書がなくても、今の作業を確認するところから進められます。</h2>
+      <p class="process-lead">最初から全部を決め切るのではなく、実際の業務と確認用の画面を見ながら進めます。</p>
       <picture class="process-visual">
         <source srcset="/images/process-flow-mobile.svg" media="(max-width: 640px)" />
         <img
@@ -192,18 +183,135 @@ const process = [
     </div>
   </section>
 
+  <section class="section creator-intro">
+    <div class="container creator-intro-grid">
+      <div>
+        <p class="eyebrow">制作者について</p>
+        <h2 class="section-title">30代の現役SEが、相談から開発まで直接対応しています。</h2>
+      </div>
+      <div class="creator-intro-copy">
+        <p>本業では業務システムの開発・改修に約10年携わっています。個人でも、Excel・GAS・Python・Webを使った業務改善や社内ツールの開発を続けています。</p>
+        <p>作るものを先に決めるのではなく、現在のファイルや手順を確認して、「どこを変えると作業が減るか」から考える進め方をしています。</p>
+        <div class="hero-actions">
+          <a class="btn" href="/about">制作者について詳しく見る <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container faq-home">
+      <div>
+        <p class="eyebrow">よくある質問</p>
+        <h2 class="section-title">依頼前によく聞かれること</h2>
+      </div>
+      <div class="faq-home-list">
+        {faqs.map(([question, answer]) => (
+          <details>
+            <summary>{question}<span aria-hidden="true">＋</span></summary>
+            <p>{answer}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">業務自動化ガイド</p>
+      <h2 class="section-title">転記、集計、VBA修正など、作業別に方法や費用をまとめています。</h2>
+      <div class="card-grid">
+        {featuredSolutions.map((solution) => (
+          <a class="work-card" href={\`/solutions/\${solution.slug}\`}>
+            <span class="card-arrow" aria-hidden="true">→</span>
+            <div><h3 class="card-title">{solution.title}</h3><p class="card-copy">{solution.description}</p></div>
+          </a>
+        ))}
+      </div>
+      <div class="hero-actions"><a class="btn" href="/solutions">業務自動化ガイドを見る <span aria-hidden="true">→</span></a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">無料ツール</p>
+      <h2 class="section-title">ブラウザでそのまま使える業務向けツールも公開しています。</h2>
+      <p class="section-lead">Excel比較やデータ整理など、単発作業で使いやすいものを掲載しています。</p>
+      {featuredTools.length > 0 ? (
+        <div class="card-grid">
+          {featuredTools.map((tool) => (
+            <a class="tool-card" href={\`/tools/\${tool.slug}\`}>
+              <span class="card-arrow" aria-hidden="true">→</span>
+              <div><h3 class="card-title">{tool.title}</h3><p class="card-copy">{tool.description}</p></div>
+              <div class="tags">{tool.technologies.map((tech) => <span class="tag">{tech}</span>)}</div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="empty-state">公開できる状態まで確認したツールから順次追加します。</div>
+      )}
+      <div class="hero-actions"><a class="btn" href="/tools">無料ツールを見る <span aria-hidden="true">→</span></a></div>
+    </div>
+  </section>
+
   <section class="cta-band">
     <div class="container cta-band-inner">
-      <div><p class="eyebrow">問い合わせ</p><h2>その手作業、<br />仕組みにできるかもしれません。</h2></div>
+      <div>
+        <p class="eyebrow">問い合わせ</p>
+        <h2>まずは、今困っている作業を教えてください。</h2>
+        <p class="cta-copy">作りたいものが決まっていなくても、現在の業務から整理できます。</p>
+      </div>
       <div class="cta-actions">
         <a class="btn btn-primary" href="/contact">サイトから相談する <span aria-hidden="true">→</span></a>
-        <a class="btn" href="https://coconala.com/users/5379632" target="_blank" rel="noopener noreferrer">ココナラから依頼する <span aria-hidden="true">↗</span></a>
+        <a class="btn" href="https://coconala.com/users/5379632" target="_blank" rel="noopener noreferrer">ココナラから相談する <span aria-hidden="true">↗</span></a>
       </div>
     </div>
   </section>
 </BaseLayout>
 
 <style>
+  .request-grid,
+  .home-price-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 30px;
+  }
+
+  .request-card,
+  .home-price-card {
+    padding: 24px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: rgba(255,255,255,.025);
+  }
+
+  .request-card h3 {
+    margin: 0 0 10px;
+    font-size: 1.05rem;
+  }
+
+  .request-card p,
+  .home-price-card p,
+  .cta-copy {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.85;
+  }
+
+  .home-price-card span {
+    display: block;
+    color: var(--muted);
+    font-size: .84rem;
+  }
+
+  .home-price-card strong {
+    display: block;
+    margin: 10px 0 8px;
+    color: var(--accent);
+    font-size: clamp(1.3rem, 3vw, 1.9rem);
+  }
+
   .process-lead {
     max-width: 760px;
     margin: -6px 0 32px;
@@ -238,12 +346,40 @@ const process = [
     border: 0;
   }
 
-  .process-accessible li {
-    display: block;
+  .faq-home {
+    display: grid;
+    grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+    gap: 48px;
   }
 
-  .process-accessible span {
-    display: block;
+  .faq-home-list {
+    display: grid;
+    gap: 10px;
+  }
+
+  .faq-home-list details {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .faq-home-list summary {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 18px 0;
+    cursor: pointer;
+    font-weight: 700;
+    list-style: none;
+  }
+
+  .faq-home-list summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-home-list p {
+    margin: 0;
+    padding: 0 0 20px;
+    color: var(--muted);
+    line-height: 1.85;
   }
 
   .cta-actions {
@@ -254,10 +390,22 @@ const process = [
   }
 
   @media (max-width: 860px) {
-    .cta-actions { justify-content: flex-start; }
+    .faq-home {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .cta-actions {
+      justify-content: flex-start;
+    }
   }
 
   @media (max-width: 640px) {
+    .request-grid,
+    .home-price-grid {
+      grid-template-columns: 1fr;
+    }
+
     .process-lead {
       margin-bottom: 22px;
       font-size: .94rem;
@@ -273,6 +421,9 @@ const process = [
   }
 
   @media (max-width: 560px) {
-    .cta-actions { display: grid; width: 100%; }
+    .cta-actions {
+      display: grid;
+      width: 100%;
+    }
   }
 </style>
