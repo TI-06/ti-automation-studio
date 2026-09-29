@@ -5,8 +5,8 @@ const source = readFileSync(new URL('../src/pages/tools/index.astro', import.met
 
 describe('公開ツール一覧', () => {
   it('利用条件と代表機能を日本語で伝える', () => {
-    expect(source).toContain('仕事で使える、');
-    expect(source).toContain('無料の業務ツール。');
+    expect(source).toContain('ブラウザですぐ使える無料ツール');
+    expect(source).toContain('無料ツール');
     expect(source).toContain('登録不要');
     expect(source).toContain('tool-product-card');
     expect(source).toContain('このツールを使う');
