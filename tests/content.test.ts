@@ -117,6 +117,8 @@ describe('検索意図別サービスページ', () => {
     expect(existsSync(serviceCssUrl)).toBe(true);
     expect(serviceCssSource).toContain('.service-hero-grid');
     expect(serviceCssSource).toContain('.service-visual');
+    expect(serviceCssSource).toContain('max-width: 560px');
+    expect(serviceCssSource).toContain('object-fit: contain');
     expect(serviceCssSource).toContain('.service-flow');
     expect(serviceCssSource).toContain('.service-faq');
     expect(serviceCssSource).toContain('@media (max-width: 860px)');
@@ -131,9 +133,16 @@ describe('トップページのヒーローレイアウト', () => {
   });
 
   it('PCとスマホで見出しサイズを抑え、中間幅では1カラムにする', () => {
-    expect(globalCss).toContain('font-size: clamp(2.7rem, 6.1vw, 5.8rem);');
+    expect(globalCss).toContain('font-size: clamp(2.9rem, 4.4vw, 4.5rem);');
+    expect(globalCss).toContain('.hero-line { display: inline; }');
     expect(globalCss).toContain('@media (max-width: 1100px)');
-    expect(globalCss).toContain('font-size: clamp(2.35rem, 12vw, 3.7rem);');
+    expect(globalCss).toContain('font-size: clamp(2.35rem, 10vw, 3.35rem);');
+  });
+
+  it('サービス一覧で旧番号カラムを残さず本文幅を確保する', () => {
+    expect(globalCss).toContain('.service { min-width: 0;');
+    expect(globalCss).toContain('display: block;');
+    expect(globalCss).not.toContain('grid-template-columns: 72px 1fr;');
   });
 });
 
