@@ -20,6 +20,6 @@ describe('開発フローのビジュアル表示', () => {
   it('01から06までのフロー本文をアクセシブルなテキストとして残す', () => {
     expect(homeSource).toContain('class="process-accessible"');
     expect(homeSource).toContain("['01', '相談'");
-    expect(homeSource).toContain("['06', '納品・改善'");
+    expect(homeSource).toContain("['06', '納品・追加改修'");
   });
 });
