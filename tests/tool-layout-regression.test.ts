@@ -72,6 +72,7 @@ describe('無料ツールのレイアウト回帰', () => {
 
   it('ダッシュボードは1180pxでツールバーとフィルターを縮退する', () => {
     expect(dashboardCss).toContain('@media (max-width: 1180px)');
+    expect(dashboardCss).toContain('.dashboard-source-main { grid-template-columns: 1fr; }');
     expect(dashboardCss).toContain('.dashboard-filter-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }');
     expect(dashboardCss).toContain('.dashboard-toolbar { position: static');
     expect(dashboardCss).toContain('@media (max-width: 820px)');
