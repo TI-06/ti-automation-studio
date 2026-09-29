@@ -45,7 +45,7 @@ const structuredData = [
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'トップ', item: Astro.site?.toString() ?? '/' },
-      { '@type': 'ListItem', position: 2, name: 'できること', item: Astro.site ? new URL('/services', Astro.site).toString() : '/services' },
+      { '@type': 'ListItem', position: 2, name: 'サービス', item: Astro.site ? new URL('/services', Astro.site).toString() : '/services' },
       { '@type': 'ListItem', position: 3, name: service.title, item: serviceUrl },
     ],
   },
@@ -61,7 +61,7 @@ const structuredData = [
     <div class="container service-hero-grid reveal">
       <div class="service-hero-copy">
         <nav class="breadcrumb" aria-label="パンくずリスト">
-          <a href="/">トップ</a><span>／</span><a href="/services">できること</a><span>／</span><span>{service.title}</span>
+          <a href="/">トップ</a><span>／</span><a href="/services">サービス</a><span>／</span><span>{service.title}</span>
         </nav>
         <p class="eyebrow">{service.eyebrow}</p>
         <h1>{service.title}</h1>
@@ -80,7 +80,7 @@ const structuredData = [
 
   <section class="section service-problems">
     <div class="container service-section-grid">
-      <div><p class="eyebrow">COMMON PROBLEMS</p><h2 class="section-title">こんな作業が続いていませんか。</h2></div>
+      <div><p class="eyebrow">よくあるご相談</p><h2 class="section-title">こんな作業に対応しています。</h2></div>
       <div class="service-check-list">
         {service.problems.map((problem) => <div class="service-check-item"><span aria-hidden="true">—</span><p>{problem}</p></div>)}
       </div>
@@ -89,9 +89,9 @@ const structuredData = [
 
   <section class="section">
     <div class="container">
-      <p class="eyebrow">WHAT WE AUTOMATE</p>
+      <p class="eyebrow">対応できること</p>
       <h2 class="section-title">できること</h2>
-      <p class="section-lead">技術を増やすことより、手でやっている工程を減らし、確認しやすい業務フローにすることを優先します。</p>
+      <p class="section-lead">現在の手順を確認し、手作業を減らせる部分から自動化します。</p>
       <div class="service-capability-grid">
         {service.capabilities.map((capability, index) => (
           <article class="service-capability-card"><span>{String(index + 1).padStart(2, '0')}</span><h3>{capability.title}</h3><p>{capability.description}</p></article>
@@ -102,21 +102,21 @@ const structuredData = [
 
   <section class="section">
     <div class="container">
-      <p class="eyebrow">BEFORE / AFTER</p>
-      <h2 class="section-title">人の手順を、そのまま仕組みにしない。</h2>
+      <p class="eyebrow">改善の考え方</p>
+      <h2 class="section-title">現在の作業を確認して、必要な部分だけ仕組みにします。</h2>
       <div class="service-flow">
-        <article><span>BEFORE</span><h3>いまの作業</h3><p>{service.flow.before}</p></article>
+        <article><span>現在</span><h3>いまの作業</h3><p>{service.flow.before}</p></article>
         <div class="service-flow-arrow" aria-hidden="true">→</div>
-        <article class="service-flow-process"><span>PROCESS</span><h3>整理・自動化</h3><p>{service.flow.process}</p></article>
+        <article class="service-flow-process"><span>対応</span><h3>整理・自動化</h3><p>{service.flow.process}</p></article>
         <div class="service-flow-arrow" aria-hidden="true">→</div>
-        <article><span>AFTER</span><h3>改善後</h3><p>{service.flow.after}</p></article>
+        <article><span>改善後</span><h3>改善後</h3><p>{service.flow.after}</p></article>
       </div>
     </div>
   </section>
 
   <section class="section">
     <div class="container service-section-grid">
-      <div><p class="eyebrow">EXAMPLES</p><h2 class="section-title">具体的には、こんな業務。</h2><p class="section-lead">実案件を特定できる情報は出さず、対応可能な業務パターンとして一般化しています。</p></div>
+      <div><p class="eyebrow">対応例</p><h2 class="section-title">具体的な業務例</h2><p class="section-lead">実案件を特定できる情報は出さず、対応可能な業務パターンとして一般化しています。</p></div>
       <ol class="service-example-list">
         {service.examples.map((example, index) => <li><span>{String(index + 1).padStart(2, '0')}</span><p>{example}</p></li>)}
       </ol>
@@ -125,7 +125,7 @@ const structuredData = [
 
   <section class="section service-fit-section">
     <div class="container">
-      <p class="eyebrow">GOOD FIT</p>
+      <p class="eyebrow">向いているケース</p>
       <h2 class="section-title">向いているケース / 向いていないケース</h2>
       <div class="service-fit-grid">
         <article><span class="service-fit-label">向いています</span><ul>{service.fit.map((item) => <li>{item}</li>)}</ul></article>
@@ -136,14 +136,14 @@ const structuredData = [
 
   <section id="related-works" class="section">
     <div class="container">
-      <p class="eyebrow">RELATED CASES</p>
+      <p class="eyebrow">関連する実績</p>
       <h2 class="section-title">関連する開発実績</h2>
-      <p class="section-lead">似た課題を、どのような仕組みへ整理しているか確認できます。</p>
+      <p class="section-lead">近い業務の開発内容を確認できます。</p>
       <div class="card-grid service-related-works">
         {relatedWorks.map((work, index) => (
           <a class="work-card" href={`/works/${work.slug}`}>
             <span class="card-arrow" aria-hidden="true">↗</span>
-            <div><span class="card-kicker">CASE {String(index + 1).padStart(2, '0')}</span><h3 class="card-title">{work.title}</h3><p class="card-copy">{work.summary}</p></div>
+            <div><span class="card-kicker">{work.category}</span><h3 class="card-title">{work.title}</h3><p class="card-copy">{work.summary}</p></div>
             <div class="tags">{work.technologies.slice(0, 4).map((tech) => <span class="tag">{tech}</span>)}</div>
           </a>
         ))}
@@ -154,14 +154,14 @@ const structuredData = [
   {relatedGuides.length > 0 && (
     <section class="section service-guides">
       <div class="container">
-        <p class="eyebrow">PRACTICAL GUIDES</p>
+        <p class="eyebrow">関連ガイド</p>
         <h2 class="section-title">関連する業務自動化ガイド</h2>
         <p class="section-lead">実装方法や費用を、より具体的な困りごとから確認できます。</p>
         <div class="card-grid">
           {relatedGuides.map((guide) => (
             <a class="work-card" href={`/solutions/${guide.slug}`}>
               <span class="card-arrow" aria-hidden="true">↗</span>
-              <div><span class="card-kicker">GUIDE</span><h3 class="card-title">{guide.title}</h3><p class="card-copy">{guide.description}</p></div>
+              <div><span class="card-kicker">業務自動化ガイド</span><h3 class="card-title">{guide.title}</h3><p class="card-copy">{guide.description}</p></div>
               <div class="tags"><span class="tag">{guide.searchIntent === 'commercial' ? '依頼・費用' : '方法・解説'}</span></div>
             </a>
           ))}
@@ -173,12 +173,12 @@ const structuredData = [
   <section class="section">
     <div class="container service-section-grid">
       <div>
-        <p class="eyebrow">TECHNOLOGY</p>
-        <h2 class="section-title">使う技術は、業務に合わせて選びます。</h2>
+        <p class="eyebrow">使用技術</p>
+        <h2 class="section-title">使用する技術</h2>
         <div class="tags service-tech-tags">{service.technologies.map((tech) => <span class="tag">{tech}</span>)}</div>
       </div>
       <div>
-        <p class="eyebrow">RELATED SERVICES</p>
+        <p class="eyebrow">関連サービス</p>
         <div class="service-related-links">
           {relatedServices.map((item) => <a href={`/services/${item.slug}`}><span>{item.title}</span><span aria-hidden="true">→</span></a>)}
         </div>
@@ -188,7 +188,7 @@ const structuredData = [
 
   <section class="section">
     <div class="container service-faq">
-      <div><p class="eyebrow">FAQ</p><h2 class="section-title">よくある質問</h2></div>
+      <div><p class="eyebrow">よくある質問</p><h2 class="section-title">依頼前によく聞かれること</h2></div>
       <div class="service-faq-list">
         {service.faq.map((item) => <details><summary>{item.question}<span aria-hidden="true">＋</span></summary><p>{item.answer}</p></details>)}
       </div>
@@ -197,7 +197,7 @@ const structuredData = [
 
   <section class="cta-band">
     <div class="container cta-band-inner">
-      <div><p class="eyebrow">CONTACT</p><h2>「これも自動化できる？」から、<br />相談できます。</h2></div>
+      <div><p class="eyebrow">問い合わせ</p><h2>対応できるか分からない作業でも、まずはご相談ください。</h2></div>
       <a class="btn btn-primary" href="/contact">相談内容を送る →</a>
     </div>
   </section>

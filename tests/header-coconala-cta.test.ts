@@ -6,8 +6,8 @@ const coconalaUrl = 'https://coconala.com/users/5379632';
 
 describe('ヘッダーのココナラ導線', () => {
   it('右上ナビにサイト問い合わせとココナラ問い合わせを並べる', () => {
-    expect(layoutSource).toContain('サイトから相談');
-    expect(layoutSource).toContain('ココナラから問い合わせ');
+    expect(layoutSource).toContain('相談する');
+    expect(layoutSource).toContain('>ココナラ</span>');
     expect(layoutSource).toContain(`href="${coconalaUrl}"`);
   });
 

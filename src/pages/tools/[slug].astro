@@ -9,7 +9,7 @@ if (!tool) return Astro.redirect('/tools');
 <BaseLayout title={tool.title} description={tool.description}>
   <section class="page-hero">
     <div class="container reveal">
-      <p class="eyebrow">公開ツール</p>
+      <p class="eyebrow">無料ツール</p>
       <h1>{tool.title}</h1>
       <p>{tool.description}</p>
       <div class="tags">{tool.technologies.map((tech) => <span class="tag">{tech}</span>)}</div>

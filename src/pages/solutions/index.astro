@@ -30,8 +30,8 @@ const structuredData = {
   <section class="service-hero">
     <div class="container reveal">
       <nav class="breadcrumb" aria-label="パンくずリスト"><a href="/">トップ</a><span>／</span><span>業務自動化のヒント</span></nav>
-      <p class="eyebrow">SOLUTIONS</p>
-      <h1 class="section-title">業務自動化のヒント</h1>
+      <p class="eyebrow">業務自動化ガイド</p>
+      <h1 class="section-title">業務自動化ガイド</h1>
       <p class="section-lead">「この作業はどう自動化する？」「どの方法を選べばいい？」を、Excel・VBA・GAS・Python・APIなどの実務目線で整理します。20本のガイドを5つのテーマに分け、方法だけでなく、向いているケース、費用の考え方、失敗しやすいポイントまでまとめています。</p>
       <nav class="cluster-nav" aria-label="ガイドのテーマ">
         {solutionClusters.map((cluster) => <a href={`#cluster-${cluster.key}`}>{cluster.label}</a>)}
@@ -45,7 +45,7 @@ const structuredData = {
       <section id={`cluster-${cluster.key}`} class="section solution-cluster">
         <div class="container">
           <div class="cluster-heading">
-            <div><p class="eyebrow">TOPIC CLUSTER</p><h2 class="section-title">{cluster.label}</h2></div>
+            <div><p class="eyebrow">テーマ別</p><h2 class="section-title">{cluster.label}</h2></div>
             <p>{cluster.description}</p>
           </div>
           <div class="solution-grid">
@@ -69,8 +69,8 @@ const structuredData = {
   <section class="section">
     <div class="container solution-guide">
       <div>
-        <p class="eyebrow">NOT SURE?</p>
-        <h2>方法が決まっていなくても大丈夫です。</h2>
+        <p class="eyebrow">方法が決まっていない方へ</p>
+        <h2>どの方法が合うか分からない場合も、作業内容から整理できます。</h2>
       </div>
       <div>
         <p>Excelのまま直すべきか、GASやPythonへ分けるべきかは、データ量・利用人数・更新頻度で変わります。現在の作業を整理するところから相談できます。</p>

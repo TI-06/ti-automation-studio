@@ -9,7 +9,7 @@ const coconalaUrl = 'https://coconala.com/users/5379632';
 describe('ココナラ依頼導線', () => {
   it('トップページの最終CTAにココナラ依頼ボタンを表示する', () => {
     expect(homeSource).toContain(`href="${coconalaUrl}"`);
-    expect(homeSource).toContain('ココナラから依頼する');
+    expect(homeSource).toContain('ココナラから相談する');
   });
 
   it('問い合わせページでサイトフォーム以外にココナラを選べる', () => {
