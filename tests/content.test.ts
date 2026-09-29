@@ -48,7 +48,7 @@ describe('公開コンテンツ', () => {
 describe('SEO設定', () => {
   it('本番URLをcanonicalとsitemapの基準にする', () => {
     expect(astroConfigSource).toContain("site: 'https://ti-automation-studio.utiltoools.workers.dev'");
-    expect(robotsSource).toContain('https://ti-automation-studio.utiltoools.workers.dev/sitemap-index.xml');
+    expect(robotsSource).toContain('https://ti-automation-studio.utiltoools.workers.dev/sitemap.xml');
   });
 
   it('Google Search Consoleの所有権確認メタタグを出力する', () => {
