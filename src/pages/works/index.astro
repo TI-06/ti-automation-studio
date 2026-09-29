@@ -22,8 +22,8 @@ const itemList = {
   <section class="page-hero works-hero">
     <div class="container reveal">
       <p class="eyebrow">開発実績</p>
-      <h1>業務の課題を、<br />動く仕組みへ。</h1>
-      <p>「何を作ったか」だけではなく、もともと何に困っていて、どのように整理し、何が改善されたのかまで分かる形で紹介しています。</p>
+      <h1>これまでの開発実績</h1>
+      <p>顧客名や実データは伏せたうえで、相談時の課題、対応した内容、主な機能が分かる形で紹介しています。</p>
     </div>
   </section>
 
@@ -33,7 +33,7 @@ const itemList = {
         <a class="work-card work-card-detailed" href={`/works/${work.slug}`}>
           <div>
             <div class="work-card-topline">
-              <span class="card-kicker">CASE {String(index + 1).padStart(2, '0')}</span>
+              <span class="card-kicker">実績 {String(index + 1).padStart(2, '0')}</span>
               <span class="work-card-category">{work.category}</span>
             </div>
             <h2 class="card-title">{work.title}</h2>
@@ -64,12 +64,12 @@ const itemList = {
     <div class="container about-panel">
       <div>
         <p class="eyebrow">課題から探す</p>
-        <h2 class="section-title">似た実績がなくても、<br />作業内容から探せます。</h2>
+        <h2 class="section-title">作業内容からも探せます。</h2>
       </div>
       <div class="about-body">
-        <p>転記、月次集計、PDF作成、GASの通知、API連携など、実績名では探しにくい課題は「業務自動化のヒント」で作業別に整理しています。</p>
+        <p>転記、月次集計、PDF作成、GAS修正、API連携などは、業務自動化ガイドで作業別にまとめています。</p>
         <div class="hero-actions">
-          <a class="btn" href="/solutions">業務自動化のヒントを見る →</a>
+          <a class="btn" href="/solutions">業務自動化ガイドを見る →</a>
           <a class="btn" href="/services">対応サービスを見る →</a>
         </div>
       </div>
@@ -78,7 +78,7 @@ const itemList = {
 
   <section class="cta-band">
     <div class="container cta-band-inner">
-      <div><p class="eyebrow">相談</p><h2>似た業務で困っているなら、<br />現在の運用から整理できます。</h2></div>
+      <div><p class="eyebrow">相談</p><h2>似た業務があれば、現在の作業内容から相談できます。</h2></div>
       <a class="btn btn-primary" href="/contact">開発について相談する →</a>
     </div>
   </section>
