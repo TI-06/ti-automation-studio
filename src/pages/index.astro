@@ -59,10 +59,7 @@ const faqs = [
     <div class="container hero-grid reveal">
       <div>
         <p class="eyebrow">業務自動化・社内ツール開発</p>
-        <h1>
-          <span class="hero-line">Excelやスプレッドシートの手作業を、</span>
-          <span class="hero-line accent">業務に合う仕組みに変えます。</span>
-        </h1>
+        <h1><span class="hero-line">Excelやスプレッドシートの手作業を、</span><span class="hero-line accent">業務に合う仕組みに変えます。</span></h1>
         <p class="hero-copy">転記・集計・帳票作成・データ加工・複数人での管理など、今の業務で時間がかかっている部分を確認し、Excel・GAS・Python・Webを使い分けて改善します。既存ファイルの修正から新しい業務ツールの開発まで対応しています。</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="/works">開発実績を見る <span aria-hidden="true">→</span></a>
@@ -71,7 +68,7 @@ const faqs = [
       </div>
       <aside class="hero-side" aria-label="相談できる内容">
         <strong>こんな段階から相談できます</strong>
-        <p>「毎月この作業に時間がかかる」「今のExcelを直したい」「何で作ればいいか分からない」といった状態でも問題ありません。</p>
+        <p>「毎月同じ作業に時間がかかる」「今のExcelを直したい」「何で作ればいいか分からない」といった段階から相談できます。</p>
       </aside>
     </div>
   </section>
@@ -127,8 +124,8 @@ const faqs = [
   <section id="services" class="section">
     <div class="container">
       <p class="eyebrow">対応サービス</p>
-      <h2 class="section-title">今の環境を確認して、無理のない方法で作ります。</h2>
-      <p class="section-lead">Excelで十分な業務はExcelを残し、複数人で使うならWeb化するなど、用途に合わせて構成を決めます。</p>
+      <h2 class="section-title">今の環境に合わせて、必要な方法を選びます。</h2>
+      <p class="section-lead">Excelで十分な業務はそのまま活かし、複数人で使うならWeb化するなど、用途に合わせて構成を決めます。</p>
       <div class="service-grid">
         {services.map(([title, copy, href]) => (
           <a class="service service-linked" href={href}>
@@ -281,7 +278,7 @@ const faqs = [
   .request-card,
   .home-price-card {
     padding: 24px;
-    border: 1px solid var(--line);
+    border: 1px solid var(--border);
     border-radius: 16px;
     background: rgba(255,255,255,.025);
   }
@@ -358,7 +355,7 @@ const faqs = [
   }
 
   .faq-home-list details {
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid var(--border);
   }
 
   .faq-home-list summary {
