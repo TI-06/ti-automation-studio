@@ -1,5 +1,5 @@
 .tool-cleaner-grid {
-  grid-template-columns: 290px minmax(0, 1fr) 330px;
+  grid-template-columns: 240px minmax(0, 1fr) 280px;
 }
 
 .cleaner-health-summary {
@@ -103,12 +103,13 @@
 }
 .cleaner-issue-card:hover { border-color: var(--border-strong); }
 .cleaner-issue-head {
+  min-width: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
 }
-.cleaner-issue-head strong { font-size: .9rem; font-weight: 500; }
+.cleaner-issue-head strong { min-width: 0; font-size: .9rem; font-weight: 500; overflow-wrap: anywhere; }
 .cleaner-issue-badge {
   display: inline-flex;
   min-height: 24px;
@@ -318,12 +319,12 @@
 }
 .cleaner-dialog-actions .tool-button { min-width: 180px; }
 
-@media (max-width: 1220px) {
-  .tool-cleaner-grid { grid-template-columns: 250px minmax(0, 1fr); }
+@media (max-width: 1240px) {
+  .tool-cleaner-grid { grid-template-columns: 220px minmax(0, 1fr); }
   .cleaner-inspector { grid-column: 1 / -1; border-left: 0 !important; border-top: 1px solid var(--border); }
 }
 
-@media (max-width: 860px) {
+@media (max-width: 960px) {
   .tool-cleaner-grid { grid-template-columns: 1fr; }
   .cleaner-health-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .cleaner-health-summary button { border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
