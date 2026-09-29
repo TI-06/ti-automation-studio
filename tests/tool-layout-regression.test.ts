@@ -38,6 +38,7 @@ describe('無料ツールのレイアウト回帰', () => {
     expect(sharedCss).toContain('text-overflow: ellipsis');
     expect(sharedCss).toContain('overflow-wrap: anywhere');
     expect(sharedCss).toContain('white-space: pre-wrap');
+    expect(sharedCss).toContain('overscroll-behavior-x: contain');
     expect(sharedCss).toContain('.tool-button');
     expect(sharedCss).toContain('white-space: normal');
   });
@@ -77,6 +78,7 @@ describe('無料ツールのレイアウト回帰', () => {
     expect(dashboardCss).toContain('.dashboard-toolbar { position: static');
     expect(dashboardCss).toContain('@media (max-width: 820px)');
     expect(dashboardCss).toContain('.dashboard-filter-grid { grid-template-columns: 1fr; }');
+    expect(dashboardCss).toContain('table-layout: fixed');
   });
 
   it('無料ツール一覧のプレビューに8〜9px相当の極小文字を残さない', () => {
