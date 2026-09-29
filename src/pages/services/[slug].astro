@@ -161,7 +161,7 @@ const structuredData = [
           {relatedGuides.map((guide) => (
             <a class="work-card" href={`/solutions/${guide.slug}`}>
               <span class="card-arrow" aria-hidden="true">↗</span>
-              <div><span class="card-kicker">GUIDE</span><h3 class="card-title">{guide.title}</h3><p class="card-copy">{guide.description}</p></div>
+              <div><span class="card-kicker">業務自動化ガイド</span><h3 class="card-title">{guide.title}</h3><p class="card-copy">{guide.description}</p></div>
               <div class="tags"><span class="tag">{guide.searchIntent === 'commercial' ? '依頼・費用' : '方法・解説'}</span></div>
             </a>
           ))}
