@@ -6,6 +6,9 @@ import { publishedTools } from '../data/tools';
 
 const FALLBACK_SITE = new URL('https://ti-automation-studio.utiltoools.workers.dev');
 
+// Search Console向けにWorker実行ではなく、ビルド時に静的XMLとして生成する。
+export const prerender = true;
+
 const corePaths = [
   '/',
   '/services',
