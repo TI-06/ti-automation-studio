@@ -17,7 +17,6 @@ const corePaths = [
   '/solutions',
   '/tools',
   '/about',
-  '/contact',
 ];
 
 const standaloneServicePaths = [
@@ -37,9 +36,9 @@ const collectPaths = () => {
   const paths = new Set<string>([
     ...corePaths,
     ...standaloneServicePaths,
-    ...services.map((service) => `/services/${service.slug}`),
+    ...services.map((service) => `/services/${service.slug}/`),
     ...works.map((work) => `/works/${work.slug}`),
-    ...solutions.map((solution) => `/solutions/${solution.slug}`),
+    ...solutions.map((solution) => `/solutions/${solution.slug}/`),
     ...publishedTools.map((tool) => tool.href),
   ]);
 
