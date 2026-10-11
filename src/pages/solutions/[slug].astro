@@ -23,7 +23,9 @@ const relatedWorks = solution.relatedWorkSlugs
 const relatedTools = solution.relatedToolSlugs
   .map((toolSlug) => tools.find((tool) => tool.slug === toolSlug && tool.published))
   .filter((tool): tool is NonNullable<typeof tool> => Boolean(tool));
-const pageUrl = Astro.site ? new URL(`/solutions/${solution.slug}`, Astro.site).toString() : `/solutions/${solution.slug}`;
+const pageUrl = Astro.site ? new URL(`/solutions/${solution.slug}/`, Astro.site).toString() : `/solutions/${solution.slug}/`;
+const articleImageUrl = Astro.site ? new URL('/og-default.svg', Astro.site).toString() : '/og-default.svg';
+const logoUrl = Astro.site ? new URL('/favicon.svg', Astro.site).toString() : '/favicon.svg';
 
 const structuredData = [
   {
@@ -35,8 +37,9 @@ const structuredData = [
     dateModified: solution.publishedAt,
     inLanguage: 'ja-JP',
     mainEntityOfPage: pageUrl,
-    author: { '@type': 'Organization', name: 'TI AUTOMATION STUDIO', url: Astro.site?.toString() ?? '/' },
-    publisher: { '@type': 'Organization', name: 'TI AUTOMATION STUDIO', url: Astro.site?.toString() ?? '/' },
+    image: articleImageUrl,
+    author: { '@type': 'Organization', name: 'TI AUTOMATION STUDIO', url: Astro.site?.toString() ?? '/', logo: logoUrl },
+    publisher: { '@type': 'Organization', name: 'TI AUTOMATION STUDIO', url: Astro.site?.toString() ?? '/', logo: logoUrl },
   },
   {
     '@context': 'https://schema.org',
@@ -49,7 +52,7 @@ const structuredData = [
   },
 ];
 ---
-<BaseLayout title={solution.seoTitle} description={solution.description} structuredData={structuredData}>
+<BaseLayout title={solution.seoTitle} description={solution.description} canonical={pageUrl} ogImage="/og-default.svg" structuredData={structuredData}>
   <article>
     <header class="solution-hero">
       <div class="container solution-hero-inner reveal">
@@ -117,7 +120,7 @@ const structuredData = [
           <p class="section-lead">同じ課題の周辺にある方法・費用・技術選定も続けて確認できます。</p>
           <div class="related-guide-grid">
             {relatedSolutions.map((item) => (
-              <a class="related-guide-card" href={`/solutions/${item.slug}`}>
+              <a class="related-guide-card" href={`/solutions/${item.slug}/`}>
                 <span>{item.searchIntent === 'commercial' ? '依頼・費用' : '方法・解説'}</span>
                 <h3>{item.title}</h3>
                 <p>{item.description}</p>
@@ -182,7 +185,7 @@ const structuredData = [
           <p>サンプルどおりに作るのではなく、現在のファイル・データ量・利用者・例外ケースに合わせて設計します。</p>
         </div>
         <div class="hero-actions">
-          <a class="btn" href={`/services/${solution.relatedServiceSlug}`}>関連サービスを見る →</a>
+          <a class="btn" href={`/services/${solution.relatedServiceSlug}/`}>関連サービスを見る →</a>
           <a class="btn btn-primary" href="/contact">開発について相談する →</a>
         </div>
       </div>
