@@ -21,7 +21,7 @@ const relatedServices = service.relatedServiceSlugs
   .map((serviceSlug) => getServiceBySlug(serviceSlug))
   .filter((item): item is NonNullable<typeof item> => Boolean(item));
 const relatedGuides = solutions.filter((item) => item.relatedServiceSlug === service.slug).slice(0, 6);
-const serviceUrl = Astro.site ? new URL(`/services/${service.slug}`, Astro.site).toString() : `/services/${service.slug}`;
+const serviceUrl = Astro.site ? new URL(`/services/${service.slug}/`, Astro.site).toString() : `/services/${service.slug}/`;
 const imageUrl = Astro.site ? new URL(service.visual, Astro.site).toString() : service.visual;
 
 const structuredData = [
@@ -54,6 +54,7 @@ const structuredData = [
 <BaseLayout
   title={service.seoTitle}
   description={service.description}
+  canonical={serviceUrl}
   ogImage={service.visual}
   structuredData={structuredData}
 >
@@ -159,7 +160,7 @@ const structuredData = [
         <p class="section-lead">実装方法や費用を、より具体的な困りごとから確認できます。</p>
         <div class="card-grid">
           {relatedGuides.map((guide) => (
-            <a class="work-card" href={`/solutions/${guide.slug}`}>
+            <a class="work-card" href={`/solutions/${guide.slug}/`}>
               <span class="card-arrow" aria-hidden="true">↗</span>
               <div><span class="card-kicker">業務自動化ガイド</span><h3 class="card-title">{guide.title}</h3><p class="card-copy">{guide.description}</p></div>
               <div class="tags"><span class="tag">{guide.searchIntent === 'commercial' ? '依頼・費用' : '方法・解説'}</span></div>
@@ -180,7 +181,7 @@ const structuredData = [
       <div>
         <p class="eyebrow">関連サービス</p>
         <div class="service-related-links">
-          {relatedServices.map((item) => <a href={`/services/${item.slug}`}><span>{item.title}</span><span aria-hidden="true">→</span></a>)}
+          {relatedServices.map((item) => <a href={`/services/${item.slug}/`}><span>{item.title}</span><span aria-hidden="true">→</span></a>)}
         </div>
       </div>
     </div>
