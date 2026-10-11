@@ -18,7 +18,7 @@ const structuredData = {
     '@type': 'ListItem',
     position: index + 1,
     name: solution.title,
-    url: Astro.site ? new URL(`/solutions/${solution.slug}`, Astro.site).toString() : `/solutions/${solution.slug}`,
+    url: Astro.site ? new URL(`/solutions/${solution.slug}/`, Astro.site).toString() : `/solutions/${solution.slug}/`,
   })),
 };
 ---
@@ -50,7 +50,7 @@ const structuredData = {
           </div>
           <div class="solution-grid">
             {clusterSolutions.map((solution) => (
-              <a class="solution-card" href={`/solutions/${solution.slug}`}>
+              <a class="solution-card" href={`/solutions/${solution.slug}/`}>
                 <div class="solution-card-meta">
                   <span class="eyebrow">{solution.eyebrow}</span>
                   <span>{solution.searchIntent === 'commercial' ? '依頼・費用' : '方法・解説'}</span>
