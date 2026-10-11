@@ -10,7 +10,7 @@ const itemList = {
     '@type': 'ListItem',
     position: index + 1,
     name: service.title,
-    url: Astro.site ? new URL(`/services/${service.slug}`, Astro.site).toString() : `/services/${service.slug}`,
+    url: Astro.site ? new URL(`/services/${service.slug}/`, Astro.site).toString() : `/services/${service.slug}/`,
   })),
 };
 ---
@@ -30,7 +30,7 @@ const itemList = {
   <section class="section-tight">
     <div class="container service-index-grid">
       {services.map((service, index) => (
-        <a class="service-index-card" href={`/services/${service.slug}`}>
+        <a class="service-index-card" href={`/services/${service.slug}/`}>
           <div class="service-index-card-visual">
             <img src={service.visual} alt={service.visualAlt} width="1600" height="900" loading={index < 2 ? 'eager' : 'lazy'} decoding="async" />
           </div>
@@ -45,6 +45,19 @@ const itemList = {
           </div>
         </a>
       ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container service-section-grid">
+      <div>
+        <p class="eyebrow">方法の選び方</p>
+        <h2 class="section-title">技術名ではなく、今の作業と利用人数から決めます。</h2>
+      </div>
+      <div class="about-body">
+        <p>一人で使うExcelの転記や集計なら、既存ファイルを活かしたVBAやPythonで十分なことがあります。Google Workspaceを中心に使っている場合はGAS、複数人で同時に入力・承認する業務ならWeb画面に分けた方が運用しやすくなります。</p>
+        <p>「ExcelをWeb化したい」のように方法を先に決めなくても問題ありません。現在のファイル、作業手順、利用人数、データ件数を確認し、今の運用を残す部分と仕組みにする部分を分けて提案します。</p>
+      </div>
     </div>
   </section>
 
