@@ -133,7 +133,7 @@ const structuredData = [
         <p class="section-lead">修正依頼の準備、費用、速度改善など、相談前に確認したいポイントを個別に解説しています。</p>
         <div class="card-grid">
           {relatedGuides.map((guide) => (
-            <a class="work-card" href={`/solutions/${guide.slug}`}>
+            <a class="work-card" href={`/solutions/${guide.slug}/`}>
               <span class="card-arrow" aria-hidden="true">↗</span>
               <div><span class="card-kicker">GUIDE</span><h3 class="card-title">{guide.title}</h3><p class="card-copy">{guide.description}</p></div>
             </a>
