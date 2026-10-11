@@ -20,12 +20,11 @@ const expectedPaths = [
   '/solutions',
   '/tools',
   '/about',
-  '/contact',
   '/services/gas-repair',
   '/services/vba-repair',
-  ...services.map((service) => `/services/${service.slug}`),
+  ...services.map((service) => `/services/${service.slug}/`),
   ...works.map((work) => `/works/${work.slug}`),
-  ...solutions.map((solution) => `/solutions/${solution.slug}`),
+  ...solutions.map((solution) => `/solutions/${solution.slug}/`),
   ...publishedTools.map((tool) => tool.href),
 ];
 
@@ -70,6 +69,7 @@ describe('Google Search Console向けサイトマップ', () => {
     expect(xml).not.toContain('/tools/automation-sample');
     expect(xml).not.toContain('/tools/data-processing-sample');
     expect(xml).not.toContain('/privacy');
+    expect(xml).not.toContain('/contact');
   });
 
   it('Googleが利用しないpriority/changefreqを出力しない', async () => {

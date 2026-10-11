@@ -8,6 +8,13 @@ const priceRanges = [
   { label: 'Webシステム・複数連携', price: '個別見積', copy: '複数ユーザー、外部API、データベース、認証などを含む構成。' },
 ];
 
+const estimateExamples = [
+  ['既存VBA・GASの修正', 'まずエラーが出る操作と影響範囲を確認します。原因が限定できる場合は部分修正で進め、全面的な作り直しは必要な場合だけ提案します。'],
+  ['毎月の転記・集計を自動化', '入力元と出力先が決まっている作業は、転記ルール、例外データ、実行頻度を確認すると比較的見積しやすい案件です。'],
+  ['入力・承認・PDFまでの業務ツール', '利用者ごとの権限、提出後の編集、差戻し、帳票レイアウトなど、画面以外の業務ルールまで含めて範囲を整理します。'],
+  ['API・外部サービス連携', '認証方式、APIの利用制限、失敗時の再処理、ログ保存まで確認します。外部サービス側の仕様によって調査工数が変わります。'],
+];
+
 const factors = [
   ['既存資産の有無', '新規開発か、既存Excel・VBA・GASを調査して改修するかで必要な確認量が変わります。'],
   ['データ量と処理回数', '数十件の単発処理と、数万件を毎日処理する仕組みでは設計・テスト範囲が変わります。'],
@@ -88,6 +95,23 @@ const structuredData = {
   </section>
 
   <section class="section">
+    <div class="container">
+      <p class="eyebrow">よくある見積例</p>
+      <h2 class="section-title">同じ予算帯でも、確認する内容は案件ごとに変わります。</h2>
+      <p class="section-lead">金額だけで判断せず、どこまでを今回の開発範囲にするかを先に整理します。既存の仕組みを残せる場合は、必要な部分だけ直す方が費用を抑えやすくなります。</p>
+      <div class="price-grid">
+        {estimateExamples.map(([title, copy]) => (
+          <article class="price-card price-example-card">
+            <span>見積例</span>
+            <h3>{title}</h3>
+            <p>{copy}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
     <div class="container price-note">
       <p class="eyebrow">既存システムがある場合</p>
       <h2>既存のExcel・VBA・GASは、まず修正で対応できるか確認します。</h2>
@@ -113,6 +137,7 @@ const structuredData = {
   .price-card span { display: block; color: var(--muted); font-size: .85rem; }
   .price-card strong { display: block; margin: 12px 0; color: var(--accent); font-size: clamp(1.5rem, 3vw, 2.2rem); }
   .price-card p, .price-factor-list p, .price-note p { margin: 0; color: var(--muted); line-height: 1.9; }
+  .price-example-card h3 { margin: 12px 0 10px; font-size: 1.08rem; }
   .price-factor-list { display: grid; gap: 14px; }
   .price-factor-list article { display: grid; grid-template-columns: 42px 1fr; gap: 14px; padding: 20px 0; border-bottom: 1px solid var(--line); }
   .price-factor-list article > span { color: var(--accent); font-size: .78rem; }

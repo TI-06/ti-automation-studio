@@ -59,7 +59,7 @@ describe('SEO Phase 1', () => {
     expect(solutionDetailSource).toContain("'@type': 'Article'");
     expect(solutionDetailSource).toContain("'@type': 'BreadcrumbList'");
     expect(solutionDetailSource).toContain('relatedServiceSlug');
-    expect(solutionDetailSource).toContain('href={`/services/${solution.relatedServiceSlug}`}');
+    expect(solutionDetailSource).toContain('href={`/services/${solution.relatedServiceSlug}/`}');
     expect(solutionDetailSource).toContain('href="/contact"');
     expect(solutionIndexSource).toContain('業務自動化ガイド');
   });

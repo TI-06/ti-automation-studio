@@ -91,7 +91,7 @@ const breadcrumbData = {
             <p>この実績に近い作業について、実装方法や費用の考え方をまとめています。</p>
             <div class="work-guide-list">
               {relatedGuides.map((guide) => (
-                <a href={`/solutions/${guide.slug}`}>
+                <a href={`/solutions/${guide.slug}/`}>
                   <span>{guide.searchIntent === 'commercial' ? '依頼・費用' : '方法・解説'}</span>
                   <strong>{guide.title}</strong>
                   <small>詳しく読む →</small>

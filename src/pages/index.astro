@@ -5,7 +5,9 @@ import { publishedTools } from '../data/tools';
 import { solutions } from '../data/solutions';
 
 const featuredWorks = works.filter((work) => work.featured).slice(0, 4);
-const featuredSolutions = solutions.slice(0, 3);
+const featuredSolutions = ['excel', 'gas', 'python', 'api', 'automation']
+  .map((cluster) => solutions.find((solution) => solution.cluster === cluster))
+  .filter((solution): solution is (typeof solutions)[number] => Boolean(solution));
 const featuredTools = publishedTools.slice(0, 3);
 
 const commonRequests = [
@@ -18,12 +20,12 @@ const commonRequests = [
 ];
 
 const services = [
-  ['Excel・VBA・スプレッドシート', '転記、集計、入力、ファイル作成など、日常的に繰り返している作業を減らします。', '/services/excel-automation'],
-  ['GAS・Google Workspace', 'スプレッドシート、Drive、Gmailなどをつなぎ、今あるGoogle環境を業務に合わせて使いやすくします。', '/services/gas-automation'],
-  ['Python・データ処理', 'CSVやExcelの検証、変換、集計、大量処理を自動化します。', '/services/python-data-processing'],
+  ['Excel・VBA・スプレッドシート', '転記、集計、入力、ファイル作成など、日常的に繰り返している作業を減らします。', '/services/excel-automation/'],
+  ['GAS・Google Workspace', 'スプレッドシート、Drive、Gmailなどをつなぎ、今あるGoogle環境を業務に合わせて使いやすくします。', '/services/gas-automation/'],
+  ['Python・データ処理', 'CSVやExcelの検証、変換、集計、大量処理を自動化します。', '/services/python-data-processing/'],
   ['社内Webツール', '入力、一覧、検索、承認など、複数人で使う業務画面を必要な機能に絞って作ります。', '/services'],
-  ['API・外部サービス連携', '外部サービスとの認証、データ取得、登録、更新処理をつなぎます。', '/services/api-integration'],
-  ['PDF・帳票作成', '入力済みデータから定型帳票やPDFを作成し、保存までまとめて自動化します。', '/services/pdf-document-automation'],
+  ['API・外部サービス連携', '外部サービスとの認証、データ取得、登録、更新処理をつなぎます。', '/services/api-integration/'],
+  ['PDF・帳票作成', '入力済みデータから定型帳票やPDFを作成し、保存までまとめて自動化します。', '/services/pdf-document-automation/'],
 ];
 
 const priceRanges = [
@@ -219,7 +221,7 @@ const faqs = [
       <h2 class="section-title">転記、集計、VBA修正など、作業別に方法や費用をまとめています。</h2>
       <div class="card-grid">
         {featuredSolutions.map((solution) => (
-          <a class="work-card" href={`/solutions/${solution.slug}`}>
+          <a class="work-card" href={`/solutions/${solution.slug}/`}>
             <span class="card-arrow" aria-hidden="true">→</span>
             <div><h3 class="card-title">{solution.title}</h3><p class="card-copy">{solution.description}</p></div>
           </a>

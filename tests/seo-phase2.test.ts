@@ -83,7 +83,7 @@ describe('SEO Phase 2 content clusters', () => {
     expect(solutionDetailSource).toContain('relatedSolutionSlugs');
     expect(solutionDetailSource).toContain('relatedSolutions');
     expect(solutionDetailSource).toContain('関連する業務自動化ガイド');
-    expect(solutionDetailSource).toContain('href={`/solutions/${item.slug}`}');
+    expect(solutionDetailSource).toContain('href={`/solutions/${item.slug}/`}');
   });
 
   it('サービスと実績から関連ガイドへ内部リンクする', () => {
