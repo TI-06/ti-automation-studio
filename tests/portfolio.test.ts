@@ -81,4 +81,30 @@ describe('visual portfolio', () => {
       expect(svg).toContain('<desc id="d">');
     }
   });
+
+  it('各システム画像は同一テンプレートではなく固有のUI構成を持つ', () => {
+    const fingerprints = new Map<string, string>([
+      ['/portfolio/billing-expense-approval.svg', '承認フロー'],
+      ['/portfolio/construction-operations.svg', '10月 工程表'],
+      ['/portfolio/learner-management.svg', '受講者・進捗管理'],
+      ['/portfolio/inventory-product-tool.svg', '商品・在庫管理'],
+      ['/portfolio/ec-api-integration.svg', 'INTEGRATION CONSOLE'],
+      ['/portfolio/excel-business-application.svg', '業務管理.xlsx'],
+      ['/portfolio/pdf-document-automation.svg', 'DOCUMENT FACTORY'],
+      ['/portfolio/bulk-data-processing.svg', 'BATCH PROCESSING'],
+      ['/portfolio/tool-excel-diff.svg', 'EXCEL DIFF'],
+      ['/portfolio/tool-data-cleaner.svg', 'DATA CLEANER'],
+      ['/portfolio/tool-dashboard.svg', 'DASHBOARD BUILDER'],
+      ['/portfolio/tool-automation-diagnosis.svg', 'AUTOMATION DIAGNOSIS'],
+    ]);
+
+    const contents = [...fingerprints].map(([path, fingerprint]) => {
+      const svg = read(`public${path}`);
+      expect(svg).toContain(fingerprint);
+      expect(svg).not.toContain('TI WORKS');
+      return svg;
+    });
+
+    expect(new Set(contents).size).toBe(contents.length);
+  });
 });
