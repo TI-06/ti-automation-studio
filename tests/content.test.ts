@@ -157,7 +157,7 @@ describe('実績のケーススタディ表示', () => {
   });
 
   it('実績一覧で課題と改善ポイントを先に比較できる', () => {
-    expect(worksIndexSource).toContain('class="work-card-insights"');
+    expect(worksIndexSource).toContain('class="work-card-insights portfolio-card-insights"');
     expect(worksIndexSource).toContain('課題');
     expect(worksIndexSource).toContain('改善');
     expect(worksIndexSource).toContain('詳細を見る');
