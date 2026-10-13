@@ -52,6 +52,13 @@ describe('visual portfolio', () => {
     expect(home).toContain('src={work.visual}');
   });
 
+  it('一覧では画像より説明領域を広くし、画像ギャラリー化を防ぐ', () => {
+    expect(portfolioCss).toContain('grid-template-columns: minmax(300px, .78fr) minmax(0, 1.22fr)');
+    expect(portfolioCss).toContain('aspect-ratio: 16 / 6.6');
+    expect(portfolioCss).toContain('grid-template-columns: minmax(190px,.7fr) minmax(0,1.3fr)');
+    expect(portfolioCss).toContain('aspect-ratio: 16 / 7');
+  });
+
   it('ポートフォリオはPC・タブレット・スマホのレスポンシブ定義を持つ', () => {
     expect(portfolioCss).toContain('grid-template-columns: repeat(2, minmax(0,1fr))');
     expect(portfolioCss).toContain('@media (max-width: 1100px)');
