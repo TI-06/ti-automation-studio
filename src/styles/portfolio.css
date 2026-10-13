@@ -218,6 +218,12 @@
 }
 .portfolio-case-card .portfolio-card-title { font-size: clamp(1.2rem, 2vw, 1.62rem); }
 .portfolio-case-card .portfolio-card-footer { margin-top: auto; padding-top: 22px; }
+.portfolio-case-card:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0,.95fr) minmax(0,1.05fr);
+}
+.portfolio-case-card:last-child:nth-child(odd) .portfolio-card-visual { aspect-ratio: auto; min-height: 320px; }
 .portfolio-tools-section {
   border-top: 1px solid var(--border);
   background: rgba(255,255,255,.008);
@@ -345,6 +351,11 @@
   .portfolio-featured-grid,
   .portfolio-case-grid,
   .portfolio-tool-grid { grid-template-columns: 1fr; }
+  .portfolio-case-card:last-child:nth-child(odd) {
+    grid-column: auto;
+    display: flex;
+  }
+  .portfolio-case-card:last-child:nth-child(odd) .portfolio-card-visual { min-height: 0; aspect-ratio: 16 / 10; }
   .portfolio-metrics { grid-template-columns: 1fr; }
   .portfolio-metric { border-right: 0; border-bottom: 1px solid var(--border); }
   .portfolio-metric:last-child { border-bottom: 0; }
@@ -355,5 +366,6 @@
   .portfolio-tool-card .portfolio-card-body { padding: 20px; }
   .portfolio-hero-panel { padding: 20px; }
   .case-visual-frame figcaption { font-size: .68rem; }
+  .home-work-card { padding-top: 22px; }
   .home-work-visual { margin: -22px -22px 20px; }
 }
