@@ -1,6 +1,14 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { works } from '../../data/works';
+import { publishedTools } from '../../data/tools';
+import '../../styles/portfolio.css';
+
+const featuredSlugs = ['workflow-report-system', 'construction-site-operations', 'learner-progress-management'];
+const featuredWorks = featuredSlugs
+  .map((slug) => works.find((work) => work.slug === slug))
+  .filter((work): work is (typeof works)[number] => Boolean(work));
+const otherWorks = works.filter((work) => !featuredSlugs.includes(work.slug));
 
 const itemList = {
   '@context': 'https://schema.org',
@@ -11,75 +19,156 @@ const itemList = {
     position: index + 1,
     name: work.title,
     url: Astro.site ? new URL(`/works/${work.slug}`, Astro.site).toString() : `/works/${work.slug}`,
+    image: Astro.site ? new URL(work.visual, Astro.site).toString() : work.visual,
   })),
 };
 ---
 <BaseLayout
-  title="開発実績"
-  description="Excel・GAS・Python・Web・APIを使った業務改善・自動化の開発実績。顧客情報を伏せ、課題と改善内容を紹介します。"
+  title="開発実績・ポートフォリオ"
+  description="Excel・GAS・Python・Web・APIを使った業務改善・自動化の開発実績と公開ツール。課題、対応内容、改善ポイントを画面イメージ付きで紹介します。"
   structuredData={itemList}
 >
-  <section class="page-hero works-hero">
-    <div class="container reveal">
-      <p class="eyebrow">開発実績</p>
-      <h1>これまでの開発実績</h1>
-      <p>顧客名や実データは伏せたうえで、相談時の課題、対応した内容、主な機能が分かる形で紹介しています。</p>
+  <section class="page-hero portfolio-hero">
+    <div class="container portfolio-hero-grid reveal">
+      <div class="portfolio-hero-copy">
+        <p class="eyebrow">開発実績・ポートフォリオ</p>
+        <h1>業務をどう変えたかまで、<br />見える実績に。</h1>
+        <p>Excel・GAS・Python・Web・APIを使い、実際の業務フローに合わせて作った仕組みを紹介しています。機能名だけではなく、どんな課題があり、何をまとめ、どう使いやすくしたかまで確認できます。</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#case-studies">開発事例を見る →</a>
+          <a class="btn" href="#built-tools">自作ツールを見る →</a>
+        </div>
+      </div>
+      <aside class="portfolio-hero-panel" aria-label="ポートフォリオの見方">
+        <span>PORTFOLIO POLICY</span>
+        <strong>「作ったもの」より、業務でどう使うかを重視しています。</strong>
+        <p>顧客名・実データ・固有情報は掲載せず、実装した機能と業務フローが伝わるように再構成しています。</p>
+      </aside>
     </div>
   </section>
 
   <section class="section-tight">
-    <div class="container card-grid works-grid">
-      {works.map((work, index) => (
-        <a class="work-card work-card-detailed" href={`/works/${work.slug}`}>
-          <div>
-            <div class="work-card-topline">
-              <span class="card-kicker">実績 {String(index + 1).padStart(2, '0')}</span>
-              <span class="work-card-category">{work.category}</span>
-            </div>
-            <h2 class="card-title">{work.title}</h2>
-            <p class="card-copy">{work.summary}</p>
+    <div class="container portfolio-metrics" aria-label="ポートフォリオ概要">
+      <div class="portfolio-metric"><strong>{works.length}事例</strong><span>掲載している開発・業務改善事例</span></div>
+      <div class="portfolio-metric"><strong>{publishedTools.length}ツール</strong><span>実際に触れる公開ツール</span></div>
+      <div class="portfolio-metric"><strong>Excel〜Web</strong><span>既存運用の改修からWebシステムまで</span></div>
+    </div>
+  </section>
 
-            <div class="work-card-insights">
-              <div class="work-card-insight">
-                <span>課題</span>
-                <p>{work.problem}</p>
+  <section id="case-studies" class="section">
+    <div class="container">
+      <div class="portfolio-section-head">
+        <div>
+          <p class="eyebrow">代表的な開発事例</p>
+          <h2 class="section-title">画面と業務の流れが分かる事例</h2>
+        </div>
+        <p class="section-lead">入力画面だけを作るのではなく、承認・帳票・進捗・マスタなど、実際の運用まで含めて設計した事例を中心に掲載しています。</p>
+      </div>
+
+      <div class="portfolio-featured-grid">
+        {featuredWorks.map((work, index) => (
+          <a class="portfolio-featured-card" href={`/works/${work.slug}`}>
+            <div class="portfolio-card-visual">
+              <img src={work.visual} alt={work.visualAlt} width="1440" height="900" loading={index === 0 ? 'eager' : 'lazy'} decoding="async" />
+              <span class="portfolio-image-badge">画面構成イメージ</span>
+            </div>
+            <div class="portfolio-card-body">
+              <div class="portfolio-card-meta"><span>CASE {String(index + 1).padStart(2, '0')}</span><span>{work.category}</span></div>
+              <h2 class="portfolio-card-title">{work.title}</h2>
+              <p class="portfolio-card-copy">{work.summary}</p>
+              <div class="work-card-insights portfolio-card-insights">
+                <div class="work-card-insight"><span>課題</span><p>{work.problem}</p></div>
+                <div class="work-card-insight"><span>改善</span><p>{work.impact[0]}</p></div>
               </div>
-              <div class="work-card-insight">
-                <span>改善</span>
-                <p>{work.impact[0]}</p>
+              <div class="portfolio-card-footer">
+                <div class="tags">{work.technologies.slice(0, 4).map((tech) => <span class="tag">{tech}</span>)}</div>
+                <span class="portfolio-card-link">事例を見る →</span>
               </div>
             </div>
-          </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
 
-          <div class="work-card-footer">
-            <div class="tags">{work.technologies.slice(0, 4).map((tech) => <span class="tag">{tech}</span>)}</div>
-            <span class="work-card-link">詳細を見る <span aria-hidden="true">→</span></span>
-          </div>
-        </a>
-      ))}
+  <section class="section-tight">
+    <div class="container">
+      <div class="portfolio-section-head">
+        <div>
+          <p class="eyebrow">その他の実績</p>
+          <h2 class="section-title">業務に合わせて、必要な範囲だけ作っています。</h2>
+        </div>
+        <p class="section-lead">既存Excelを活かす案件、API連携、帳票自動化、大量データ処理など、全面的なWeb化以外の改善も対応しています。</p>
+      </div>
+
+      <div class="portfolio-case-grid">
+        {otherWorks.map((work, index) => (
+          <a class="portfolio-case-card" href={`/works/${work.slug}`}>
+            <div class="portfolio-card-visual">
+              <img src={work.visual} alt={work.visualAlt} width="1440" height="900" loading="lazy" decoding="async" />
+              <span class="portfolio-image-badge">画面構成イメージ</span>
+            </div>
+            <div class="portfolio-card-body">
+              <div class="portfolio-card-meta"><span>CASE {String(index + 4).padStart(2, '0')}</span><span>{work.category}</span></div>
+              <h2 class="portfolio-card-title">{work.title}</h2>
+              <p class="portfolio-card-copy">{work.summary}</p>
+              <div class="portfolio-card-footer">
+                <div class="tags">{work.technologies.slice(0, 4).map((tech) => <span class="tag">{tech}</span>)}</div>
+                <span class="portfolio-card-link">詳細を見る →</span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <p class="portfolio-note"><strong>掲載画像について：</strong>顧客情報や実データを公開しないため、画面イメージは実装内容・機能構成をもとにポートフォリオ用として再構成しています。実案件の固有情報や画面をそのまま掲載しているものではありません。</p>
+    </div>
+  </section>
+
+  <section id="built-tools" class="section portfolio-tools-section">
+    <div class="container">
+      <div class="portfolio-section-head">
+        <div>
+          <p class="eyebrow">自作・公開ツール</p>
+          <h2 class="section-title">実際にブラウザで試せるツール</h2>
+        </div>
+        <p class="section-lead">受託開発だけでなく、Excel比較・データ整理・ダッシュボード・自動化診断など、業務でそのまま試せるツールも設計・実装しています。</p>
+      </div>
+
+      <div class="portfolio-tool-grid">
+        {publishedTools.map((tool) => (
+          <a class="portfolio-tool-card" href={tool.href}>
+            <div class="portfolio-card-visual">
+              {tool.visual && <img src={tool.visual} alt={tool.visualAlt ?? tool.title} width="1440" height="900" loading="lazy" decoding="async" />}
+            </div>
+            <div class="portfolio-card-body">
+              <div class="portfolio-card-meta"><span>PUBLIC TOOL</span><span>{tool.processing}</span></div>
+              <h3 class="portfolio-card-title">{tool.title}</h3>
+              <p class="portfolio-card-copy">{tool.description}</p>
+              <div class="tags">{tool.technologies.slice(0, 3).map((tech) => <span class="tag">{tech}</span>)}</div>
+              <div class="portfolio-card-footer"><span class="portfolio-card-link">このツールを使う →</span></div>
+            </div>
+          </a>
+        ))}
+      </div>
+      <div class="hero-actions"><a class="btn" href="/tools">無料ツール一覧を見る →</a></div>
     </div>
   </section>
 
   <section class="section-tight">
     <div class="container about-panel">
       <div>
-        <p class="eyebrow">課題から探す</p>
-        <h2 class="section-title">作業内容からも探せます。</h2>
+        <p class="eyebrow">近い事例がない場合</p>
+        <h2 class="section-title">今のファイルや作業手順から整理できます。</h2>
       </div>
       <div class="about-body">
-        <p>転記、月次集計、PDF作成、GAS修正、API連携などは、業務自動化ガイドで作業別にまとめています。</p>
+        <p>同じ業種・同じ画面でなくても、転記、集計、承認、帳票、検索、API連携など業務の要素が近ければ応用できます。現在使っているExcelやスプレッドシートから確認できます。</p>
         <div class="hero-actions">
           <a class="btn" href="/solutions">業務自動化ガイドを見る →</a>
           <a class="btn" href="/services">対応サービスを見る →</a>
+          <a class="btn btn-primary" href="/contact">開発について相談する →</a>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="cta-band">
-    <div class="container cta-band-inner">
-      <div><p class="eyebrow">相談</p><h2>似た業務があれば、現在の作業内容から相談できます。</h2></div>
-      <a class="btn btn-primary" href="/contact">開発について相談する →</a>
     </div>
   </section>
 </BaseLayout>

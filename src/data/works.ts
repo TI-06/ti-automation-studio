@@ -2,6 +2,9 @@ interface WorkBase {
   slug: string;
   title: string;
   category: string;
+  visual: string;
+  visualAlt: string;
+  visualCaption: string;
   summary: string;
   overview: string;
   problem: string;
@@ -23,6 +26,9 @@ const rawWorks: WorkBase[] = [
     slug: 'workflow-report-system',
     title: '請求・経費精算Webシステム',
     category: '請求管理 / 経費精算 / 承認',
+    visual: '/portfolio/billing-expense-approval.svg',
+    visualAlt: '請求・経費精算Webシステムの画面構成イメージ',
+    visualCaption: '機密情報を含まないよう、実装内容をもとに再構成した画面イメージです。',
     summary: '協力会社からの請求と社内の経費精算を、入力・承認・PDF確認までブラウザで扱えるようにした業務システム。',
     overview: '請求書と経費精算で入力方法や確認手順が分かれていたため、利用者ごとの権限、提出後の編集制御、承認・差戻し、PDF確認までを一つのWeb画面にまとめました。PCだけでなくスマートフォンからの入力も想定し、現場や利用者などの情報はマスタで管理しています。',
     problem: '請求や経費の内容確認、承認、PDF保管が複数の手順に分かれ、担当者ごとの確認状況も追いにくい状態でした。',
@@ -37,6 +43,9 @@ const rawWorks: WorkBase[] = [
     slug: 'inventory-product-tool',
     title: '在庫・商品管理ツール',
     category: '在庫管理 / 商品データ管理',
+    visual: '/portfolio/inventory-product-tool.svg',
+    visualAlt: '在庫・商品管理ツールの画面構成イメージ',
+    visualCaption: '機密情報を含まないよう、実装内容をもとに再構成した画面イメージです。',
     summary: '商品画像と商品データを同じ管理画面で確認し、Excelでの一括編集も残した在庫・商品管理ツール。',
     overview: '商品画像、商品情報、Excelでの一括編集が別々になっていた管理業務を、Web画面を中心にまとめました。すべてを新しい操作へ置き換えるのではなく、慣れているExcel編集も残しながら、画像とデータの対応関係を見失いにくい構成にしています。',
     problem: '商品画像と管理データが別々に存在し、更新や確認のたびに複数のファイルを行き来する必要がありました。',
@@ -51,6 +60,9 @@ const rawWorks: WorkBase[] = [
     slug: 'ec-api-integration',
     title: 'EC商品登録・API連携',
     category: 'EC連携 / API自動化',
+    visual: '/portfolio/ec-api-integration.svg',
+    visualAlt: 'EC商品登録・API連携ツールの画面構成イメージ',
+    visualCaption: '機密情報を含まないよう、実装内容をもとに再構成した画面イメージです。',
     summary: 'OAuth認証、商品データの変換、API登録、エラー記録までをまとめたEC商品登録の自動化。',
     overview: '管理している商品データを外部ECサービスへ繰り返し登録する作業について、認証・データ変換・送信・結果確認までをAPI連携の流れとして整理しました。成功時だけでなく失敗時にも原因を追いやすくし、再処理しやすいことを重視しています。',
     problem: '商品データを複数サービスへ手動登録する必要があり、件数が増えるほど作業時間と入力ミスが増える状態でした。',
@@ -65,6 +77,9 @@ const rawWorks: WorkBase[] = [
     slug: 'excel-business-application',
     title: 'Excel業務アプリケーション',
     category: 'Excel改善 / 業務アプリ化',
+    visual: '/portfolio/excel-business-application.svg',
+    visualAlt: 'Excel業務アプリケーションの画面構成イメージ',
+    visualCaption: '機密情報を含まないよう、実装内容をもとに再構成した画面イメージです。',
     summary: '複雑なExcelの計算ロジックは残し、日常操作を入力画面とボタンにまとめた業務アプリ。',
     overview: '長く使われてきたExcelには重要な計算ロジックやデータが残っている一方、シート構成や操作手順が複雑になると担当者以外が扱いづらくなります。既存資産を活かしながら、必要な操作だけを画面やボタンへまとめ、日常業務として扱いやすい形へ整理しました。',
     problem: '多数のシート、関数、手順を理解していないと操作できず、担当者ごとの作業品質に差が出やすい状態でした。',
@@ -79,6 +94,9 @@ const rawWorks: WorkBase[] = [
     slug: 'pdf-document-automation',
     title: 'PDF・帳票自動生成',
     category: '帳票作成 / PDF自動化',
+    visual: '/portfolio/pdf-document-automation.svg',
+    visualAlt: 'PDF・帳票自動生成ツールの画面構成イメージ',
+    visualCaption: '機密情報を含まないよう、実装内容をもとに再構成した画面イメージです。',
     summary: '入力済みデータから決まった様式のPDFを作り、ファイル名付与と保存まで自動化。',
     overview: '日々入力している情報を別の帳票へ何度も転記していた業務について、元データから必要な項目を組み立て、印刷レイアウトを整えたPDFまで自動生成する流れに変更しました。作成だけでなく、ファイル名や保存先も一定のルールに揃えられる構成にしています。',
     problem: '同じ内容を複数箇所へ転記しながら帳票を作成しており、作成時間と確認工数が積み重なっていました。',
@@ -93,6 +111,9 @@ const rawWorks: WorkBase[] = [
     slug: 'bulk-data-processing',
     title: '業務用データ変換・一括処理',
     category: 'データ処理 / Python自動化',
+    visual: '/portfolio/bulk-data-processing.svg',
+    visualAlt: '業務用データ変換・一括処理ツールの画面構成イメージ',
+    visualCaption: '機密情報を含まないよう、実装内容をもとに再構成した画面イメージです。',
     summary: 'CSV・Excelを一括で検証・変換し、エラー行だけを確認できるようにしたデータ処理ツール。',
     overview: '大量のCSVやExcelを人手で整形し、入力ミスを探してから別形式へ変換する定型作業を、自動検証と一括変換の処理へ置き換えました。正常データと確認が必要なデータを分けることで、すべてを目視するのではなく、必要な箇所へ確認作業を集中できるようにしています。',
     problem: '大量のデータを人手で整形・確認しており、データ量が増えると処理時間と見落としのリスクが高まっていました。',
@@ -104,9 +125,29 @@ const rawWorks: WorkBase[] = [
     featured: false,
   },
   {
+    slug: 'learner-progress-management',
+    title: '受講者リスト・進捗管理システム',
+    category: '受講者管理 / 進捗 / 拠点運用',
+    visual: '/portfolio/learner-management.svg',
+    visualAlt: '受講者リスト・進捗管理システムの画面構成イメージ',
+    visualCaption: '機密情報を含まないよう、実装内容をもとに再構成した画面イメージです。',
+    summary: '受講者情報、受講日、進捗、講師用一覧、残席などを拠点ごとの運用に合わせて整理した管理システム。',
+    overview: '受講者情報を複数のシートや担当者ごとの管理へ分散させず、申込から受講、進捗確認までを扱いやすい形に整理しました。講師が見る一覧は拠点別・受講日順とし、残席や進捗など運用上よく確認する情報を迷わず追える構成にしています。',
+    problem: '受講者情報、受講日、残席、進捗などの更新箇所が分かれ、担当者ごとに確認方法が異なりやすい状態でした。',
+    solution: ['受講者データを一元管理する構成へ整理', '講師用一覧を拠点別・受講日順で生成', '申込時の残席減算と手動調整を両立', '差分取込と前回値の保持で更新内容を確認しやすく設計', '設定シートを中心に運用先や各種条件を変更できる構成に整理'],
+    features: ['受講者一覧・検索', '拠点別の講師用一覧', '受講日・進捗の管理', '残席の自動減算と手動調整', '旧データからの差分取込', '設定・進捗確認画面'],
+    impact: ['受講者情報と進捗の確認先を整理', '講師が必要な情報を拠点単位で確認しやすく改善', '残席や差分更新など手作業で起きやすいミスを軽減', '既存データを活かしながら段階的に新運用へ移行可能にした'],
+    suitableFor: ['受講者や会員情報を複数のExcel・スプレッドシートで管理している', '講師や担当者ごとに必要な一覧を分けたい', '残席・進捗・日程を同じデータから管理したい', '既存台帳を残しながら新しい管理方式へ移行したい'],
+    technologies: ['Google Apps Script', 'Spreadsheet', 'HTML/CSS', 'JavaScript'],
+    featured: true,
+  },
+  {
     slug: 'construction-site-operations',
     title: '建設現場向け 工程・安全帳票管理システム',
     category: '建設業務DX / 工程管理・帳票自動化',
+    visual: '/portfolio/construction-operations.svg',
+    visualAlt: '建設現場向け工程・安全帳票管理システムの画面構成イメージ',
+    visualCaption: '機密情報を含まないよう、実装内容をもとに再構成した画面イメージです。',
     summary: '工程表に入力した内容を安全日誌などの帳票へ引き継ぎ、PDF作成・保存までつないだ建設業向けWebシステム。',
     overview: '工程表と安全関連帳票で同じ作業内容や担当者情報を何度も入力していたため、工程管理を起点にデータを使い回せるようにしました。ブラウザで工程を入力・確認し、その内容から日々の帳票を作成してPDF保存まで行います。既存のスプレッドシート運用を活かしながら、PCとスマートフォンの両方で使える画面にしています。',
     problem: '工程表と日々の安全関連帳票が別々に管理され、同じ作業内容や担当情報を繰り返し転記する必要がありました。現場や担当者ごとに確認手順も増えやすく、帳票作成と情報確認の負担が積み重なる状態でした。',
@@ -143,6 +184,10 @@ const workSeo: Record<string, Pick<Work, 'seoTitle' | 'seoDescription'>> = {
   'bulk-data-processing': {
     seoTitle: 'CSV・Excel大量データの検証・変換をPythonで自動化した事例',
     seoDescription: '大量のCSV・Excelを自動検証し、業務ルールに沿って一括変換・集計し、確認が必要なエラー行だけを分離するデータ処理事例です。',
+  },
+  'learner-progress-management': {
+    seoTitle: '受講者リスト・進捗・残席管理をGASで整理した開発事例',
+    seoDescription: '受講者情報、受講日、進捗、講師用一覧、残席管理、差分取込をGoogle Apps Scriptとスプレッドシートで整理した管理システムの開発事例です。',
   },
   'construction-site-operations': {
     seoTitle: '建設現場の工程管理・安全帳票をGASで自動化した開発事例',
