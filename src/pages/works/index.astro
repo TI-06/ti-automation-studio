@@ -76,7 +76,10 @@ const itemList = {
               <div class="portfolio-card-meta"><span>CASE {String(index + 1).padStart(2, '0')}</span><span>{work.category}</span></div>
               <h2 class="portfolio-card-title">{work.title}</h2>
               <p class="portfolio-card-copy">{work.summary}</p>
-              <div class="portfolio-card-impact"><span>改善ポイント</span>{work.impact[0]}</div>
+              <div class="work-card-insights portfolio-card-insights">
+                <div class="work-card-insight"><span>課題</span><p>{work.problem}</p></div>
+                <div class="work-card-insight"><span>改善</span><p>{work.impact[0]}</p></div>
+              </div>
               <div class="portfolio-card-footer">
                 <div class="tags">{work.technologies.slice(0, 4).map((tech) => <span class="tag">{tech}</span>)}</div>
                 <span class="portfolio-card-link">事例を見る →</span>
@@ -161,6 +164,7 @@ const itemList = {
       <div class="about-body">
         <p>同じ業種・同じ画面でなくても、転記、集計、承認、帳票、検索、API連携など業務の要素が近ければ応用できます。現在使っているExcelやスプレッドシートから確認できます。</p>
         <div class="hero-actions">
+          <a class="btn" href="/solutions">業務自動化ガイドを見る →</a>
           <a class="btn" href="/services">対応サービスを見る →</a>
           <a class="btn btn-primary" href="/contact">開発について相談する →</a>
         </div>
