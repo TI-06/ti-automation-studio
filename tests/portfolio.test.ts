@@ -52,6 +52,13 @@ describe('visual portfolio', () => {
     expect(home).toContain('src={work.visual}');
   });
 
+  it('一覧では画像より説明領域を広くし、画像ギャラリー化を防ぐ', () => {
+    expect(portfolioCss).toContain('grid-template-columns: minmax(300px, .78fr) minmax(0, 1.22fr)');
+    expect(portfolioCss).toContain('aspect-ratio: 16 / 6.6');
+    expect(portfolioCss).toContain('grid-template-columns: minmax(190px,.7fr) minmax(0,1.3fr)');
+    expect(portfolioCss).toContain('aspect-ratio: 16 / 7');
+  });
+
   it('ポートフォリオはPC・タブレット・スマホのレスポンシブ定義を持つ', () => {
     expect(portfolioCss).toContain('grid-template-columns: repeat(2, minmax(0,1fr))');
     expect(portfolioCss).toContain('@media (max-width: 1100px)');
@@ -73,5 +80,31 @@ describe('visual portfolio', () => {
       expect(svg).toContain('<title id="t">');
       expect(svg).toContain('<desc id="d">');
     }
+  });
+
+  it('各システム画像は同一テンプレートではなく固有のUI構成を持つ', () => {
+    const fingerprints = new Map<string, string>([
+      ['/portfolio/billing-expense-approval.svg', '承認フロー'],
+      ['/portfolio/construction-operations.svg', '10月 工程表'],
+      ['/portfolio/learner-management.svg', '受講者・進捗管理'],
+      ['/portfolio/inventory-product-tool.svg', '商品・在庫管理'],
+      ['/portfolio/ec-api-integration.svg', 'INTEGRATION CONSOLE'],
+      ['/portfolio/excel-business-application.svg', '業務管理.xlsx'],
+      ['/portfolio/pdf-document-automation.svg', 'DOCUMENT FACTORY'],
+      ['/portfolio/bulk-data-processing.svg', 'BATCH PROCESSING'],
+      ['/portfolio/tool-excel-diff.svg', 'EXCEL DIFF'],
+      ['/portfolio/tool-data-cleaner.svg', 'DATA CLEANER'],
+      ['/portfolio/tool-dashboard.svg', 'DASHBOARD BUILDER'],
+      ['/portfolio/tool-automation-diagnosis.svg', 'AUTOMATION DIAGNOSIS'],
+    ]);
+
+    const contents = [...fingerprints].map(([path, fingerprint]) => {
+      const svg = read(`public${path}`);
+      expect(svg).toContain(fingerprint);
+      expect(svg).not.toContain('TI WORKS');
+      return svg;
+    });
+
+    expect(new Set(contents).size).toBe(contents.length);
   });
 });
