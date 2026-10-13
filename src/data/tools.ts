@@ -12,6 +12,8 @@ export interface Tool {
   githubUrl?: string;
   published: boolean;
   featured: boolean;
+  visual?: string;
+  visualAlt?: string;
 }
 
 // 既存リポジトリは秘密情報・顧客情報・ライセンス・UI品質の確認後に published: true へ変更する。
@@ -28,6 +30,8 @@ export const tools: Tool[] = [
     href: '/tools/excel-diff',
     published: true,
     featured: true,
+    visual: '/portfolio/tool-excel-diff.svg',
+    visualAlt: 'Excel差分比較ツールの画面イメージ',
   },
   {
     slug: 'data-cleaner',
@@ -41,6 +45,8 @@ export const tools: Tool[] = [
     href: '/tools/data-cleaner',
     published: true,
     featured: true,
+    visual: '/portfolio/tool-data-cleaner.svg',
+    visualAlt: 'データ整理・クレンジングツールの画面イメージ',
   },
   {
     slug: 'dashboard-builder',
@@ -54,6 +60,8 @@ export const tools: Tool[] = [
     href: '/tools/dashboard-builder',
     published: true,
     featured: true,
+    visual: '/portfolio/tool-dashboard.svg',
+    visualAlt: 'ダッシュボード作成ツールの画面イメージ',
   },
   {
     slug: 'automation-diagnosis',
@@ -67,6 +75,8 @@ export const tools: Tool[] = [
     href: '/tools/automation-diagnosis',
     published: true,
     featured: true,
+    visual: '/portfolio/tool-automation-diagnosis.svg',
+    visualAlt: '業務自動化診断ツールの画面イメージ',
   },
   {
     slug: 'automation-sample',
