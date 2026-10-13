@@ -3,8 +3,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { works } from '../data/works';
 import { publishedTools } from '../data/tools';
 import { solutions } from '../data/solutions';
+import '../styles/portfolio.css';
 
-const featuredWorks = works.filter((work) => work.featured).slice(0, 4);
+const featuredWorkSlugs = ['workflow-report-system', 'construction-site-operations', 'learner-progress-management', 'ec-api-integration'];
+const featuredWorks = featuredWorkSlugs
+  .map((slug) => works.find((work) => work.slug === slug))
+  .filter((work): work is (typeof works)[number] => Boolean(work));
 const featuredSolutions = ['excel', 'gas', 'python', 'api', 'automation']
   .map((cluster) => solutions.find((solution) => solution.cluster === cluster))
   .filter((solution): solution is (typeof solutions)[number] => Boolean(solution));
@@ -108,7 +112,8 @@ const faqs = [
       <p class="section-lead">顧客名や実データは出していません。どんな作業に困っていて、どこまでシステム化したかを中心にまとめています。</p>
       <div class="card-grid">
         {featuredWorks.map((work) => (
-          <a class="work-card" href={`/works/${work.slug}`}>
+          <a class="work-card home-work-card" href={`/works/${work.slug}`}>
+            <div class="home-work-visual"><img src={work.visual} alt={work.visualAlt} width="1440" height="900" loading="lazy" decoding="async" /></div>
             <span class="card-arrow" aria-hidden="true">→</span>
             <div>
               <span class="card-kicker">{work.category}</span>
