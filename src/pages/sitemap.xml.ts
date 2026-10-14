@@ -3,21 +3,13 @@ import { services } from '../data/services';
 import { works } from '../data/works';
 import { solutions } from '../data/solutions';
 import { publishedTools } from '../data/tools';
+import { coreCanonicalPaths } from '../lib/canonical-core';
 
 const FALLBACK_SITE = new URL('https://ti-automation-studio.utiltoools.workers.dev');
 
 // Search Console向けにWorker実行ではなく、ビルド時に静的XMLとして生成する。
 export const prerender = true;
 
-const corePaths = [
-  '/',
-  '/services',
-  '/works',
-  '/price',
-  '/solutions',
-  '/tools',
-  '/about',
-];
 
 const standaloneServicePaths = [
   '/services/gas-repair',
@@ -34,7 +26,7 @@ const escapeXml = (value: string) =>
 
 const collectPaths = () => {
   const paths = new Set<string>([
-    ...corePaths,
+    ...coreCanonicalPaths,
     ...standaloneServicePaths,
     ...services.map((service) => `/services/${service.slug}/`),
     ...works.map((work) => `/works/${work.slug}`),
