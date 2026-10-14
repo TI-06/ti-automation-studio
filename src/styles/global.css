@@ -252,3 +252,33 @@ img { max-width: 100%; display: block; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+/* Editorial consistency for interactive inquiry, footer and section transitions. */
+.contact-layout > div:last-child {
+  min-width: 0;
+  padding: clamp(24px,3vw,36px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: rgba(255,255,255,.012);
+}
+.contact-layout .field input,
+.contact-layout .field select,
+.contact-layout .field textarea {
+  border-radius: var(--radius-control);
+  background: #14171b;
+  min-height: 48px;
+}
+.contact-layout .field input:focus,
+.contact-layout .field select:focus,
+.contact-layout .field textarea:focus { border-color: var(--accent); }
+.contact-layout .checkbox { border-top: 1px solid var(--border); padding-top: 20px; }
+#submit-button { min-height: 52px; padding-inline: 30px; font-weight: 650; }
+.contact-layout .coconala-choice,
+.contact-layout .contact-source-context { border-radius: var(--radius-card); }
+@media (max-width: 560px) {
+  .contact-layout > div:last-child { padding: 22px 18px; }
+}
+/* Avoid distracting motion for keyboard and motion-sensitive visitors. */
+@media (prefers-reduced-motion: reduce) {
+  .process-phase-card, .about-capability, .price-card, .portfolio-featured-card { transition: none !important; }
+}
