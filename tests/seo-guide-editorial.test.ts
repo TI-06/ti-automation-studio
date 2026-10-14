@@ -4,17 +4,10 @@ import { solutions } from '../src/data/solutions';
 import { solutionDeepDives } from '../src/data/solution-deep-dives';
 
 const source = readFileSync(new URL('../src/pages/solutions/[slug].astro', import.meta.url), 'utf8');
-const priority = [
-  'excel-transfer-automation',
-  'vba-repair-outsourcing',
-  'gas-pdf-automation',
-  'gas-performance',
-  'spreadsheet-automation',
-  'gas-web-app-development',
-];
+const priority = solutions.map((solution) => solution.slug);
 
-describe('SEO Phase 2: editorial depth and visitor readability', () => {
-  it('既存20URLを保ったまま検索意図の明確な6記事を詳しくする', () => {
+describe('SEO Phase 2: all twenty guides have original practical details', () => {
+  it('既存20URLを保ったまますべての記事を個別に詳しくする', () => {
     expect(solutions).toHaveLength(20);
     expect(Object.keys(solutionDeepDives).sort()).toEqual([...priority].sort());
     const all = new Set(solutions.map((s) => s.slug));
@@ -25,6 +18,8 @@ describe('SEO Phase 2: editorial depth and visitor readability', () => {
     for (const [slug, guide] of Object.entries(solutionDeepDives)) {
       expect(guide.intro.length, slug).toBeGreaterThan(55);
       expect(guide.sections, slug).toHaveLength(2);
+      expect(guide.sections.flatMap((section) => section.tasks).length).toBeGreaterThanOrEqual(6);
+      expect(guide.sections.some((section) => Boolean(section.example))).toBe(true);
       for (const section of guide.sections) {
         headings.push(section.heading);
         expect(section.heading.length).toBeGreaterThan(8);
@@ -74,7 +69,7 @@ describe('SEO Phase 2: editorial depth and visitor readability', () => {
   it('公式資料への任意リンクを設け、関連実績・無料ツールも維持する', () => {
     for (const guide of Object.values(solutionDeepDives)) {
       for (const ref of guide.sources) {
-        expect(ref.url).toMatch(/^https:\/\/developers\.google\.com\/apps-script\//);
+        expect(ref.url).toMatch(/^https:\/\/(developers\.google\.com\/apps-script\/|support\.microsoft\.com\/|learn\.microsoft\.com\/|pandas\.pydata\.org\/|docs\.python\.org\/)/);
       }
     }
     expect(source).toContain('rel="noopener noreferrer"');
