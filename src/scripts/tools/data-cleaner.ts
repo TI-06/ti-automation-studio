@@ -1005,6 +1005,7 @@ if (root) {
     window.setTimeout(hideProgress, 250);
     renderAll();
     resultCta.show();
+    appRoot.dispatchEvent(new Event('tool:show-results'));
   });
 
   fileInput.addEventListener('change', () => {
@@ -1020,7 +1021,7 @@ if (root) {
     adoptDataset(createCleanerSample());
   });
 
-  resetButton.addEventListener('click', resetAll);
+  resetButton.addEventListener('click', () => { resetAll(); appRoot.dispatchEvent(new Event('tool:reset-view')); });
   sheetSelect.addEventListener('change', confirmSheetChange);
   encodingSelect.addEventListener('change', reloadCsv);
 
