@@ -218,6 +218,9 @@ img { max-width: 100%; display: block; }
   .brand { font-size: .71rem; }
   .nav-cta { padding: 8px 10px; }
   .hero { min-height: auto; padding: 44px 0 36px; }
+  .field input, .field select, .field textarea { font-size: 16px; }
+  .checkbox input[type="checkbox"] { flex: 0 0 18px; width: 18px; height: 18px; margin-top: 5px; }
+  .checkbox span { min-width: 0; overflow-wrap: anywhere; }
   .hero h1 { font-size: clamp(2.35rem, 10vw, 3.35rem); line-height: 1.1; }
   .hero-copy { font-size: .96rem; line-height: 1.8; }
   .hero-actions { display: grid; }
