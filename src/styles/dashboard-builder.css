@@ -167,3 +167,28 @@
   .dashboard-widget[data-size="medium"] { grid-column: span 6; }
   .dashboard-widget[data-size="large"] { grid-column: span 12; }
 }
+
+/* On mobile, secondary export options live in a single disclosure. */
+.dashboard-export-menu > summary { display: none; }
+.dashboard-export-actions { display: flex; flex-wrap: wrap; gap: 7px; }
+@media (max-width: 820px) {
+  .dashboard-toolbar-actions { width: 100%; align-items: stretch; }
+  .dashboard-export-menu { width: 100%; }
+  .dashboard-export-menu > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 44px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    color: var(--text);
+    cursor: pointer;
+    list-style: none;
+    font-size: .875rem;
+  }
+  .dashboard-export-menu > summary::-webkit-details-marker { display: none; }
+  .dashboard-export-actions { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px; margin-top: 8px; }
+  .dashboard-export-actions .tool-button { min-width: 0; }
+}
+@media (max-width: 420px) { .dashboard-export-actions { grid-template-columns: 1fr; } }
+@media print { .dashboard-export-menu { display: none !important; } }
