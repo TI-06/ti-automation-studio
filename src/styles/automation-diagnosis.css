@@ -190,6 +190,12 @@
 }
 
 @media (max-width: 700px) {
+  .diagnosis-choice { min-height: 52px; padding: 13px 14px; font-size: .875rem; }
+  .diagnosis-choice strong { font-size: .875rem; }
+  .diagnosis-choice input[type="checkbox"], .diagnosis-choice input[type="radio"] { width: 18px; height: 18px; flex-basis: 18px; }
+  .diagnosis-question-title { font-size: .92rem; }
+  .diagnosis-question small { font-size: .82rem; }
+  .diagnosis-step-head p { font-size: .875rem; }
   .diagnosis-meta-bar { grid-template-columns: 1fr; }
   .diagnosis-rule-note { text-align: left; }
   .diagnosis-workspace { padding: 22px 15px 30px; }

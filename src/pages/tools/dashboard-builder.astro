@@ -137,10 +137,15 @@ const structuredData = [
             </div>
             <div class="dashboard-toolbar-actions" data-export-ignore>
               <button class="tool-button tool-button-secondary" type="button" data-widget-add disabled>グラフを追加</button>
-              <button class="tool-button tool-button-secondary" type="button" data-export-image disabled>画像で保存</button>
-              <button class="tool-button tool-button-secondary" type="button" data-export-pdf disabled>PDFで保存</button>
-              <button class="tool-button tool-button-secondary" type="button" data-export-excel disabled>Excelで保存</button>
-              <button class="tool-button tool-button-primary" type="button" data-export-config disabled>設定を保存</button>
+              <details class="dashboard-export-menu" data-dashboard-export-menu open>
+                <summary>保存・出力 <span aria-hidden="true">⌄</span></summary>
+                <div class="dashboard-export-actions">
+                  <button class="tool-button tool-button-secondary" type="button" data-export-image disabled>画像で保存</button>
+                  <button class="tool-button tool-button-secondary" type="button" data-export-pdf disabled>PDFで保存</button>
+                  <button class="tool-button tool-button-secondary" type="button" data-export-excel disabled>Excelで保存</button>
+                  <button class="tool-button tool-button-primary" type="button" data-export-config disabled>設定を保存</button>
+                </div>
+              </details>
             </div>
           </section>
 
