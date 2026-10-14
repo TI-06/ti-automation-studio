@@ -48,6 +48,12 @@ const process = [
   ['06', '納品・追加改修', '運用開始後に出てきた修正や追加要望にも対応します。'],
 ];
 
+const processPhases = [
+  { number: '01', name: '相談・現状確認', steps: process.slice(0, 2) },
+  { number: '02', name: '設計・開発', steps: process.slice(2, 4) },
+  { number: '03', name: '確認・納品', steps: process.slice(4, 6) },
+];
+
 const faqs = [
   ['仕様が決まっていなくても相談できますか？', '大丈夫です。現在使っているファイルや作業手順を見ながら、どこまで作るかを整理できます。'],
   ['既存のExcelやGASの修正だけでも依頼できますか？', '対応しています。全面的に作り直す前に、今の構成を活かせるか確認します。'],
@@ -90,10 +96,12 @@ const faqs = [
   <section class="section">
     <div class="container">
       <p class="eyebrow">よくあるご相談</p>
-      <h2 class="section-title">今の作業に近いものがあれば、改善方法を一緒に整理できます。</h2>
+      <h2 class="section-title">こうした手作業、減らせます。</h2>
+      <p class="section-lead">毎月のExcel集計、入力・承認、帳票作成など、手間のかかる作業から相談できます。</p>
       <div class="request-grid">
-        {commonRequests.map(([title, copy]) => (
+        {commonRequests.map(([title, copy], index) => (
           <article class="request-card">
+            <span class="request-card-no">{String(index + 1).padStart(2, '0')}</span>
             <h3>{title}</h3>
             <p>{copy}</p>
           </article>
@@ -108,7 +116,7 @@ const faqs = [
   <section class="section">
     <div class="container">
       <p class="eyebrow">開発実績</p>
-      <h2 class="section-title">実際に対応した業務を、課題と対応内容が分かる形で紹介しています。</h2>
+      <h2 class="section-title">業務で使う仕組みを、実例でご紹介します。</h2>
       <p class="section-lead">顧客名や実データは出していません。どんな作業に困っていて、どこまでシステム化したかを中心にまとめています。</p>
       <div class="card-grid">
         {featuredWorks.map((work) => (
@@ -131,7 +139,7 @@ const faqs = [
   <section id="services" class="section">
     <div class="container">
       <p class="eyebrow">対応サービス</p>
-      <h2 class="section-title">今の環境に合わせて、必要な方法を選びます。</h2>
+      <h2 class="section-title">今の業務に合う方法を選びます。</h2>
       <p class="section-lead">Excelで十分な業務はそのまま活かし、複数人で使うならWeb化するなど、用途に合わせて構成を決めます。</p>
       <div class="service-grid">
         {services.map(([title, copy, href]) => (
@@ -149,7 +157,8 @@ const faqs = [
   <section class="section">
     <div class="container">
       <p class="eyebrow">料金の目安</p>
-      <h2 class="section-title">作業量によって変わりますが、最初の検討材料として目安を公開しています。</h2>
+      <h2 class="section-title">料金の目安を公開しています。</h2>
+      <p class="section-lead">既存ツールの修正からWebシステムまで。内容や作業範囲によって金額は変わるため、まずは概算の参考としてご覧ください。</p>
       <div class="home-price-grid">
         {priceRanges.map(([label, price, copy]) => (
           <article class="home-price-card">
@@ -168,22 +177,39 @@ const faqs = [
       <p class="eyebrow">ご相談から納品まで</p>
       <h2 class="section-title">仕様書がなくても、今の作業を確認するところから進められます。</h2>
       <p class="process-lead">最初から全部を決め切るのではなく、実際の業務と確認用の画面を見ながら進めます。</p>
-      <picture class="process-visual">
-        <source srcset="/images/process-flow-mobile.svg" media="(max-width: 640px)" />
-        <img
-          src="/images/process-flow-desktop.svg"
-          alt="相談から納品・改善までの開発フロー"
-          loading="lazy"
-          decoding="async"
-          width="1440"
-          height="520"
-        />
-      </picture>
-      <ol class="process-accessible">
-        {process.map(([no, title, copy]) => (
-          <li><strong>{no} {title}</strong><span>{copy}</span></li>
+      <ol class="process-phase-grid" aria-label="ご相談から納品までの6工程">
+        {processPhases.map((phase) => (
+          <li class="process-phase-card">
+            <div class="process-phase-head">
+              <span class="process-phase-number" aria-hidden="true">{phase.number}</span>
+              <div>
+                <span class="process-phase-kicker">PHASE {phase.number}</span>
+                <h3>{phase.name}</h3>
+              </div>
+              <span class="process-phase-symbol" aria-hidden="true">↗</span>
+            </div>
+            <ol class="process-phase-steps">
+              {phase.steps.map(([no, title, copy]) => (
+                <li>
+                  <span class="process-step-number">{no}</span>
+                  <div>
+                    <h4>{title}</h4>
+                    <p>{copy}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </li>
         ))}
       </ol>
+      <div class="process-reassurance">
+        <span class="process-reassurance-icon" aria-hidden="true">?</span>
+        <div>
+          <strong>仕様が決まっていなくても相談できます。</strong>
+          <p>現在の作業やファイルを確認し、必要な範囲を一緒に整理します。</p>
+        </div>
+        <a href="/contact">相談する <span aria-hidden="true">→</span></a>
+      </div>
     </div>
   </section>
 
@@ -223,7 +249,7 @@ const faqs = [
   <section class="section">
     <div class="container">
       <p class="eyebrow">業務自動化ガイド</p>
-      <h2 class="section-title">転記、集計、VBA修正など、作業別に方法や費用をまとめています。</h2>
+      <h2 class="section-title">自動化の方法を、業務ごとに解説。</h2>
       <div class="card-grid">
         {featuredSolutions.map((solution) => (
           <a class="work-card" href={`/solutions/${solution.slug}/`}>
@@ -239,7 +265,7 @@ const faqs = [
   <section class="section">
     <div class="container">
       <p class="eyebrow">無料ツール</p>
-      <h2 class="section-title">ブラウザでそのまま使える業務向けツールも公開しています。</h2>
+      <h2 class="section-title">無料ツールも試せます。</h2>
       <p class="section-lead">Excel比較やデータ整理など、単発作業で使いやすいものを掲載しています。</p>
       {featuredTools.length > 0 ? (
         <div class="card-grid">
@@ -274,22 +300,25 @@ const faqs = [
 </BaseLayout>
 
 <style>
-  .request-grid,
-  .home-price-grid {
+  .request-grid, .home-price-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
     margin-top: 30px;
   }
+  .request-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .home-price-grid { grid-template-columns: repeat(4, minmax(0,1fr)); }
 
   .request-card,
   .home-price-card {
     padding: 24px;
     border: 1px solid var(--border);
-    border-radius: 16px;
-    background: rgba(255,255,255,.025);
+    border-radius: var(--radius-card);
+    background: rgba(255,255,255,.022);
   }
-
+  .request-card { position: relative; min-height: 190px; transition: border-color .2s ease; }
+  .request-card:hover { border-color: var(--border-strong); }
+  .request-card-no { display: block; color: var(--accent); font-size: .78rem; font-weight: 700; letter-spacing: .1em; margin-bottom: 20px; }
+  .home-price-card { padding: 24px 20px; min-height: 185px; }
   .request-card h3 {
     margin: 0 0 10px;
     font-size: 1.05rem;
@@ -324,30 +353,112 @@ const faqs = [
     line-height: 1.9;
   }
 
-  .process-visual {
-    display: block;
-    width: 100%;
-    margin-top: 30px;
-  }
 
-  .process-visual img {
-    display: block;
-    width: 100%;
-    height: auto;
-    border-radius: 18px;
-    box-shadow: 0 22px 70px rgb(0 0 0 / 28%);
-  }
-
-  .process-accessible {
-    position: absolute;
-    width: 1px;
-    height: 1px;
+  .process-phase-grid {
+    counter-reset: none;
+    list-style: none;
+    margin: 34px 0 0;
     padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .process-phase-card {
+    position: relative;
+    min-width: 0;
+    padding: clamp(22px, 2.7vw, 34px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    background: linear-gradient(145deg, rgba(200,169,107,.065), rgba(255,255,255,.018) 55%, rgba(255,255,255,.01));
+    transition: border-color .22s ease, transform .22s ease, box-shadow .22s ease;
+  }
+
+  .process-phase-card:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-raised);
+  }
+
+  .process-phase-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 32px;
+    width: 64px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+
+  .process-phase-head { display: flex; align-items: center; gap: 15px; min-width: 0; }
+  .process-phase-number {
+    display: grid;
+    place-items: center;
+    flex: 0 0 52px;
+    height: 52px;
+    border: 1px solid var(--border-strong);
+    border-radius: 50%;
+    color: var(--accent);
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -.04em;
+  }
+  .process-phase-kicker { display: block; color: var(--soft); font-size: .75rem; letter-spacing: .13em; font-weight: 700; }
+  .process-phase-head h3 { margin: 3px 0 0; font-size: clamp(1.05rem, 1.5vw, 1.22rem); line-height: 1.4; }
+  .process-phase-symbol { margin-left: auto; color: var(--accent); opacity: .7; font-size: 1.4rem; }
+  .process-phase-steps {
+    list-style: none;
+    display: grid;
+    gap: 0;
+    margin: 28px 0 0;
+    padding: 0;
+    border-top: 1px solid var(--border);
+  }
+  .process-phase-steps li {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr);
+    gap: 12px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .process-phase-steps li:last-child { padding-bottom: 6px; border-bottom: 0; }
+  .process-step-number { color: var(--accent); font-size: .83rem; font-weight: 650; font-variant-numeric: tabular-nums; }
+  .process-phase-steps h4 { margin: 0 0 6px; font-size: .95rem; font-weight: 650; line-height: 1.5; }
+  .process-phase-steps p { margin: 0; color: var(--muted-strong); font-size: .875rem; line-height: 1.8; }
+  .process-reassurance {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: 16px;
+    padding: 22px 26px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    background: rgba(255,255,255,.025);
+  }
+  .process-reassurance-icon {
+    display: grid;
+    place-items: center;
+    flex: 0 0 42px;
+    height: 42px;
+    border: 1px solid var(--border-strong);
+    border-radius: 50%;
+    color: var(--accent);
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  .process-reassurance > div { min-width: 0; }
+  .process-reassurance strong { display: block; font-size: .96rem; line-height: 1.5; }
+  .process-reassurance p { margin: 4px 0 0; color: var(--muted); font-size: .86rem; }
+  .process-reassurance a {
+    margin-left: auto;
+    flex: 0 0 auto;
+    color: var(--accent);
+    font-size: .85rem;
+    font-weight: 700;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
   }
 
   .faq-home {
@@ -393,6 +504,9 @@ const faqs = [
     gap: 12px;
   }
 
+  @media (max-width: 1080px) {
+    .request-grid, .home-price-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  }
   @media (max-width: 860px) {
     .faq-home {
       grid-template-columns: 1fr;
@@ -415,16 +529,24 @@ const faqs = [
       font-size: .94rem;
     }
 
-    .process-visual {
-      margin-top: 20px;
-    }
-
-    .process-visual img {
-      border-radius: 14px;
-    }
   }
 
+  @media (max-width: 1024px) {
+    .process-phase-grid { gap: 10px; }
+    .process-phase-card { padding: 20px; }
+    .process-phase-head { gap: 10px; }
+    .process-phase-number { flex-basis: 44px; height: 44px; }
+    .process-phase-symbol { display: none; }
+  }
+  @media (max-width: 860px) {
+    .process-phase-grid { grid-template-columns: 1fr; gap: 12px; }
+    .process-phase-card { padding: 24px; }
+    .process-phase-steps { margin-top: 16px; }
+    .process-phase-steps li { padding: 12px 0; }
+  }
   @media (max-width: 560px) {
+    .process-reassurance { align-items: flex-start; flex-wrap: wrap; padding: 20px; gap: 12px; }
+    .process-reassurance a { flex-basis: 100%; margin-left: 0; padding-left: 54px; }
     .cta-actions {
       display: grid;
       width: 100%;
