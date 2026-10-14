@@ -8,6 +8,7 @@
   --muted-strong: #cac8c0;
   --accent: #c8a96b;
   --border: rgba(242, 240, 234, 0.12);
+  --line: var(--border); /* compatibility for legacy components */
   --border-strong: rgba(200, 169, 107, 0.35);
   --container: 1180px;
   --radius: 8px;
