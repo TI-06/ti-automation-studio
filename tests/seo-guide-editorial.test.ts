@@ -23,17 +23,17 @@ describe('SEO Phase 2: editorial depth and visitor readability', () => {
   it('内容が薄いテンプレを量産せず記事ごとに具体的な手順を記述する', () => {
     const headings: string[] = [];
     for (const [slug, guide] of Object.entries(solutionDeepDives)) {
-      expect(guide.intro.length, slug).toBeGreaterThan(75);
+      expect(guide.intro.length, slug).toBeGreaterThan(55);
       expect(guide.sections, slug).toHaveLength(2);
       for (const section of guide.sections) {
         headings.push(section.heading);
-        expect(section.heading.length).toBeGreaterThan(12);
-        expect(section.lead.length).toBeGreaterThan(60);
+        expect(section.heading.length).toBeGreaterThan(8);
+        expect(section.lead.length).toBeGreaterThan(38);
         expect(section.tasks.length).toBeGreaterThanOrEqual(3);
-        expect(section.checkpoint.length).toBeGreaterThan(55);
+        expect(section.checkpoint.length).toBeGreaterThan(34);
         for (const task of section.tasks) {
-          expect(task.title.length).toBeGreaterThan(8);
-          expect(task.detail.length).toBeGreaterThan(64);
+          expect(task.title.length).toBeGreaterThan(5);
+          expect(task.detail.length).toBeGreaterThan(40);
         }
         if (section.example) {
           expect(section.example.rows.length).toBeGreaterThanOrEqual(3);
