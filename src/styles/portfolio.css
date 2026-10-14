@@ -474,3 +474,38 @@
   .portfolio-filter-options button { padding: 9px 11px; font-size: .8rem; }
   .portfolio-filter-count { margin: 0; }
 }
+
+/* Editorial hierarchy: one substantial featured case, then two concise visual case cards. */
+.portfolio-featured-grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
+.portfolio-featured-card { min-height: 0; border-radius: var(--radius-card); }
+.portfolio-featured-card:first-child {
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(0,.84fr) minmax(0,1.16fr);
+}
+.portfolio-featured-card:not(:first-child) {
+  display: flex;
+  flex-direction: column;
+}
+.portfolio-featured-card:not(:first-child) .portfolio-card-visual {
+  min-height: 0;
+  aspect-ratio: 16 / 7.8;
+}
+.portfolio-featured-card:not(:first-child) .portfolio-card-body {
+  justify-content: flex-start;
+  padding: 24px 26px 26px;
+}
+.portfolio-featured-card:not(:first-child) .portfolio-card-title {
+  font-size: clamp(1.28rem,1.7vw,1.55rem);
+  margin-top: 12px;
+}
+.portfolio-featured-card:not(:first-child) .portfolio-card-insights {
+  margin-top: 14px;
+  padding-top: 14px;
+}
+.portfolio-case-card, .portfolio-tool-card { border-radius: var(--radius-card); }
+.portfolio-featured-card:hover, .portfolio-case-card:hover, .portfolio-tool-card:hover { box-shadow: var(--shadow-raised); }
+@media (max-width: 860px) {
+  .portfolio-featured-grid { grid-template-columns: 1fr; }
+  .portfolio-featured-card:first-child { grid-column: auto; grid-template-columns: 1fr; }
+  .portfolio-featured-card:not(:first-child) .portfolio-card-body { padding: 23px 19px; }
+}
