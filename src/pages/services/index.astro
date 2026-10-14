@@ -2,6 +2,34 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { services } from '../../data/services';
 
+const serviceChoices = [
+  {
+    concern: 'Excelの転記・集計が毎月大変',
+    direction: '既存Excelを活かすか、VBA・Pythonでまとめて処理するかを比較',
+    slug: 'excel-automation',
+  },
+  {
+    concern: 'スプレッドシート・メール・Driveを連携したい',
+    direction: 'Google Workspaceの権限と自動実行の範囲を整理',
+    slug: 'gas-automation',
+  },
+  {
+    concern: 'CSV・Excelが大量で処理に時間がかかる',
+    direction: '文字コード・欠損・重複を検証して一括処理',
+    slug: 'python-data-processing',
+  },
+  {
+    concern: 'ECや外部システムで同じ内容を二重入力している',
+    direction: '利用可能なAPI・認証・データ同期の方式を確認',
+    slug: 'api-integration',
+  },
+  {
+    concern: '請求書・報告書・日報を繰り返しPDFにしている',
+    direction: '帳票テンプレート・改ページ・命名・保存をまとめる',
+    slug: 'pdf-document-automation',
+  },
+] as const;
+
 const itemList = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
@@ -45,6 +73,29 @@ const itemList = {
           </div>
         </a>
       ))}
+    </div>
+  </section>
+
+  <section class="section service-choices" aria-labelledby="service-choices-heading">
+    <div class="container">
+      <p class="eyebrow">業務の悩みから探す</p>
+      <h2 class="section-title" id="service-choices-heading">今の困りごとに近いものを選ぶ</h2>
+      <p class="section-lead">技術名が分からなくても、普段の作業から対応範囲を探せます。各ページでは方法の比較や設計時の注意点も説明しています。</p>
+      <div class="service-choice-list">
+        {serviceChoices.map((item) => {
+          const target = services.find((service) => service.slug === item.slug);
+          return (
+            <a href={`/services/${item.slug}/`} class="service-choice-row">
+              <div>
+                <h3>{item.concern}</h3>
+                <p>{item.direction}</p>
+              </div>
+              <span class="service-choice-action">{target?.eyebrow ?? '詳しく見る'} <span aria-hidden="true">→</span></span>
+            </a>
+          );
+        })}
+      </div>
+      <p class="service-choices-note">Excel・GAS・Python・Webを組み合わせる方法もあります。どれに当てはまるか迷う場合は<a href="/contact">現在の手順から相談</a>できます。</p>
     </div>
   </section>
 
