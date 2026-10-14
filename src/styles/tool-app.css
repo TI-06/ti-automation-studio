@@ -576,3 +576,14 @@ button.tool-summary-item:hover { background: rgba(255,255,255,.025); }
   .tool-app-subtitle { font-size: .9rem; }
   .tool-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+/* Product previews remain visual aids: the descriptive text is readable first. */
+.tool-product-card { border-radius: var(--radius-card); overflow: hidden; }
+.tool-product-copy h2 { line-height: 1.4; }
+.tool-product-preview { background: #0c0f13; }
+.tool-product-card:hover { box-shadow: var(--shadow-raised); }
+@media (max-width: 560px) {
+  .tool-product-preview { padding: 18px; min-height: 240px; }
+  .tool-product-meta span { font-size: .73rem; }
+  .tool-product-link { font-size: .9rem; }
+}
