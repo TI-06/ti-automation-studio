@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { canonicalCorePaths, canonicalizeCorePath } from '../src/lib/canonical-core';
+import { coreCanonicalPaths, canonicalizeCorePath } from '../src/lib/canonical-core';
 import { GET } from '../src/pages/sitemap.xml';
 
 const SITE = 'https://ti-automation-studio.utiltoools.workers.dev';
