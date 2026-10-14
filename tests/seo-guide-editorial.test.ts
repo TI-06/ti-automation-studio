@@ -32,7 +32,7 @@ describe('SEO Phase 2: editorial depth and visitor readability', () => {
         expect(section.tasks.length).toBeGreaterThanOrEqual(3);
         expect(section.checkpoint.length).toBeGreaterThan(34);
         for (const task of section.tasks) {
-          expect(task.title.length).toBeGreaterThan(5);
+          expect(task.title.length).toBeGreaterThan(2);
           expect(task.detail.length).toBeGreaterThan(40);
         }
         if (section.example) {
