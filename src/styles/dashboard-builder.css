@@ -126,6 +126,11 @@
 }
 
 @media (max-width: 820px) {
+  .dashboard-source-actions .tool-button,
+  .dashboard-toolbar-actions .tool-button { min-height: 44px; }
+  .dashboard-column-card p, .dashboard-filter-checks label { font-size: .82rem; }
+  .dashboard-widget-title { font-size: .92rem; }
+  .dashboard-data-note, .dashboard-data-toolbar p { font-size: .84rem; }
   .dashboard-source-main,
   .dashboard-data-toolbar { grid-template-columns: 1fr; }
   .dashboard-source-actions { justify-content: flex-start; }
