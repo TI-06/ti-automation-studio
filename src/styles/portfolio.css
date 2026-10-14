@@ -420,3 +420,57 @@
   .home-work-card { padding-top: 22px; }
   .home-work-visual { margin: -22px -22px 20px; }
 }
+
+/* Searchable portfolio categories: case cards retain independent project visuals. */
+.portfolio-filter-section { padding: 18px 0 0; }
+.portfolio-filter-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 22px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 22px;
+}
+.portfolio-filter-label {
+  color: var(--muted);
+  font-size: .85rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.portfolio-filter-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.portfolio-filter-options button {
+  min-height: 44px;
+  padding: 9px 14px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: #d0cdc5;
+  font: inherit;
+  font-size: .84rem;
+  line-height: 1.35;
+  cursor: pointer;
+}
+.portfolio-filter-options button[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: rgba(200,169,107,.12);
+  color: var(--text);
+  font-weight: 700;
+}
+.portfolio-filter-options button:hover { border-color: var(--accent); }
+.portfolio-filter-count {
+  margin: 0 0 0 auto;
+  color: var(--muted);
+  font-size: .8rem;
+}
+[data-work-section][hidden],
+.portfolio-featured-card[hidden],
+.portfolio-case-card[hidden] { display: none !important; }
+@media (max-width: 560px) {
+  .portfolio-filter-wrap { align-items: flex-start; flex-direction: column; gap: 10px; }
+  .portfolio-filter-options { gap: 6px; }
+  .portfolio-filter-options button { padding: 9px 11px; font-size: .8rem; }
+  .portfolio-filter-count { margin: 0; }
+}
