@@ -522,3 +522,57 @@ button.tool-summary-item:hover { background: rgba(255,255,255,.025); }
   .tool-field input[type="number"],
   .tool-file-zone input[type="file"] { font-size: 16px; }
 }
+
+/* Mobile tools: reveal one panel at a time only after JS enables the view switcher. */
+.tool-mobile-view-nav { display: none; }
+@media (max-width: 960px) {
+  .tool-mobile-view-nav {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 5px;
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+    background: #111317;
+  }
+  .tool-mobile-view-nav button {
+    min-width: 0;
+    min-height: 48px;
+    padding: 8px 5px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: #d5d2ca;
+    cursor: pointer;
+    line-height: 1.4;
+    font-size: .78rem;
+  }
+  .tool-mobile-view-nav button[aria-pressed="true"] {
+    background: rgba(200, 169, 107, .14);
+    border-color: var(--accent);
+    color: var(--text);
+    font-weight: 700;
+  }
+  .tool-app-grid[data-mobile-active="setup"] > [data-mobile-panel]:not([data-mobile-panel="setup"]),
+  .tool-app-grid[data-mobile-active="result"] > [data-mobile-panel]:not([data-mobile-panel="result"]),
+  .tool-app-grid[data-mobile-active="detail"] > [data-mobile-panel]:not([data-mobile-panel="detail"]) {
+    display: none;
+  }
+  .tool-app-grid [data-mobile-panel] { scroll-margin-top: 96px; }
+  .tool-button { min-height: 44px; font-size: .875rem; }
+  .tool-panel-title { font-size: 1rem; }
+  .tool-panel-copy, .tool-empty-state p { font-size: .875rem; }
+  .tool-summary-label { font-size: .78rem; }
+  .tool-inspector-row span { color: var(--muted); font-size: .78rem; }
+  .tool-inspector-row strong { font-size: .875rem; }
+  .tool-table { font-size: .825rem; }
+  .tool-table th { font-size: .76rem; }
+  .tool-table-wrap { scrollbar-color: rgba(200,169,107,.55) transparent; }
+}
+@media (max-width: 560px) {
+  .tool-mobile-view-nav { padding: 10px 8px; }
+  .tool-mobile-view-nav button { font-size: .72rem; }
+  .tool-app-badges span { font-size: .75rem; }
+  .tool-app-heading h1 { line-height: 1.32; overflow-wrap: break-word; }
+  .tool-app-subtitle { font-size: .9rem; }
+  .tool-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
