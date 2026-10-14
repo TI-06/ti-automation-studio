@@ -20,7 +20,14 @@ const relatedWorks = service.relatedWorkSlugs
 const relatedServices = service.relatedServiceSlugs
   .map((serviceSlug) => getServiceBySlug(serviceSlug))
   .filter((item): item is NonNullable<typeof item> => Boolean(item));
-const relatedGuides = solutions.filter((item) => item.relatedServiceSlug === service.slug).slice(0, 6);
+const recommendedGuideSlugs = [
+  ...service.priorityGuideSlugs,
+  ...solutions.filter((item) => item.relatedServiceSlug === service.slug).map((item) => item.slug),
+];
+const relatedGuides = [...new Set(recommendedGuideSlugs)]
+  .map((guideSlug) => solutions.find((item) => item.slug === guideSlug))
+  .filter((item): item is NonNullable<typeof item> => Boolean(item))
+  .slice(0, 6);
 const serviceUrl = Astro.site ? new URL(`/services/${service.slug}/`, Astro.site).toString() : `/services/${service.slug}/`;
 const imageUrl = Astro.site ? new URL(service.visual, Astro.site).toString() : service.visual;
 
@@ -101,6 +108,27 @@ const structuredData = [
     </div>
   </section>
 
+  <section class="section service-decision-section" aria-labelledby="service-decision-heading">
+    <div class="container">
+      <div class="service-section-grid service-decision-intro">
+        <div>
+          <p class="eyebrow">方法の選び方</p>
+          <h2 class="section-title" id="service-decision-heading">この業務なら、どの方法が合う？</h2>
+        </div>
+        <p class="section-lead">{service.decisionLead}</p>
+      </div>
+      <div class="service-decision-grid">
+        {service.decisionPoints.map((point, index) => (
+          <article class="service-decision-card">
+            <span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+            <h3>{point.title}</h3>
+            <p>{point.detail}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <section class="section">
     <div class="container">
       <p class="eyebrow">改善の考え方</p>
@@ -131,6 +159,24 @@ const structuredData = [
       <div class="service-fit-grid">
         <article><span class="service-fit-label">向いています</span><ul>{service.fit.map((item) => <li>{item}</li>)}</ul></article>
         <article class="service-not-fit"><span class="service-fit-label">別の方法も検討します</span><ul>{service.notFit.map((item) => <li>{item}</li>)}</ul></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section service-implementation-section" aria-labelledby="implementation-heading">
+    <div class="container service-section-grid">
+      <div>
+        <p class="eyebrow">設計時に確認すること</p>
+        <h2 class="section-title" id="implementation-heading">運用開始後に困らないための設計ポイント</h2>
+        <p class="section-lead">動作させるだけでなく、変更・エラー・再実行まで確認するための項目です。案件ごとに必要なものを選びます。</p>
+      </div>
+      <div class="service-implementation-checks">
+        {service.deliveryChecks.map((check, index) => (
+          <article>
+            <span class="service-check-index">{String(index + 1).padStart(2, '0')}</span>
+            <div><h3>{check.title}</h3><p>{check.detail}</p></div>
+          </article>
+        ))}
       </div>
     </div>
   </section>
@@ -193,6 +239,25 @@ const structuredData = [
       <div class="service-faq-list">
         {service.faq.map((item) => <details><summary>{item.question}<span aria-hidden="true">＋</span></summary><p>{item.answer}</p></details>)}
       </div>
+    </div>
+  </section>
+
+  <section class="section service-preparation-section" aria-labelledby="service-preparation-heading">
+    <div class="container service-preparation">
+      <div>
+        <p class="eyebrow">相談前の準備</p>
+        <h2 id="service-preparation-heading">この3つが分かると、見積もりや仕様の相談が進めやすくなります。</h2>
+        <p>すべて揃っていなくても問題ありません。情報を伏せたサンプルや、手順の説明から整理できます。</p>
+        <div class="hero-actions">
+          <a class="btn" href="/price">料金・費用の目安を見る →</a>
+          <a class="btn btn-primary" href="/contact">この内容を相談する →</a>
+        </div>
+      </div>
+      <ol>
+        {service.preparation.map((item, index) => (
+          <li><span>{String(index + 1).padStart(2, '0')}</span><p>{item}</p></li>
+        ))}
+      </ol>
     </div>
   </section>
 
