@@ -133,18 +133,20 @@ const structuredData = {
 
 <style>
   .price-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 34px; }
-  .price-card { padding: 28px; border: 1px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.025); }
+  .price-card { padding: 28px; border: 1px solid var(--border); border-radius: var(--radius-card); background: rgba(255,255,255,.022); transition: border-color .2s ease, box-shadow .2s ease; }
+  .price-card:hover { border-color: var(--border-strong); box-shadow: var(--shadow-raised); }
   .price-card span { display: block; color: var(--muted); font-size: .85rem; }
-  .price-card strong { display: block; margin: 12px 0; color: var(--accent); font-size: clamp(1.5rem, 3vw, 2.2rem); }
+  .price-card strong { display: block; margin: 14px 0; color: var(--accent); font-size: clamp(1.65rem, 2.8vw, 2.25rem); font-weight: 650; letter-spacing: -.035em; line-height: 1.3; }
   .price-card p, .price-factor-list p, .price-note p { margin: 0; color: var(--muted); line-height: 1.9; }
-  .price-example-card h3 { margin: 12px 0 10px; font-size: 1.08rem; }
+  .price-example-card h3 { margin: 12px 0 10px; font-size: 1.12rem; }
+  .price-card p { font-size: .91rem; }
   .price-factor-list { display: grid; gap: 14px; }
-  .price-factor-list article { display: grid; grid-template-columns: 42px 1fr; gap: 14px; padding: 20px 0; border-bottom: 1px solid var(--line); }
+  .price-factor-list article { display: grid; grid-template-columns: 42px 1fr; gap: 14px; padding: 20px 0; border-bottom: 1px solid var(--border); }
   .price-factor-list article > span { color: var(--accent); font-size: .78rem; }
   .price-factor-list h3 { margin: 0 0 8px; font-size: 1.05rem; }
   .price-check-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
-  .price-check-list li { padding: 16px 18px; border: 1px solid var(--line); border-radius: 12px; }
-  .price-note { padding: 34px; border: 1px solid var(--line); border-radius: 20px; background: rgba(200,169,107,.07); }
+  .price-check-list li { padding: 16px 18px; border: 1px solid var(--border); border-radius: var(--radius-control); }
+  .price-note { padding: 34px; border: 1px solid var(--border); border-radius: var(--radius-card); background: linear-gradient(115deg, rgba(200,169,107,.09), rgba(200,169,107,.018)); }
   .price-note h2 { margin: 8px 0 14px; }
   @media (max-width: 760px) { .price-grid { grid-template-columns: 1fr; } .price-note { padding: 24px; } }
 </style>
