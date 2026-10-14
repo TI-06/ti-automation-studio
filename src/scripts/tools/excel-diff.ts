@@ -627,6 +627,7 @@ if (root) {
       window.setTimeout(hideProgress, 250);
       setControlBusy();
       renderResults();
+      root.dispatchEvent(new Event('tool:show-results'));
       return;
     }
 
@@ -649,7 +650,7 @@ if (root) {
     setFile('after', sample.after);
   });
 
-  resetButton.addEventListener('click', resetAll);
+  resetButton.addEventListener('click', () => { resetAll(); root.dispatchEvent(new Event('tool:reset-view')); });
 
   sheetSelect.addEventListener('change', () => {
     state.selectedSheet = sheetSelect.value;
