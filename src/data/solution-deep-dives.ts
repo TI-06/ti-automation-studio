@@ -594,7 +594,12 @@ export const solutionDeepDives: Record<string,SolutionDeepDive> = {
         "checkpoint": "どの方法でも『前月と同じ操作で、提出ファイル数が変わっても再実行できるか』をテストすると運用面の差が見えます。"
       }
     ],
-    "sources": []
+    "sources": [
+      {
+        "title": "Microsoft：Power Queryで複数ファイルを結合",
+        "url": "https://support.microsoft.com/ja-jp/excel/import-data-from-a-folder-with-multiple-files-power-query"
+      }
+    ]
   },
   "gas-development-outsourcing": {
     "intro": "GAS開発の見積もりで金額の差が大きくなるのは、画面数よりも権限、連携先、例外処理、保守の範囲が違うことが多いためです。依頼者が仕様書を一から書けなくても、必要な項目を整理すれば比較しやすくなります。",
@@ -740,7 +745,12 @@ export const solutionDeepDives: Record<string,SolutionDeepDive> = {
         "checkpoint": "自動化前の手作業で使っていたチェック表を捨てず、プログラムの検証項目に置き換えてから運用を切り替えます。"
       }
     ],
-    "sources": []
+    "sources": [
+      {
+        "title": "Microsoft：Power Queryで複数ファイルを結合",
+        "url": "https://support.microsoft.com/ja-jp/excel/import-data-from-a-folder-with-multiple-files-power-query"
+      }
+    ]
   },
   "excel-pdf-automation": {
     "intro": "ExcelからのPDF出力は、ExportAsFixedFormatなどで保存できても、印刷結果が正しいとは限りません。行数、余白、長い名称、改ページの条件を確かめることが、帳票自動化で最も重要な部分です。",
@@ -959,7 +969,12 @@ export const solutionDeepDives: Record<string,SolutionDeepDive> = {
         "checkpoint": "計測したボトルネックを直した後に再計測し、改善効果が小さければ別の工程を確認します。最初から全面改修しない方が安全です。"
       }
     ],
-    "sources": []
+    "sources": [
+      {
+        "title": "Microsoft：Excel VBAのパフォーマンス改善",
+        "url": "https://learn.microsoft.com/ja-jp/office/vba/excel/concepts/excel-performance/excel-tips-for-optimizing-performance-obstructions"
+      }
+    ]
   },
   "gas-mail-automation": {
     "intro": "GASのメール自動送信は、MailAppやGmailAppを呼び出すだけなら簡単です。しかし実務では『いつ、誰に、どの内容を、何回送るか』が重要です。重複送信や誤宛先を防ぐため、送信条件と履歴を先に決めます。",
@@ -1114,7 +1129,12 @@ export const solutionDeepDives: Record<string,SolutionDeepDive> = {
         "checkpoint": "実装を依頼するときは、入力サンプル・完成ファイル・利用するPCの環境・実行頻度をセットで伝えると、配布も含めた見積もりを受けやすくなります。"
       }
     ],
-    "sources": []
+    "sources": [
+      {
+        "title": "pandas：データの結合・照合に関する公式ガイド",
+        "url": "https://pandas.pydata.org/docs/user_guide/merging.html"
+      }
+    ]
   },
   "csv-bulk-processing": {
     "intro": "CSVの一括処理は、結合処理そのものよりも、文字コード・区切り文字・型・欠損値の扱いが難しい場面があります。大量データを黙って捨てないために、読み込み前の検査と結果確認を分けて考えます。",
@@ -1187,7 +1207,12 @@ export const solutionDeepDives: Record<string,SolutionDeepDive> = {
         "checkpoint": "一括変換の成功判定は『出力ファイルができた』だけにしません。元ファイル数・元行数・正常行・エラー行・重複行の整合をチェックしてください。"
       }
     ],
-    "sources": []
+    "sources": [
+      {
+        "title": "Python公式：CSVファイルの読み書き",
+        "url": "https://docs.python.org/3/library/csv.html"
+      }
+    ]
   },
   "excel-large-data-processing": {
     "intro": "Excelが重くなった原因は、単に行数が多いこととは限りません。不要な書式・数式の再計算・外部参照・VBAの細かいセル操作などが重なっていることがあります。原因を切り分けてから改善方法を選びます。",
@@ -1260,7 +1285,12 @@ export const solutionDeepDives: Record<string,SolutionDeepDive> = {
         "checkpoint": "改善前後で処理時間だけでなく、出力件数・合計値・表示内容も比較します。高速化によって結果が変わっていないことを確認してから移行します。"
       }
     ],
-    "sources": []
+    "sources": [
+      {
+        "title": "Microsoft：Power Queryで複数ファイルを結合",
+        "url": "https://support.microsoft.com/ja-jp/excel/import-data-from-a-folder-with-multiple-files-power-query"
+      }
+    ]
   },
   "api-integration-cost": {
     "intro": "API連携の費用は『1回送信できるようにする』場合と『毎日止まらずに同期する』場合で大きく変わります。認証・変換・重複防止・失敗復旧のどこまでを作るかが見積もりの中心です。",
