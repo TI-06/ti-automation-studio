@@ -66,7 +66,7 @@ describe('SEO Service Phase 1: unique helpful content', () => {
       'service.priorityGuideSlugs',
       'class="service-decision-card"',
       'class="service-implementation-checks"',
-      'class="service-preparation"',
+      'class="container service-preparation"',
       'href="/price"',
       'href="/contact"',
       "'@type': 'Service'",
