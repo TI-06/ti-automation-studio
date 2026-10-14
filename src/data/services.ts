@@ -22,14 +22,20 @@ export interface ServiceDefinition {
   relatedWorkSlugs: string[];
   relatedServiceSlugs: string[];
   faq: ServiceFaq[];
+  /** 実務上の判断材料。成果値の断定や架空の顧客情報は含めない。 */
+  decisionLead: string;
+  decisionPoints: { title: string; detail: string }[];
+  deliveryChecks: { title: string; detail: string }[];
+  preparation: string[];
+  priorityGuideSlugs: string[];
 }
 
 export const services: ServiceDefinition[] = [
   {
     slug: 'excel-automation',
     title: 'Excel・VBA業務自動化',
-    seoTitle: 'Excel自動化・VBA開発｜繰り返し作業を業務改善',
-    description: 'Excelの転記・集計・帳票作成・ファイル処理を自動化。既存のExcelを活かしながら、VBAやPythonも組み合わせて日々の定型業務を効率化します。',
+    seoTitle: 'Excel自動化・VBA開発｜転記・集計・マクロ改修',
+    description: 'Excelの転記・月次集計・VBAマクロ修正・PDF帳票出力に対応。既存ブックの関数や操作を活かし、業務に合った自動化の方法と費用を整理します。',
     eyebrow: 'Excel・VBA',
     hero: '転記・集計・帳票作成など、Excelで繰り返している作業を減らします。',
     visual: '/service-visuals/excel-automation.svg',
@@ -67,12 +73,30 @@ export const services: ServiceDefinition[] = [
       { question: 'VBA以外の方法になることもありますか？', answer: 'あります。データ量や処理内容によってはPythonやGAS、Web化の方が保守しやすい場合があるため、業務に合わせて提案します。' },
       { question: '仕様書がなくても相談できますか？', answer: '現在のファイルと作業手順、困っている点が分かれば整理できます。最初から完成した仕様書は不要です。' },
     ],
+    decisionLead: 'Excelを使い続けるのか、PythonやGASへ処理を分けるのかは、ファイル数だけでは決まりません。更新頻度、利用人数、入力形式の揺れ、処理後の確認方法まで含めて判断します。',
+    decisionPoints: [
+      { title: 'Excel・Power Queryが合う', detail: '同じ形式のファイルを定期的に集計し、利用者が更新操作を行える場合。複雑な入力UIや例外処理が不要なら、マクロを増やさない方法を先に検討します。' },
+      { title: 'VBAが合う', detail: '既存ブックの計算式や帳票レイアウトを残し、Excel内のボタンから転記・検証・保存まで実行する場合。既存マクロの改修では、どの処理から呼ばれているかも確認します。' },
+      { title: 'Python・GASが合う', detail: '大量ファイルの一括変換、外部サービスとの連携、共有運用など、Excelだけに処理を集めると保守しにくい場合。元のExcelは入力・確認用として残す構成も選べます。' },
+    ],
+    deliveryChecks: [
+      { title: '列や帳票の変更に備える', detail: '列番号を固定で決め打ちせず、見出し名・設定・テンプレートを使い分けます。追加列や順番変更が起きる業務は、エラー時の扱いも仕様にします。' },
+      { title: '再実行しても結果が壊れないようにする', detail: '途中で止まった際に上書き対象や重複取込を確認できるよう、処理単位・バックアップ・エラーログを決めます。' },
+      { title: '入力ミスを早めに見つける', detail: '日付・数値・必須項目・マスタとの一致を先に検証し、問題のある行を表示します。最終結果だけでなく確認すべき箇所を残す設計です。' },
+    ],
+    preparation: [
+      '現在使っているExcelファイル（個人情報は伏せたサンプルで可）',
+      '手作業で行う順序と、希望する出力結果',
+      '月あたりのファイル数・処理件数、利用するPCやExcelの環境',
+    ],
+    priorityGuideSlugs: ['excel-transfer-automation', 'excel-multiple-files-aggregation', 'vba-development-cost'],
+
   },
   {
     slug: 'gas-automation',
     title: 'GAS・Google Workspace業務自動化',
-    seoTitle: 'GAS業務自動化・Google Apps Script開発',
-    description: 'Google Apps Script（GAS）でスプレッドシート、Drive、Gmailなどの業務を連携。入力・通知・ファイル生成・Webアプリ化までGoogle Workspaceを活用して自動化します。',
+    seoTitle: 'GAS開発・スプレッドシート自動化｜社内Webアプリ',
+    description: 'Google Apps Script（GAS）でスプレッドシート・Drive・Gmailを連携。申請・承認、通知、PDF生成、社内Webアプリの設計・改修まで対応します。',
     eyebrow: 'GAS・Google Workspace',
     hero: 'スプレッドシート、Drive、Gmailなどをつないで一連の作業にします。',
     visual: '/service-visuals/gas-automation.svg',
@@ -110,12 +134,30 @@ export const services: ServiceDefinition[] = [
       { question: '既存のスプレッドシートを使えますか？', answer: '可能です。現在の列や運用を確認し、そのまま活かす部分と整理する部分を分けて設計します。' },
       { question: 'GASの実行時間制限が心配です。', answer: 'データ量や処理内容を確認し、分割処理・キャッシュ・別技術への切り分けも含めて設計します。' },
     ],
+    decisionLead: 'GASはGoogle Workspaceの中で完結する業務に向きます。一方で、利用者の権限、同時編集、実行時間、送信量によっては画面やデータ保存方法を分ける必要があります。',
+    decisionPoints: [
+      { title: 'シートのまま自動化する', detail: '少人数で管理する定型集計やファイル整理なら、既存シートへメニューや自動処理を追加する方法が手軽です。入力ルールと実行権限を決めて運用します。' },
+      { title: 'GAS Webアプリにする', detail: '複数の利用者が入力・承認する場合は、閲覧権限や画面操作を分けられるWebアプリを検討します。マスタ・履歴・承認状態をどう保存するかが重要です。' },
+      { title: '別基盤と連携する', detail: 'データ量、外部API、実行時間の制約が厳しい業務では、GASにすべてを載せず、バックエンドやデータベースに一部の処理を切り出す構成も比較します。' },
+    ],
+    deliveryChecks: [
+      { title: '権限と公開範囲を整理する', detail: '編集者・承認者・管理者の操作範囲を分け、誰の権限でGASを実行するか、Drive内のファイルを誰が見られるかを確認します。' },
+      { title: '同時操作を想定する', detail: '同時更新時の衝突を防ぐため、ロックや更新前チェックの要否を決めます。送信ボタンの連打による二重処理も考慮します。' },
+      { title: '制限・例外への対応を入れる', detail: 'GASの実行時間やサービス側の割当制限を踏まえ、分割実行、再試行、エラー記録を設計します。運用担当者が原因を確認できる形を目指します。' },
+    ],
+    preparation: [
+      '利用中のスプレッドシート・Drive構成とアクセス権限',
+      '何人が入力・確認・承認するか、各ユーザーの役割',
+      '通知先、出力したい帳票、定期処理の実行タイミング',
+    ],
+    priorityGuideSlugs: ['spreadsheet-automation', 'gas-web-app-development', 'gas-performance'],
+
   },
   {
     slug: 'python-data-processing',
     title: 'Python・CSV・大量データ処理',
-    seoTitle: 'Python業務自動化・CSV/Excel大量データ処理',
-    description: 'PythonでCSV・Excel・大量ファイルの検証、整形、変換、集計を一括処理。人が目視・コピーしているデータ加工を再現性のある処理へ置き換えます。',
+    seoTitle: 'PythonでCSV・Excel一括処理｜データ変換と集計',
+    description: 'Pythonで大量のCSV・Excelを検証・整形・結合・一括集計。文字コード、列形式、重複、欠損値を扱い、エラー行を確認できる業務処理を設計します。',
     eyebrow: 'Python・データ処理',
     hero: 'CSVやExcelの大量データをまとめて検証・変換・集計します。',
     visual: '/service-visuals/python-data-processing.svg',
@@ -139,12 +181,30 @@ export const services: ServiceDefinition[] = [
       { question: '実行するたびにPythonを操作する必要がありますか？', answer: '用途に応じてダブルクリック実行、Web画面、定期処理など、利用者がコードを触らない形にもできます。' },
       { question: 'エラーのあるデータだけ分けられますか？', answer: '可能です。正常データと確認が必要な行を分け、理由も一緒に出力する設計ができます。' },
     ],
+    decisionLead: '大量データの処理では「何件処理できたか」だけでなく「どの行を取り込めなかったか」が重要です。入力ファイルの種類、出力仕様、エラーの扱いを先に決めます。',
+    decisionPoints: [
+      { title: '複数ファイルを同じ形に揃える', detail: '部署別・月別のCSVやExcelを共通フォーマットへ変換してから集計する方法です。ファイル名・日付・項目の対応表も合わせて整理します。' },
+      { title: '検証しながら取り込む', detail: '文字コード、日付形式、必須列、重複キーなどを確認し、問題のある行だけを別出力します。全件を止めるか正常行を継続するかを業務に合わせて決めます。' },
+      { title: '定期バッチにする', detail: '決まったフォルダ・周期で処理する場合は、前回実行との重複判定や実行ログ、失敗時のやり直し方法まで含めて運用を設計します。' },
+    ],
+    deliveryChecks: [
+      { title: '元データを破壊しない', detail: '入力ファイルは原則保持し、変換後データとエラー一覧を分けます。処理前後の件数や合計値の突合も確認項目です。' },
+      { title: '表記ゆれとキーの扱いを決める', detail: '「001」と「1」、全角半角、空欄、同姓同名などの一致条件を仕様化します。安易な自動補完による誤結合を防ぐためです。' },
+      { title: '必要な環境で動かす', detail: 'WindowsのローカルPC、サーバー、クラウドなど実行場所を確認し、Pythonの配布方法・スケジュール実行・保守手順を決めます。' },
+    ],
+    preparation: [
+      '入力CSV・Excelのサンプルと期待する出力サンプル',
+      'ファイル数・おおよその行数、列名変更や欠損の有無',
+      '重複・エラー行を削除するか、確認後に修正するかの運用ルール',
+    ],
+    priorityGuideSlugs: ['csv-bulk-processing', 'excel-large-data-processing', 'python-excel-automation'],
+
   },
   {
     slug: 'api-integration',
     title: 'API・ECサービス連携',
-    seoTitle: 'API連携開発・EC業務自動化｜OAuth対応',
-    description: '外部サービスのAPI・OAuth認証を使い、商品登録、データ取得、更新、同期を自動化。複数サービス間の手入力を減らし、エラー確認まで含めた連携を構築します。',
+    seoTitle: 'API連携開発｜OAuth認証・商品登録・データ同期',
+    description: 'REST APIやOAuthを使った外部サービス連携に対応。ECの商品登録、在庫・注文データ同期、取得・更新、エラーの再処理を業務に合わせて設計します。',
     eyebrow: 'API・外部連携',
     hero: '外部サービス間の登録・取得をAPIでつなぎ、二重入力を減らします。',
     visual: '/service-visuals/api-integration.svg',
@@ -168,12 +228,30 @@ export const services: ServiceDefinition[] = [
       { question: 'OAuthのトークン更新にも対応できますか？', answer: '対応できます。リフレッシュトークンなどサービス仕様に合わせ、継続運用できる認証処理を組み込みます。' },
       { question: 'API連携できるか分からないサービスも相談できますか？', answer: 'まず公式APIや提供機能を確認し、実現可能な範囲と代替案を整理します。' },
     ],
+    decisionLead: 'API連携は接続できることだけでは完成しません。登録済みデータの判定、認証期限、取得件数の制限、送信失敗後の再処理が実運用では重要になります。',
+    decisionPoints: [
+      { title: '一方向の自動登録', detail: 'CSVや社内台帳から商品・顧客情報を登録する場合。必須項目の変換、送信前チェック、APIのレスポンス保存を組み込みます。' },
+      { title: '双方向の同期', detail: '複数サービスで情報を更新する場合は、更新元の優先順位、差分取得の方法、同時更新時の競合ルールを最初に決めます。' },
+      { title: 'Webhooksや定期取得を使う', detail: 'サービスがWebhookに対応していればイベント通知を使い、使えない場合は定期取得を検討します。取りこぼし検知と再実行方法を併せて設計します。' },
+    ],
+    deliveryChecks: [
+      { title: 'OAuthトークンを安全に扱う', detail: 'アクセストークンの期限と更新処理、保管場所、権限スコープを確認します。認証情報を画面やログにそのまま出さない構成にします。' },
+      { title: '送信制限と再試行を考える', detail: 'HTTP 429や一時的な5xxエラーを想定し、間隔を空けた再試行や処理待ちキューを検討します。永続的な400系エラーは内容を確認できるように分けます。' },
+      { title: '重複登録と不一致を防ぐ', detail: '商品IDや外部管理番号で既存レコードを照合し、二重送信・部分成功・更新漏れを検知します。' },
+    ],
+    preparation: [
+      '連携先サービス名と利用可能なAPI仕様書・権限',
+      '取得・登録・更新したい項目の対応表',
+      '処理件数・実行頻度・失敗時に許容できる停止時間',
+    ],
+    priorityGuideSlugs: ['api-business-automation', 'api-integration-cost', 'business-automation-outsourcing'],
+
   },
   {
     slug: 'pdf-document-automation',
     title: 'PDF・帳票自動生成',
-    seoTitle: 'PDF帳票自動生成｜Excel・GASの帳票作成を自動化',
-    description: 'Excelやスプレッドシートの入力データから見積書・報告書・日報などの定型帳票を自動生成。PDF化、ファイル名付与、保存まで一括で効率化します。',
+    seoTitle: 'PDF自動生成｜請求書・報告書・帳票出力',
+    description: 'Excel・スプレッドシートから請求書、見積書、報告書、安全日誌などのPDFを自動作成。帳票レイアウト、改ページ、ファイル名、保存先まで設計します。',
     eyebrow: 'PDF・帳票',
     hero: '入力済みデータから帳票やPDFを作成し、保存まで自動化します。',
     visual: '/service-visuals/pdf-document-automation.svg',
@@ -197,6 +275,24 @@ export const services: ServiceDefinition[] = [
       { question: '一度に複数のPDFを作れますか？', answer: '可能です。対象データを条件で抽出し、案件別・日付別などの単位で一括生成できます。' },
       { question: '保存先も自動で分けられますか？', answer: '可能です。案件名や年月などを使ってフォルダを選択・作成し、規則的に保存できます。' },
     ],
+    decisionLead: '帳票の自動生成ではデータの計算と見た目の両方が重要です。PDF化するだけでなく、印刷サイズ、金額の端数処理、明細行数、承認済みデータの扱いまで確認します。',
+    decisionPoints: [
+      { title: 'Excelテンプレートを使う', detail: '既存の帳票様式を活かしたい場合。印刷範囲・余白・ページ区切りの制御を確認し、手入力する項目を減らします。' },
+      { title: 'GASでPDFを生成する', detail: 'スプレッドシートやWebフォームの申請データから帳票を作る場合。テンプレート複製、PDF化、Drive保存、アクセス権限を一連の処理にします。' },
+      { title: '複雑なレイアウトを組む', detail: '明細の可変行数や複数様式、押印欄などがある場合は、HTML/CSSからPDFへ変換する方法も候補です。画面プレビューと印刷結果を両方確認します。' },
+    ],
+    deliveryChecks: [
+      { title: '計算値と表示値を一致させる', detail: '税込・税抜、端数処理、集計単位を先に統一し、帳票に印字する値が一覧画面の金額と一致するよう検証します。' },
+      { title: '用紙と改ページを確認する', detail: 'A4・A3、縦横、余白、複数ページの罫線やタイトル位置を確認します。利用者のPCやPDFビューアによる違いにも注意します。' },
+      { title: 'ファイル管理を決める', detail: 'ファイル名、保存先、同名更新、再発行、確定後の修正可否を決めて、誤った帳票を共有しない運用にします。' },
+    ],
+    preparation: [
+      '現在の帳票PDF・Excel、または必要な記載欄の見本',
+      '明細の最大行数、用紙サイズ、計算・端数ルール',
+      'ファイル命名規則、保存先、閲覧・承認の担当者',
+    ],
+    priorityGuideSlugs: ['gas-pdf-automation', 'excel-pdf-automation', 'vba-development-cost'],
+
   },
 ];
 
