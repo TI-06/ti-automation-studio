@@ -21,8 +21,9 @@ tools.forEach((root) => {
     });
     if (moveFocus && window.matchMedia('(max-width: 960px)').matches) {
       const panel = root.querySelector<HTMLElement>(`[data-mobile-panel="${name}"]`);
-      panel?.scrollIntoView({ block: 'start', behavior: 'instant' });
-      panel?.querySelector<HTMLElement>('h2, h3')?.focus({ preventScroll: true });
+      panel?.scrollIntoView({ block: 'start', behavior: 'auto' });
+      const heading = panel?.querySelector<HTMLElement>('h2, h3');
+      if (heading) { heading.tabIndex = -1; heading.focus({ preventScroll: true }); }
     }
   }
 
