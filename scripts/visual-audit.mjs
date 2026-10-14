@@ -4,10 +4,16 @@ import path from 'node:path';
 
 const BASE = process.env.AUDIT_BASE_URL ?? 'http://127.0.0.1:4321';
 const OUTPUT = path.resolve('visual-audit-results');
-const WIDTHS = [320, 375, 390, 768, 1024, 1440];
+const WIDTHS = [320, 375, 390, 768, 1024, 1440, 1920];
 const PATHS = [
   ['home', '/'],
   ['works', '/works'],
+  ['work-detail', '/works/workflow-report-system'],
+  ['services', '/services'],
+  ['service-detail', '/services/excel-automation/'],
+  ['price', '/price'],
+  ['about', '/about'],
+  ['guide', '/solutions/excel-transfer-automation/'],
   ['tools', '/tools'],
   ['excel-diff', '/tools/excel-diff'],
   ['data-cleaner', '/tools/data-cleaner'],
@@ -78,6 +84,28 @@ try {
       if (status !== 200) issues.push(`${name}@${width}: HTTP ${status}`);
       if (dimensions.overflow > 3) issues.push(`${name}@${width}: document overflow ${dimensions.overflow}px; ${JSON.stringify(dimensions.offenders)}`);
 
+      if (name === 'home') {
+        try {
+          const phases = await page.locator('.process-phase-card').count();
+          const steps = await page.locator('.process-phase-steps li').count();
+          if (phases !== 3 || steps !== 6) issues.push(`home@${width}: process phases ${phases}, steps ${steps}`);
+          const clipped = await page.locator('.process-phase-card').evaluateAll(cards =>
+            cards.some(card => {
+              const r = card.getBoundingClientRect();
+              return r.width < 240 || r.right > window.innerWidth + 3;
+            })
+          );
+          if (clipped) issues.push(`home@${width}: process card outside readable width`);
+        } catch(e) { issues.push(`home@${width}: process layout ${e.message}`); }
+      }
+      if (name === 'services') {
+        const count = await page.locator('.service-index-card').count();
+        if (count !== 5) issues.push(`services@${width}: expected 5 services, got ${count}`);
+      }
+      if (name === 'about') {
+        const cardCount = await page.locator('.about-capability').count();
+        if (cardCount !== 6) issues.push(`about@${width}: expected 6 capabilities, got ${cardCount}`);
+      }
       if (width <= 768) {
         try {
           const menu = page.locator('[data-mobile-menu]');
