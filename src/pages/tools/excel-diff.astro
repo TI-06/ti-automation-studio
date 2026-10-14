@@ -71,7 +71,12 @@ const structuredData = [
         processingLabel="ブラウザ内処理"
       >
         <div class="tool-app-grid" data-excel-diff-app>
-          <aside class="tool-panel" aria-label="比較条件">
+          <nav class="tool-mobile-view-nav" data-tool-mobile-nav aria-label="ツールの表示切替">
+            <button type="button" data-mobile-view="setup" aria-pressed="true">1. ファイル・設定</button>
+            <button type="button" data-mobile-view="result" aria-pressed="false">2. 結果・確認</button>
+            <button type="button" data-mobile-view="detail" aria-pressed="false">3. 詳細・操作</button>
+          </nav>
+          <aside class="tool-panel" data-mobile-panel="setup" aria-label="比較条件">
             <h2 class="tool-panel-title">1. ファイルを選択</h2>
             <p class="tool-panel-copy">2つのExcelファイルを比較します。対応形式は .xlsx / .xls、1ファイル20MBまでです。</p>
 
@@ -139,7 +144,7 @@ const structuredData = [
             </div>
           </aside>
 
-          <section class="tool-panel tool-workspace" aria-label="差分結果">
+          <section class="tool-panel tool-workspace" data-mobile-panel="result" aria-label="差分結果">
             <div class="tool-workspace-head">
               <div>
                 <h2 class="tool-panel-title">3. 差分結果</h2>
@@ -223,7 +228,7 @@ const structuredData = [
             </div>
           </section>
 
-          <aside class="tool-panel tool-inspector" aria-label="差分の詳細" data-diff-inspector>
+          <aside class="tool-panel tool-inspector" data-mobile-panel="detail" aria-label="差分の詳細" data-diff-inspector>
             <h2 class="tool-panel-title">選択した差分</h2>
             <p class="tool-panel-copy" data-inspector-empty>一覧から差分を選択すると、変更前後の値や数式を確認できます。</p>
             <div class="tool-inspector-card" data-inspector-card hidden>
