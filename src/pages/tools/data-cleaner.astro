@@ -72,7 +72,12 @@ const structuredData = [
         processingLabel="ブラウザ内処理"
       >
         <div class="tool-app-grid tool-cleaner-grid" data-cleaner-app>
-          <aside class="tool-panel" aria-label="ファイルと整理条件">
+          <nav class="tool-mobile-view-nav" data-tool-mobile-nav aria-label="ツールの表示切替">
+            <button type="button" data-mobile-view="setup" aria-pressed="true">1. ファイル・設定</button>
+            <button type="button" data-mobile-view="result" aria-pressed="false">2. 整理候補</button>
+            <button type="button" data-mobile-view="detail" aria-pressed="false">3. 列・保存</button>
+          </nav>
+          <aside class="tool-panel" data-mobile-panel="setup" aria-label="ファイルと整理条件">
             <h2 class="tool-panel-title">1. ファイルを選択</h2>
             <p class="tool-panel-copy">CSV / Excelに対応。1ファイル20MB、100,000行までです。</p>
 
@@ -141,7 +146,7 @@ const structuredData = [
             </div>
           </aside>
 
-          <section class="tool-panel tool-workspace" aria-label="データ健康診断と変更確認">
+          <section class="tool-panel tool-workspace" data-mobile-panel="result" aria-label="データ健康診断と変更確認">
             <div class="tool-workspace-head">
               <div>
                 <h2 class="tool-panel-title">データ健康診断</h2>
@@ -222,7 +227,7 @@ const structuredData = [
             </div>
           </section>
 
-          <aside class="tool-panel tool-inspector cleaner-inspector" aria-label="列の詳細と変更履歴">
+          <aside class="tool-panel tool-inspector cleaner-inspector" data-mobile-panel="detail" aria-label="列の詳細と変更履歴">
             <section>
               <h2 class="tool-panel-title">選択した列</h2>
               <p class="tool-panel-copy" data-column-empty>データを読み込んで列名を選択してください。</p>
