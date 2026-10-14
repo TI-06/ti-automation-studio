@@ -14,6 +14,11 @@ const PATHS = [
   ['price', '/price'],
   ['about', '/about'],
   ['guide', '/solutions/excel-transfer-automation/'],
+  ['guide-vba', '/solutions/vba-repair-outsourcing/'],
+  ['guide-pdf', '/solutions/gas-pdf-automation/'],
+  ['guide-performance', '/solutions/gas-performance/'],
+  ['guide-sheets', '/solutions/spreadsheet-automation/'],
+  ['guide-webapp', '/solutions/gas-web-app-development/'],
   ['tools', '/tools'],
   ['excel-diff', '/tools/excel-diff'],
   ['data-cleaner', '/tools/data-cleaner'],
@@ -105,6 +110,22 @@ try {
       if (name === 'about') {
         const cardCount = await page.locator('.about-capability').count();
         if (cardCount !== 6) issues.push(`about@${width}: expected 6 capabilities, got ${cardCount}`);
+      }
+      if (name.startsWith('guide')) {
+        try {
+          const toc = page.locator('.solution-toc');
+          if (!(await toc.isVisible())) issues.push(`${name}@${width}: guide table of contents not visible`);
+          const sections = await page.locator('.solution-practical-section').count();
+          if (sections !== 2) issues.push(`${name}@${width}: expected 2 practical sections, got ${sections}`);
+          const practicalLinks = await toc.locator('a[href^="#guide-practical-"]').count();
+          if (practicalLinks !== 2) issues.push(`${name}@${width}: expected 2 deep links, got ${practicalLinks}`);
+          if (width <= 390) {
+            const hiddenHeader = await page.locator('.solution-practical-example thead').first().evaluate(el => {
+              return window.getComputedStyle(el).position === 'absolute';
+            }).catch(() => null);
+            if (hiddenHeader === false) issues.push(`${name}@${width}: mobile example should be stacked`);
+          }
+        } catch (e) { issues.push(`${name}@${width}: guide readability ${e.message}`); }
       }
       if (width <= 768) {
         try {
