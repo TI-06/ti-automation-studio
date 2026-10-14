@@ -11,8 +11,8 @@ describe('Sitemap and canonical URL consistency', () => {
     const xml = await (await GET({ site: new URL(SITE) } as never)).text();
     expect(xml).toContain(`<loc>${SITE}/solutions/</loc>`);
     expect(xml).not.toContain(`<loc>${SITE}/solutions</loc>`);
-    expect(canonicalCorePaths).toContain('/solutions/');
-    expect(canonicalCorePaths).not.toContain('/solutions');
+    expect(coreCanonicalPaths).toContain('/solutions/');
+    expect(coreCanonicalPaths).not.toContain('/solutions');
   });
 
   it('Index-page slash aliases all resolve to a single canonical', () => {
