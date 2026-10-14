@@ -17,7 +17,7 @@ const expectedPaths = [
   '/services',
   '/works',
   '/price',
-  '/solutions',
+  '/solutions/',
   '/tools',
   '/about',
   '/services/gas-repair',
